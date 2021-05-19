@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use \App\Http\Controllers\AssociateController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,16 +70,7 @@ Route::post('/users/store', [UserController::class, 'store']);
 /**
  * Associates Routes
  */
-Route::get('/associates',function(){
-    $data = [
-        'category_name' => 'associates',
-        'page_name' => 'associates',
-        'has_scrollspy' => 0,
-        'scrollspy_offset' => '',
-        'alt_menu' => 0,
-    ];
-    return view('associate.list')->with($data);
-});
+Route::get('/associates',[AssociateController::class, 'index']);
 
 Route::get('/covenants',function(){
     $data = [

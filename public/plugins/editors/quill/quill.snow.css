@@ -72,7 +72,7 @@
   list-style-type: none;
 }
 .ql-editor ul > li::before {
-  content: "\2022";
+  content: "•";
 }
 .ql-editor ul[data-checked=true], .ql-editor ul[data-checked=false] {
   pointer-events: none;
@@ -86,10 +86,10 @@
   pointer-events: all;
 }
 .ql-editor ul[data-checked=true] > li::before {
-  content: "\2611";
+  content: "☑";
 }
 .ql-editor ul[data-checked=false] > li::before {
-  content: "\2610";
+  content: "☐";
 }
 .ql-editor li::before {
   display: inline-block;

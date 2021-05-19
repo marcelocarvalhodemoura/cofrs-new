@@ -24,7 +24,32 @@
                         <h5>Controle de associados</h5>
 
                         <p class="">Página do Sistema Cofrs destinada ao gerenciamento de associados.</p>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 text-right">
 
+                            </div>
+
+                            <div class="col-md-12">
+                                <table id="associatetable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4"">
+                                <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Matrícula</th>
+                                    <th>Fone</th>
+                                    <th>Cidade</th>
+                                    <th>Tipo</th>
+                                    <th>Ativação</th>
+                                    <th>Ação</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,3 +58,7 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ URL::asset('/assets/js/associate/custom.js') }}"></script>
+@endpush

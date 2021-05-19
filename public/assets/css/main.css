@@ -150,7 +150,7 @@ blockquote.blockquote > p {
   margin-bottom: 0;
 }
 blockquote .small:before, blockquote footer:before, blockquote small:before {
-  content: "\2014\A0";
+  content: "— ";
 }
 blockquote .small, blockquote footer, blockquote small {
   display: block;

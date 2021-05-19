@@ -90,7 +90,7 @@
   cursor: pointer;
 }
 .file-tree .file-tree-folder::before {
-  content: "\E9B9";
+  content: "";
   font-size: 1.25rem;
 }
 .file-tree .file-tree-folder::after {
@@ -99,7 +99,7 @@
   position: absolute;
   top: 0.4rem;
   left: -2em;
-  content: "\F182";
+  content: "";
   display: block;
   text-align: center;
   font-family: "flaticon" !important;

@@ -39,7 +39,7 @@
   display: flex;
 }
 .chat-system .user-list-box .search svg {
-  content: "\F169";
+  content: "";
   position: absolute;
   left: 11px;
   color: #acb0c3;
@@ -572,7 +572,7 @@
   display: block;
   width: 8px;
   height: 6px;
-  content: "\A0";
+  content: " ";
   transform: rotate(29deg) skew(-35deg);
 }
 .chat-system .chat-box .bubble.you {

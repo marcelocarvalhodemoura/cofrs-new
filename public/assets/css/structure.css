@@ -185,7 +185,7 @@ code {
   margin-left: 80px;
 }
 
-/*
+/* 
 =====================
     Navigation Bar
 =====================
@@ -844,7 +844,7 @@ code {
   fill: rgba(86, 71, 142, 0.34);
 }
 
-/*
+/* 
 ===============
     Sidebar
 ===============
@@ -897,7 +897,7 @@ code {
 .sidebar-wrapper .profile-info figure {
   width: 100%;
   height: 82px;
-  /*background: url("../../../storage/img/255x255.jpg") center center/cover no-repeat;*/
+  background: url("../../../storage/img/255x255.jpg") center center/cover no-repeat;
   margin-bottom: 0;
 }
 .sidebar-wrapper .profile-info .user-info {
@@ -967,7 +967,6 @@ code {
   pointer-events: none;
   margin-top: -13px;
   left: -4px;
-  -webkit-filter: blur(5px);
   filter: blur(7px);
   background: linear-gradient(#fafafac4 41%, rgba(255, 255, 255, 0.14) 95%, rgba(255, 255, 255, 0));
 }
@@ -1327,7 +1326,7 @@ code {
   animation-name: e-fadeInUp;
 }
 
-/*
+/*  
     ======================
         Footer-wrapper
     ======================
@@ -1365,7 +1364,7 @@ code {
   vertical-align: text-top;
 }
 
-/*
+/*  
     ======================
         MEDIA QUERIES
     ======================

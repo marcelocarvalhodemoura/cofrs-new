@@ -578,10 +578,10 @@ span.CodeMirror-selectedtext {
   content: "3";
 }
 .editor-toolbar a.fa-header-bigger:after {
-  content: "\25B2";
+  content: "▲";
 }
 .editor-toolbar a.fa-header-smaller:after {
-  content: "\25BC";
+  content: "▼";
 }
 .editor-toolbar.disabled-for-preview a:not(.no-disable) {
   pointer-events: none;

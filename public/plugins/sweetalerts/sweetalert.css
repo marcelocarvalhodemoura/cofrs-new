@@ -295,7 +295,7 @@ body.swal2-iosfix {
 }
 .swal2-modal .swal2-validationerror::before {
   font-family: flaticon !important;
-  content: "\F231";
+  content: "";
   display: inline-block;
   width: 24px;
   height: 24px;

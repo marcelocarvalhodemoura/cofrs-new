@@ -129,51 +129,51 @@ a.bg-success:hover {
 }
 
 .fc-icon-left-single-arrow:after {
-  content: "\2039";
+  content: "‹";
   font-weight: 700;
   font-size: 200%;
   top: -7%;
 }
 
 .fc-icon-right-single-arrow:after {
-  content: "\203A";
+  content: "›";
   font-weight: 700;
   font-size: 200%;
   top: -7%;
 }
 
 .fc-icon-left-double-arrow:after {
-  content: "\AB";
+  content: "«";
   font-size: 160%;
   top: -7%;
 }
 
 .fc-icon-right-double-arrow:after {
-  content: "\BB";
+  content: "»";
   font-size: 160%;
   top: -7%;
 }
 
 .fc-icon-left-triangle:after {
-  content: "\25C4";
+  content: "◄";
   font-size: 125%;
   top: 3%;
 }
 
 .fc-icon-right-triangle:after {
-  content: "\25BA";
+  content: "►";
   font-size: 125%;
   top: 3%;
 }
 
 .fc-icon-down-triangle:after {
-  content: "\25BC";
+  content: "▼";
   font-size: 125%;
   top: 2%;
 }
 
 .fc-icon-x:after {
-  content: "\D7";
+  content: "×";
   font-size: 200%;
   top: 6%;
 }
@@ -920,7 +920,7 @@ a.fc-more:hover {
   content: attr(data-start);
 }
 .fc-time-grid-event.fc-short .fc-time:after {
-  content: "\A0-\A0";
+  content: " - ";
 }
 .fc-time-grid-event.fc-short .fc-title {
   font-size: 0.85em;

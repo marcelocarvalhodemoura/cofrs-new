@@ -83,11 +83,11 @@
 }
 
 .dropify-font-upload:before, .dropify-wrapper .dropify-message span.file-icon:before {
-  content: "\E800";
+  content: "";
 }
 
 .dropify-font-file:before {
-  content: "\E801";
+  content: "";
 }
 
 .dropify-wrapper {

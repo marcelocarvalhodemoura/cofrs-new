@@ -9,7 +9,7 @@ $(document).ready(function(){
             {data: 'usr_nome', name: 'usr_nome'},
             {data: 'usr_usuario', name: 'usr_usuario'},
             {data: 'usr_email', name: 'usr_email'},
-            {data: 'tipusr_nome', name: 'tipusr_nome'},
+            {data: 'usr_fone', name: 'usr_fone'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         "oLanguage": {
