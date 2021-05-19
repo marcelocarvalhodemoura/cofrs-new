@@ -45,30 +45,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($userList as $item)
 
-                                        <tr>
-                                            <td>{{ $item->usr_nome }}</td>
-                                            <td>{{ $item->usr_usuario }}</td>
-                                            <td>{{ $item->usr_email }}</td>
-                                            <td>
-                                            @switch($item->tipusr_nome)
-                                                @case('Administrador')
-                                                    <span class="badge badge-danger">{{ $item->tipusr_nome }}</span>
-                                                @break
-
-                                                @case('Gestor')
-                                                    <span class="badge badge-warning">{{ $item->tipusr_nome }}</span>
-                                                @break
-
-                                                @case('Operador')
-                                                    <span class="badge badge-info">{{ $item->tipusr_nome }}</span>
-                                                @break
-                                            @endswitch
-                                            </td>
-                                            <td>sadsadsadsa</td>
-                                        </tr>
-                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -48,10 +48,27 @@ Route::get('/logout', function(){
     return redirect('');
 })->name('logout');
 
-//User routes
+/**
+ * User routes
+ */
 Route::get('/users', [UserController::class, 'index']);
+
+//load form with data
+Route::get('/users/load/{id}', [UserController::class, 'getUser']);
+
+//Remove data
+Route::post('/users/delete/{id}', [UserController::class, 'delete']);
+
+//Forgot password
+Route::post('/users/pass/{id}', [UserController::class, 'forgotPassword']);
+
+//Send data from the form
 Route::post('/users/store', [UserController::class, 'store']);
 
+
+/**
+ * Associates Routes
+ */
 Route::get('/associates',function(){
     $data = [
         'category_name' => 'associates',

@@ -6,16 +6,32 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Hash;
+use DataTables;
+use Mockery\Exception;
 
 class UserController extends Controller
 {
-    //
 
-    public function index(){
-
-        $userList = User::join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')->get();
-
+    public function index(Request $request){
+        //load all UserTypes
         $userType = UserType::all();
+
+        if($request->ajax()){
+
+            //load all users and usertypes
+            $userList = User::latest()
+                ->join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')
+                ->get();
+
+            return \Yajra\DataTables\DataTables::of($userList)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->usr_codigoid.'"/>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
         $data = [
             'category_name' => 'users',
@@ -23,10 +39,16 @@ class UserController extends Controller
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
             'alt_menu' => 0,
-            'userList' => $userList,
             'userType' => $userType
         ];
+
+
         return view('user.list')->with($data);
+    }
+
+    public function getUser($id)
+    {
+        return response()->json(User::find($id));
     }
 
     public function store(Request $request)
@@ -49,5 +71,51 @@ class UserController extends Controller
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
 
+    }
+
+    /**
+     * Forgot password
+     */
+    public function forgotPassword(Request $request)
+    {
+        if($request->ajax()){
+            if($request->post('editPassword') != $request->post('editPassword2')){
+                return response()->json(['status'=>'error', 'msg'=>'Senha e Conf. de Senha devem ser iguais!']);
+            }
+
+            try {
+
+                $userModel = User::find($request->post('editUserID'));
+
+                $userModel->usr_senha = Hash::make($request->post('editPassword'));
+
+                $userModel->save();
+
+                return response()->json(['status'=> 'success', 'msg'=>'Usuário atualizado com sucesso!']);
+
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
+
+        }
+
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    protected function delete($id)
+    {
+        try {
+            User::find($id)->delete();
+            return true;
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
     }
 }

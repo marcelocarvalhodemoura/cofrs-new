@@ -167,6 +167,7 @@ var App = function() {
                 }
             });
         },
+
         languageDropdown: function() {
             var getDropdownElement = document.querySelectorAll('.more-dropdown.language-dropdown .dropdown-item');
             for (var i = 0; i < getDropdownElement.length; i++) {
@@ -194,7 +195,7 @@ var App = function() {
                 toggleFunction.sidebar();
             }
         },
-        
+
         onResize: function() {
             $(window).on('resize', function(event) {
                 event.preventDefault();
@@ -204,7 +205,7 @@ var App = function() {
                 }
             });
         }
-        
+
     }
 
     var _desktopResolution = {
@@ -216,7 +217,7 @@ var App = function() {
                 toggleFunction.onToggleSidebarSubmenu();
             }
         },
-        
+
         onResize: function() {
             $(window).on('resize', function(event) {
                 event.preventDefault();
@@ -226,7 +227,7 @@ var App = function() {
                 }
             });
         }
-        
+
     }
 
     function sidebarFunctionality() {
@@ -267,6 +268,7 @@ var App = function() {
 
         }
 
+
         function sidebarMobCheck() {
             if (window.innerWidth <= 991 ) {
 
@@ -301,7 +303,7 @@ var App = function() {
             /*
                 Mobile Resoltion fn
             */
-            _mobileResolution.onRefresh();            
+            _mobileResolution.onRefresh();
             _mobileResolution.onResize();
 
             sidebarFunctionality();

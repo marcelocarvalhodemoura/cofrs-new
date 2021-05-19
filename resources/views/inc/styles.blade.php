@@ -1025,6 +1025,6 @@
       @break
 
     @default
-        <script>console.log('No custom Styles available.')</script>
+
 @endswitch
 <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
