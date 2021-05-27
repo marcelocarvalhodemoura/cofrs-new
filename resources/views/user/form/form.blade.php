@@ -3,7 +3,7 @@
     <div class="form-row">
         <div class="col-md-4 mb-4">
             <label for="name">Nome</label>
-            <input type="text" class="form-control" id="nameUser" name="nameUser" value="" required>
+            <input type="text" class="form-control" id="name" name="name" value="" required>
             <div class="valid-feedback">
 
             </div>

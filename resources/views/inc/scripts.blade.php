@@ -7,14 +7,16 @@
 <script src="{{asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
 <script src="{{asset('assets/js/app.js')}}"></script>
 <script>
-    $(document).ready(function() {
-        App.init();
-    });
+    // $(document).ready(function() {
+    //     App.init();
+    // });
 </script>
 <script src="{{asset('assets/js/scrollspyNav.js')}}"></script>
 <script src="{{asset('plugins/highlight/highlight.pack.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
+<script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
 @endif

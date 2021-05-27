@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\AssociateController;
+use \App\Http\Controllers\TypeAssociateController;
+use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\AgentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,7 +75,29 @@ Route::post('/users/store', [UserController::class, 'store']);
  * Associates Routes
  */
 Route::get('/associates',[AssociateController::class, 'index']);
+Route::post('/associates/store', [AssociateController::class, 'store']);
+Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
 
+/**
+ * Type Associates Routes
+ */
+Route::get('/typeassociate/list', [TypeAssociateController::class, 'list']);
+
+/**
+ * Classification Route
+ */
+Route::get('/classification/list', [ClassificationController::class, 'list']);
+
+
+/**
+ * Agent Route
+ */
+
+Route::get('/agent/list', [AgentController::class, 'list']);
+
+/**
+ * Convenants Routes
+ */
 Route::get('/covenants',function(){
     $data = [
         'category_name' => 'covenants',

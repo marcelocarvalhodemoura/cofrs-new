@@ -19,9 +19,7 @@ class UserController extends Controller
         if($request->ajax()){
 
             //load all users and usertypes
-            $userList = User::latest()
-                ->join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')
-                ->get();
+            $userList = User::join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')->get();
 
             return \Yajra\DataTables\DataTables::of($userList)
                 ->addIndexColumn()
@@ -53,15 +51,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+
         try {
             User::updateOrCreate(
                 ['usr_codigoid' => $request->post('userId')],
                 [
-                    'usr_nome'=>$request->post('name'),
-                    'usr_usuario'=>$request->post('user'),
-                    'usr_email'=>$request->post('email'),
+                    'usr_nome'  =>  $request->post('name'),
+                    'usr_usuario' => $request->post('user'),
+                    'usr_email' => $request->post('email'),
                     'usr_senha' => Hash::make($request->post('password')),
-                    'tipusr_codigoid' =>$request->post('usertype'),
+                    'tipusr_codigoid' => $request->post('usertype'),
                     'usr_removesn' => 0
                 ]
             );
