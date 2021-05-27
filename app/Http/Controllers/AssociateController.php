@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use App\Models\Associate;
-use DataTables;
+use  \Yajra\DataTables\DataTables;
 
 class AssociateController extends Controller
 {
@@ -17,7 +17,7 @@ class AssociateController extends Controller
             //load all associates
             $associateList = Associate::join('tipoassociado', 'associado.tipassoc_codigoid', '=', 'tipoassociado.tipassoc_codigoid')->get();
 
-            return \Yajra\DataTables\DataTables::of($associateList)
+            return DataTables::of($associateList)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->assoc_codigoid.'"/>';
@@ -92,6 +92,12 @@ class AssociateController extends Controller
 
     public function associateConvenants($id)
     {
-        return Installment::where('assoc_codigoid', '=', $id)->get();
+        //load all Portion
+        return $portions = Installment::join('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
+            ->join('parcelamento', 'parcelamento.lanc_codigoid', '=', 'lancamento.lanc_codigoid')
+            ->where('assoc_codigoid', '=', $id)
+            ->where('par_status', '=', 'Pendente')
+            ->get();
     }
+
 }

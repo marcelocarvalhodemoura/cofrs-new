@@ -2,26 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/portion.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/modal/covenants.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/modal/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/modal/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/modal/dependent.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/associate/modal/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/list.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/list.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/portion.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/portion.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/covenants.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/covenants.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,7 +216,7 @@
       <workItem from="1621544911855" duration="3671000" />
       <workItem from="1621627502704" duration="4300000" />
       <workItem from="1621705474474" duration="9388000" />
-      <workItem from="1622031134472" duration="15303000" />
+      <workItem from="1622031134472" duration="20726000" />
     </task>
     <servers />
   </component>

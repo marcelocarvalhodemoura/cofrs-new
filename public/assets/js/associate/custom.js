@@ -80,7 +80,7 @@ $(document).ready(function() {
         url:"/agent/list",
         method:"GET",
         success: response => {
-            var optionAgent = '<option>-Selecione-</option>';
+            var optionAgent = '<option value="">-Selecione-</option>';
 
             response.forEach(element =>{
                optionAgent += '<option value="'+element.ag_codigoid+'">'+element.ag_nome+'</option>';
@@ -95,7 +95,7 @@ $(document).ready(function() {
         url:"/classification/list",
         method:"GET",
         success: response => {
-            var optionClassification = '<option>-Selecione-</option>';
+            var optionClassification = '<option value="">-Selecione-</option>';
 
             response.forEach(element => {
                optionClassification += '<option value="'+element.cla_codigoid+'">'+element.cla_nome+'</option>';
@@ -169,39 +169,52 @@ $(document).ready(function() {
     })()
     //});
 
-    //associate Portion
-    $('#tableAssocPortion').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "/associates",
-        columns: [
-            {data: 'assoc_nome', name: 'assoc_nome'},
-            {data: 'assoc_cpf', name: 'assoc_cpf'},
-            {data: 'assoc_matricula', name: 'assoc_matricula'},
-            {data: 'assoc_fone', name: 'assoc_fone'},
-            {data: 'assoc_cidade', name: 'assoc_cidade'},
-            {data: 'tipassoc_nome', name: 'tipassoc_nome'},
-            {data: 'assoc_ativosn', name: 'assoc_ativosn'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        "oLanguage": {
-            "sProcessing": "Processando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "Não foram encontrados resultados",
-            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
-            "sInfoFiltered": "",
-            "sInfoPostFix": "",
-            "pagingType": "full_numbers",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "Primeiro",
-                "sPrevious": "Anterior",
-                "sNext": "Seguinte",
-                "sLast": "Último"
-            }
-        },
+    $('#btnAssociateModalConvenants').on('click', function (e) {
+        e.preventDefault();
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+            //alert(usuarioMarcados);
+        });
+
+        //validate if exist value
+        if (id > 0) {
+            $('#associateFormModalconvenants').modal('show');
+
+            $.ajax({
+                url:"/associates/instalment/"+id,
+                method:"GET",
+                success: response => {
+                    console.log(response);
+                    let tr = '';
+                    response.forEach(element =>{
+                        console.log(element.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                        tr += '<tr>';
+                        tr += '<td class="text-primary">' + element.con_nome + '</td>';
+                        tr += '<td>' + element.par_numero + 'º</td>';
+                        tr += '<td>' + element.lanc_numerodeparcela + '</td>';
+                        tr += '<td>' + element.lanc_valortotal + '</td>';
+                        tr += '<td><span class="badge badge-warning">' + element.par_status + '</span></td></tr>';
+                    });
+
+                    $("#tableAssocPortion tbody").append(tr).fadeIn();
+                }
+            });
+
+        } else {
+
+            swal("Atenção !", "Selecione apenas 1 registro por vez", "info");
+        }
+
+        $('#associateFormModalconvenants').on('hide.bs.modal', function () {
+            // remove all tr in tbody
+            $("#tableAssocPortion tbody tr").fadeOut().remove();
+        });
     });
+
+
+
 
 });

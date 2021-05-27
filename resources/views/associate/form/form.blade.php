@@ -70,7 +70,7 @@
         <div class="col-md-4 mb-4">
             <label for="sexo" class="form-label">Sexo <b>*</b></label>
             <select name="sexo" class="form-control" id="sexo"  required>
-                <option>-Selecione-</option>
+                <option value="">-Selecione-</option>
                 <option value="Feminino">Feminino</option>
                 <option value="Masculino">Masculino</option>
             </select>
@@ -230,6 +230,7 @@
             </textarea>
         </div>
     </div>
+    <br/>
     <div class="form-row">
         <div class="col-md-12 mb-4">
             <h5>Informações Bancárias</h5>
