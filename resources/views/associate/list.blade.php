@@ -35,7 +35,7 @@
                             </div>
 
                             <div class="col-md-12">
-                                <table id="associatetable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
+                                <table id="associatetable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4 dataTable no-footer">
                                 <thead>
                                 <tr>
                                     <th>Nome</th>

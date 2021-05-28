@@ -37,6 +37,8 @@ Route::get('', function() {
     return view('pages.authentication.auth_login_boxed')->with($data);
 });
 
+Route::post('/auth', [UserController::class, 'authentication']);
+
 Route::get('/dashboard', function(){
     $data = [
         'category_name' => 'dashboard',
@@ -77,6 +79,7 @@ Route::post('/users/store', [UserController::class, 'store']);
 Route::get('/associates',[AssociateController::class, 'index']);
 Route::post('/associates/store', [AssociateController::class, 'store']);
 Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
+Route::get('/associates/{id}', [AssociateController::class, 'getAssociate']);
 
 /**
  * Type Associates Routes

@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @include('associate.form.form')
+                @include('associate.form.dependent')
 
             </div>
 

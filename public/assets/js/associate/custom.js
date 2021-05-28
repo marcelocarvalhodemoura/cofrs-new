@@ -120,7 +120,6 @@ $(document).ready(function() {
         }
     });
 
-    //$("#formAssoc").on('submit', event => {
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict'
@@ -167,7 +166,43 @@ $(document).ready(function() {
                 }, false)
             })
     })()
-    //});
+
+    /**
+     * Load Associate Edit Form Modal
+     */
+    $('#btnAssociateModalEdit').on('click', function (e) {
+        e.preventDefault();
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+
+        });
+
+        //validate if exist value
+        if (id > 0) {
+
+            //load Associate data
+            $.ajax({
+                url:"/associates/"+id,
+                method:"GET",
+                success:response => {
+                    console.log(response);
+
+                    $("#name").val(response.assoc_nome);
+                }
+            });
+
+            //load Modal Edit Associate
+            $("#associateFormModalEdit").modal('show');
+
+        }else{
+            swal("Atenção !", "Selecione apenas 1 registro por vez", "info");
+        }
+
+    });
+
 
     $('#btnAssociateModalConvenants').on('click', function (e) {
         e.preventDefault();
@@ -187,18 +222,26 @@ $(document).ready(function() {
                 url:"/associates/instalment/"+id,
                 method:"GET",
                 success: response => {
-                    console.log(response);
-                    let tr = '';
-                    response.forEach(element =>{
-                        console.log(element.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-                        tr += '<tr>';
-                        tr += '<td class="text-primary">' + element.con_nome + '</td>';
-                        tr += '<td>' + element.par_numero + 'º</td>';
-                        tr += '<td>' + element.lanc_numerodeparcela + '</td>';
-                        tr += '<td>' + element.lanc_valortotal + '</td>';
-                        tr += '<td><span class="badge badge-warning">' + element.par_status + '</span></td></tr>';
-                    });
 
+                    let tr = '';
+
+                    if (response == ""){
+
+                        tr = '<tr class="table-warning"><td colspan="5" align="center">Não há registro de Pendências</td></tr>';
+
+                    }else{
+                        response.forEach(element =>{
+                            console.log(element.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                            tr += '<tr>';
+                            tr += '<td class="text-primary">' + element.con_nome + '</td>';
+                            tr += '<td>' + element.par_numero + 'º</td>';
+                            tr += '<td>' + element.lanc_numerodeparcela + '</td>';
+                            tr += '<td>' + element.lanc_valortotal + '</td>';
+                            tr += '<td><span class="badge badge-warning">' + element.par_status + '</span></td></tr>';
+                        });
+                    }
+
+                    //include new rows
                     $("#tableAssocPortion tbody").append(tr).fadeIn();
                 }
             });

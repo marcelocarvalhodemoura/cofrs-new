@@ -11,7 +11,7 @@
                         <h1 class="">Sitema COFRS</h1>
                         <p class="">Sistema exclusivo de funcionários do COFRS.</p>
 
-                        <form class="text-left">
+                        <form class="text-left" id="formAuth">
                             <div class="form">
                                 @csrf
                                 <div id="username-field" class="field-wrapper input">

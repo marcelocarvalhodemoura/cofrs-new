@@ -12,11 +12,19 @@ if (togglePassword) {
 	  }
 	});
 }
-$('form').on('click', function(e){
-    e.preventDefault();
-    console.log('cliquei no form ');
+$('form').on('click', event =>{
+    event.preventDefault();
 
-    window.location.href = '/dashboard'
+    $.ajax({
+        method:"POST",
+        url:"/auth",
+        data:$(this).serialize(),
+        success: response => {
+            console.log(response);
+        }
+    });
+
+    //window.location.href = '/dashboard'
 });
 
 

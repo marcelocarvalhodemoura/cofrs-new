@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use App\Models\Associate;
+use Mockery\Exception;
 use  \Yajra\DataTables\DataTables;
 
 class AssociateController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Exception
+     */
     public function index(Request $request)
     {
 
@@ -39,6 +45,10 @@ class AssociateController extends Controller
         return view('associate.list')->with($data);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         if($request->ajax()){
@@ -90,6 +100,20 @@ class AssociateController extends Controller
 
     }
 
+    protected function getAssociate($id)
+    {
+        try{
+            return response()->json(Associate::find($id));
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
+
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function associateConvenants($id)
     {
         //load all Portion

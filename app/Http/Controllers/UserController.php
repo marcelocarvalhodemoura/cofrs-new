@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Hash;
-use DataTables;
+use \Yajra\DataTables\DataTables;
 use Mockery\Exception;
 
 class UserController extends Controller
@@ -21,7 +21,7 @@ class UserController extends Controller
             //load all users and usertypes
             $userList = User::join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')->get();
 
-            return \Yajra\DataTables\DataTables::of($userList)
+            return DataTables::of($userList)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->usr_codigoid.'"/>';
@@ -42,6 +42,17 @@ class UserController extends Controller
 
 
         return view('user.list')->with($data);
+    }
+
+    public function authentication(Request $request)
+    {
+
+
+        if(Hash::check($request->password, $request->user()->password)) {
+            return dd($request);
+        }else {
+
+        }
     }
 
     public function getUser($id)
