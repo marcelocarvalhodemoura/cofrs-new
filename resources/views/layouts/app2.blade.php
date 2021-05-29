@@ -18,7 +18,9 @@
     @include('inc.styles')
 </head>
 <body>
-
+    @if(!\Illuminate\Support\Facades\Session::has('user'))
+        {{ route('login') }}
+    @endif
     <!-- BEGIN LOADER -->
     <div id="load_screen">
         <div class="loader">

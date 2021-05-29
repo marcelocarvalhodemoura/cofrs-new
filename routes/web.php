@@ -7,6 +7,8 @@ use \App\Http\Controllers\AssociateController;
 use \App\Http\Controllers\TypeAssociateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,30 +37,20 @@ Route::get('', function() {
     ];
     // $pageName = 'auth_default';
     return view('pages.authentication.auth_login_boxed')->with($data);
-});
+})->name('login');
 
 Route::post('/auth', [UserController::class, 'authentication']);
 
-Route::get('/dashboard', function(){
-    $data = [
-        'category_name' => 'dashboard',
-        'page_name' => 'analytics',
-        'has_scrollspy' => 0,
-        'offsetTop' => '',
-        'scrollspy_offset' => '',
-        'alt_menu' => 0,
-    ];
-    return view('dashboard')->with($data);
-});
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
-Route::get('/logout', function(){
-    return redirect('');
-})->name('logout');
+
+
 
 /**
  * User routes
  */
 Route::get('/users', [UserController::class, 'index']);
+Route::get('/logout', [UserController::class, 'logOut'])->name('logout');
 
 //load form with data
 Route::get('/users/load/{id}', [UserController::class, 'getUser']);

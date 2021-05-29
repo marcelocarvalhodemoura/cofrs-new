@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use App\Models\Associate;
+use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use  \Yajra\DataTables\DataTables;
 
@@ -17,6 +18,9 @@ class AssociateController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Session::has('user')) {
+            return redirect()->route('login');
+        }
 
         if($request->ajax()){
 
