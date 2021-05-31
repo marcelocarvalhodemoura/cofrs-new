@@ -3,7 +3,7 @@
     <div class="form-row">
         <div class="col-md-4 mb-4">
             <label for="Name">Nome <b>*</b></label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="" required>
+            <input type="text" class="form-control" id="depName" name="depName" placeholder="" required>
             <div class="valid-feedback">
 
             </div>
@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-4 mb-4">
             <label for="cpf">CPF <b>*</b></label>
-            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="999.999.999-99" required>
+            <input type="text" class="form-control" id="depCpf" name="depCpf" placeholder="999.999.999-99" required>
             <div class="valid-feedback">
 
             </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-4 mb-4">
             <label for="rg">Rg <b>*</b></label>
-            <input type="text" class="form-control" id="rg" name="rg" required>
+            <input type="text" class="form-control" id="depRg" name="depRg" required>
             <div class="valid-feedback">
 
             </div>
@@ -35,7 +35,7 @@
     <div class="form-row">
         <div class="col-md-12 mb-4">
             <label for="description">Observação</label>
-            <textarea name="description" id="description" class="form-control">
+            <textarea name="depDescription" id="depDescription" class="form-control">
 
             </textarea>
         </div>

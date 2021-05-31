@@ -1,4 +1,17 @@
 $(document).ready(function() {
+
+    $("#btnAssociateModalCreate").on('click', function(){
+        //replace Form Title
+        $("#associateModalCenterTitle").html('Formulário de Cadastramento de Associado');
+        //Remove input hidden
+        $("#associateId").remove();
+        // Clear all data on the Form
+        $("#formAssoc")[0].reset();
+        //Open modal
+        $("#associateFormModal").modal('show');
+    });
+
+
     //load datables library
     var table = $('#associatetable').DataTable({
         processing: true,
@@ -190,12 +203,46 @@ $(document).ready(function() {
                 success:response => {
                     console.log(response);
 
+                    var born = response.assoc_datanascimento.split('-');
+
+                    var bornFormated = born[2]+'/'+born[1]+'/'+born[0];
+
                     $("#name").val(response.assoc_nome);
+                    $("#identify").val(response.assoc_identificacao);
+                    $("#registration").val(response.assoc_matricula);
+                    $("#born").val(bornFormated);
+                    $("#email").val(response.assoc_email);
+                    $("#cpf").val(response.assoc_cpf);
+                    $("#rg").val(response.assoc_rg);
+                    $("#sexo").val(response.assoc_sexo);
+                    $("#job").val(response.assoc_profissao);
+                    $("#classification").val(response.cla_codigoid);
+                    $("#civilstatus").val(response.assoc_estadocivil);
+                    $("#phone").val(response.assoc_fone);
+                    $("#phone2").val(response.assoc_fone2);
+                    $("#typeassociate").val(response.tipassoc_codigoid);
+                    $("#typeagent").val(response.ag_codigoid);
+                    $("#cep").val(response.assoc_cep);
+                    $("#adress").val(response.assoc_endereco);
+                    $("#complement").val(response.assoc_complemento);
+                    $("#district").val(response.assoc_bairro);
+                    $("#state").val(response.assoc_uf);
+                    $("#city").val(response.assoc_cidade);
+                    $("#contract").val(response.assoc_contrato);
+                    $("#description").val(response.assoc_observacao);
+                    $("#bank").val(response.assoc_banco);
+                    $("#bank_agency").val(response.assoc_agencia);
+                    $("#count").val(response.assoc_conta);
+
+                    $("#formAssoc").append('<input type="hidden" id="associateId" name="associateId" value="' + response.assoc_codigoid + '">');
                 }
             });
 
+            //replace Title
+            $("#associateModalCenterTitle").html('Formulário de Alteração de Associado');
+
             //load Modal Edit Associate
-            $("#associateFormModalEdit").modal('show');
+            $("#associateFormModal").modal('show');
 
         }else{
             swal("Atenção !", "Selecione apenas 1 registro por vez", "info");

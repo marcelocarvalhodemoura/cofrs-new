@@ -1,3 +1,4 @@
+
 @if ($page_name != 'coming_soon' && $page_name != 'contact_us' && $page_name != 'error404' && $page_name != 'error500' && $page_name != 'error503' && $page_name != 'faq' && $page_name != 'helpdesk' && $page_name != 'maintenence' && $page_name != 'privacy' && $page_name != 'auth_boxed' && $page_name != 'auth_default')
 
     <!--  BEGIN SIDEBAR  -->
@@ -7,9 +8,9 @@
             <div class="profile-info">
                 <figure class="user-cover-image"></figure>
                 <div class="user-info">
-                    <img src="{{asset('assets/images/user.png') }}" alt="avatar" style="height:52%">
-                    <h6 class="">Sonia Shaw</h6>
-                    <p class="">Project Leader</p>
+                    <img src="{{ asset('assets/images/user.png') }}" alt="avatar" style="height:52%">
+                    <h6 class="" style="margin-top: 5px;">{{ \Illuminate\Support\Facades\Session::get('name') }}</h6>
+                    <p class="">{{ \Illuminate\Support\Facades\Session::get('type') }}</p>
                 </div>
             </div>
             <div class="shadow-bottom"></div>

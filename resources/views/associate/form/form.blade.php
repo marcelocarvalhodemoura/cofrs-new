@@ -111,7 +111,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroupPrepend">@</span>
                 </div>
-                <input type="text" class="form-control" id="email" name="email" placeholder="nome@provedor.com" required="">
+                <input type="email" class="form-control" id="email" name="email" placeholder="nome@provedor.com" required="">
                 <div class="valid-feedback">
 
                 </div>

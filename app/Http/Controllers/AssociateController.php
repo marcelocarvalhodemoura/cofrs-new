@@ -88,8 +88,6 @@ class AssociateController extends Controller
                     'assoc_estadocivil' => $request->post('civilstatus'),
                     'assoc_fone2' => $request->post('phone2'),
                     'assoc_ativosn' => 1,
-                    //'assoc_dataativacao' => '0000-00-00',
-                    //'assoc_datadesligamento' => '0000-00-00',
                     'assoc_contrato' => $request->post('contract'),
                     'ag_codigoid' => $request->post('typeagent'),
                     'assoc_removesn' => 0,

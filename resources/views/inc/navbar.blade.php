@@ -176,8 +176,8 @@
                             <div class="media mx-auto">
                                 <img src="{{asset('assets/images/user.png')}}" class="img-fluid mr-2" alt="avatar">
                                 <div class="media-body">
-                                    <h5>Sonia Shaw</h5>
-                                    <p>Project Leader</p>
+                                    <h5>{{ \Illuminate\Support\Facades\Session::get('name') }}</h5>
+                                    <p>{{ \Illuminate\Support\Facades\Session::get('type') }}</p>
                                 </div>
                             </div>
                         </div>
