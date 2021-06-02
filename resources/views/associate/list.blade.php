@@ -29,8 +29,8 @@
                             <div class="col-md-12 text-right">
                                 @include('associate.modal.create')
                                 @include('associate.modal.edit')
-                                @include('associate.modal.covenants')
                                 @include('associate.modal.dependent')
+                                @include('associate.modal.covenants')
                                 @include('associate.modal.delete')
                             </div>
 

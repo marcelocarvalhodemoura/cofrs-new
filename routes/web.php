@@ -72,6 +72,8 @@ Route::get('/associates',[AssociateController::class, 'index']);
 Route::post('/associates/store', [AssociateController::class, 'store']);
 Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
 Route::get('/associates/{id}', [AssociateController::class, 'getAssociate']);
+Route::get('/associates/depents', [AssociateController::class, 'storeDepents']);
+Route::get('/associates/depents/{id}', [AssociateController::class, 'getDepents']);
 
 /**
  * Type Associates Routes

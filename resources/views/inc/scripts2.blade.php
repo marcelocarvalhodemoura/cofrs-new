@@ -19,7 +19,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
-
+<script src="{{asset('plugins/jquery-step/jquery.steps.min.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 

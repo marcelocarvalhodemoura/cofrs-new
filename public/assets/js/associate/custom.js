@@ -148,6 +148,23 @@ $(document).ready(function() {
                         event.preventDefault()
                         event.stopPropagation()
                     }else{
+
+                        if(
+                            $("#depName").val() == ""
+                            || $("#depCpf").val() == ""
+                            || $("#depRg").val() == ""
+                            ||$("#depDescription").val() == ""
+                        ){
+                            $.ajax({
+                                url:"",
+                                method:"POST",
+                                data:$("#formDependents").serialize(),
+                                success: response => {
+                                    console.log(response);
+                                }
+                            });
+                        }
+
                         //send data
                         $.ajax({
                             url:"/associates/store",
@@ -179,6 +196,96 @@ $(document).ready(function() {
                 }, false)
             })
     })()
+
+    /**
+     * Dependents modal
+     */
+    $('#btnModalDependent').on('click', function (e) {
+        e.preventDefault();
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+
+        });
+
+        //validate if exist value
+        if (id > 0) {
+
+            $.ajax({
+                url:"/associates/depents/"+id,
+                method:"GET",
+                success: response => {
+                    console.log(response);
+                    let tr = '';
+
+                    if (response == ""){
+
+                        tr = '<tr class="table-warning"><td colspan="4" align="center">Não há registro de Dependentes</td></tr>';
+
+                    }else{
+                        response.forEach(element =>{
+                            console.log(element.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                            tr += '<tr>';
+                            tr += '<td class="text-primary">' + element.dep_nome + '</td>';
+                            tr += '<td>' + element.dep_rg + 'º</td>';
+                            tr += '<td>' + element.dep_cpf + '</td>';
+                            tr += '<td>' +
+                                    '<span className="text-danger">'+
+                                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
+                                            '<polyline points="3 6 5 6 21 6"></polyline>' +
+                                            '<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
+                                            '<line x1="10" y1="11" x2="10" y2="17"></line>' +
+                                            '<line x1="14" y1="11" x2="14" y2="17"></line>' +
+                                        '</svg>' +
+                                    '</span>'+
+                                 '</td>' +
+                                '</tr>';
+                        });
+                    }
+
+                    //include new rows
+                    $("#tableDep tbody").append(tr).fadeIn();
+                    //set Id on the hidden input
+                    $("#assocID").val(id);
+                    //show Dependents modal
+                    $('#associateFormModalDependents').modal('show');
+                }
+            });
+
+        } else {
+
+            swal("Atenção !", "Selecione apenas 1 registro por vez", "info");
+        }
+    });
+
+
+    /**
+     * Create new rows
+     */
+    $("#btnAddDep").on('click', function(){
+
+        $(".table-warning").remove()
+
+        let row = '<tr>\n' +
+            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
+            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
+            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
+            '                  <td>' +
+            '<span className="text-danger">'+
+            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
+            '<polyline points="3 6 5 6 21 6"></polyline>' +
+            '<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
+            '<line x1="10" y1="11" x2="10" y2="17"></line>' +
+            '<line x1="14" y1="11" x2="14" y2="17"></line>' +
+            '</svg>' +
+            '</span>'+
+            '</td>\n'+
+            '            </tr>';
+
+        $("#tableDep tbody").fadeIn().append(row);
+    });
 
     /**
      * Load Associate Edit Form Modal

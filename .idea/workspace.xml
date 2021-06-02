@@ -2,15 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line1.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line2.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line3.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line4.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line5.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line6.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line7.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line8.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/associate/form/dependent.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/dependent.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/list.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/covenants.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/covenants.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/delete.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/delete.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/dependent.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/dependent.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/associate/modal/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/modal/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/styles2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/styles2.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +186,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -218,7 +233,11 @@
       <workItem from="1621544911855" duration="3671000" />
       <workItem from="1621627502704" duration="4300000" />
       <workItem from="1621705474474" duration="9388000" />
-      <workItem from="1622031134472" duration="50423000" />
+      <workItem from="1622031134472" duration="50674000" />
+      <workItem from="1622492054663" duration="3372000" />
+      <workItem from="1622547149599" duration="734000" />
+      <workItem from="1622548703145" duration="523000" />
+      <workItem from="1622572836154" duration="7792000" />
     </task>
     <servers />
   </component>
@@ -249,6 +268,11 @@
           <url>file://$PROJECT_DIR$/app/Models/UserType.php</url>
           <line>4</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/Models/Depent.php</url>
+          <line>4</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

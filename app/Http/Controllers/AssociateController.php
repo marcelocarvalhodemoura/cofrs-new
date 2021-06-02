@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Depent;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use App\Models\Associate;
@@ -47,6 +48,31 @@ class AssociateController extends Controller
 
 
         return view('associate.list')->with($data);
+    }
+
+    public function getDepents($id)
+    {
+        return response()->json(Depent::where('assoc_codigoid', '=', $id)->get());
+    }
+
+    public function storeDepents(Request $request)
+    {
+        try {
+            Depent::updateOrCreate(
+                ['dep_codigoid' => $request->post('') ],
+                [
+                    'dep_nome' => $request->post(),
+                    'dep_fone' => $request->post(),
+                    'dep_rg' => $request->post(),
+                    'dep_cpf' => $request->post(),
+                    'assoc_codigoid' => $request->post(),
+
+                ]
+            );
+            return response()->json(['status'=> 'success', 'msg'=>'Associado salvo com sucesso!']);
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
     }
 
     /**

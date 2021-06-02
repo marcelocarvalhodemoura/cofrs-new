@@ -19,6 +19,7 @@
 
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
+<script src="{{asset('plugins/jquery-step/jquery.steps.min.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 

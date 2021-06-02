@@ -9,6 +9,7 @@
 <link href="{{asset('assets/css/plugins.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('assets/css/scrollspyNav.css')}}" rel="stylesheet" type="text/css" />
 
+
 @endif
 <!-- END GLOBAL MANDATORY STYLES -->
 
