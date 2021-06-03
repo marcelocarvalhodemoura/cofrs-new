@@ -18,6 +18,7 @@ class Typeassociate extends Model
      * @var string
      */
     protected $primaryKey = 'tipassoc_codigoid';
+    protected $date = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

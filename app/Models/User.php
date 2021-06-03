@@ -12,6 +12,7 @@ class User extends Model
     public $table = 'usuario';
 
     protected $primaryKey = 'usr_codigoid';
+    protected $date = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +24,6 @@ class User extends Model
         'usr_usuario',
         'usr_email',
         'usr_senha',
-        'usr_ativosn',
-        'tipusr_codigoid',
-        'usr_removesn'
+        'tipusr_codigoid'
     ];
 }

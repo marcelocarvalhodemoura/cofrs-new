@@ -286,6 +286,47 @@ $(document).ready(function() {
 
         $("#tableDep tbody").fadeIn().append(row);
     });
+    /**
+     * Remove depents item
+     */
+    function remove(item){
+
+        swal({
+                title: "Tem certeza?",
+                text: "O registro será removido permanentemente!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn btn-danger",
+                confirmButtonText: "Sim, remove o item!",
+                closeOnConfirm: false
+            },
+            function(){
+                swal("Removido!", "Registro removido com sucesso.", "success");
+                var tr = $(item).closest('tr');
+
+                $.ajax({
+                    type:"post",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{ id:$(item).attr("data-id") },
+                    url:'/user/remove/'+$(item).attr("data-id"),
+                    success: function(response){
+                        console.log(response);
+
+                        tr.fadeOut(400, function() {
+                            tr.fadeOut('slow');
+                            return false;
+                        });
+                    }
+                });
+
+
+            });
+
+
+
+    }
 
     /**
      * Load Associate Edit Form Modal

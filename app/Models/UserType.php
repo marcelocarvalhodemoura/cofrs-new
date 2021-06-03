@@ -10,8 +10,10 @@ use Illuminate\Notifications\Notifiable;
 class UserType extends Model
 {
     public $table = 'tipousuario';
-   // use HasFactory, Notifiable;
+    // use HasFactory, Notifiable;
 
+    protected $primaryKey = 'tipusr_codigoid';
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
      *
@@ -21,22 +23,5 @@ class UserType extends Model
         'tipusr_nome'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    //protected $hidden = [
-      //  'password',
-        //'remember_token',
-    //];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-   // protected $casts = [
-     //   'email_verified_at' => 'datetime',
-    //];
 }

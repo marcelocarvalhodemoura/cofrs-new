@@ -18,6 +18,7 @@ class Classification extends Model
      * @var string
      */
     protected $primaryKey = 'cla_codigoid';
+    protected $date = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

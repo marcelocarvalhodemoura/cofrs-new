@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipousuarioTable extends Migration
+class Agent extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTipousuarioTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipousuario', function (Blueprint $table) {
-            $table->increments('tipusr_codigoid');
-            $table->string('tipusr_nome');
+        /**
+         * Create table Agente
+         */
+        Schema::create('agente', function(Blueprint $table){
+            $table->increments('ag_codigoid');
+            $table->string('ag_nome');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +31,9 @@ class CreateTipousuarioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipousuario');
+        /**
+         * Drop Agente Table
+         */
+        Schema::dropIfExists('agente');
     }
 }
