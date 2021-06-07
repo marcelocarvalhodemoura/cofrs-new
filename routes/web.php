@@ -70,10 +70,12 @@ Route::post('/users/store', [UserController::class, 'store']);
  */
 Route::get('/associates',[AssociateController::class, 'index']);
 Route::post('/associates/store', [AssociateController::class, 'store']);
+Route::post('/associates/delete/{id}', [AssociateController::class, 'delete']);
 Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
 Route::get('/associates/{id}', [AssociateController::class, 'getAssociate']);
-Route::get('/associates/depents', [AssociateController::class, 'storeDepents']);
-Route::get('/associates/depents/{id}', [AssociateController::class, 'getDepents']);
+Route::post('/associates/dependents/store', [AssociateController::class, 'storeDependets']);
+Route::get('/associates/dependents/{id}', [AssociateController::class, 'getDependents']);
+Route::post('/associates/dependents/remove/{id}', [AssociateController::class, 'deleteDependents']);
 
 /**
  * Type Associates Routes

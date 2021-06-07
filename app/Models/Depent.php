@@ -9,7 +9,7 @@ class Depent extends Model
 {
     use HasFactory;
 
-    public $table = 'dependentes';
+    public $table = 'dependente';
 
     protected $primaryKey = 'dep_codigoid';
     protected $date = ['deleted_at'];

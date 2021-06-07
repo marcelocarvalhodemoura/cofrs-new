@@ -50,28 +50,54 @@ class AssociateController extends Controller
         return view('associate.list')->with($data);
     }
 
-    public function getDepents($id)
+    public function getDependents($id)
     {
         return response()->json(Depent::where('assoc_codigoid', '=', $id)->get());
     }
 
-    public function storeDepents(Request $request)
+    public function storeDependets(Request $request)
+    {
+
+        try {
+
+            if($request->ajax()){
+
+                $dependentsForm = $request->post();
+
+                $dependentsModel = new Depent();
+
+                for ($i = 0; count($dependentsForm["depName"]) > $i; $i++){
+
+                    $dependentsModel->dep_nome =  $dependentsForm["depName"][$i];
+                    $dependentsModel->dep_rg =  $dependentsForm["depIdentify"][$i];
+                    $dependentsModel->dep_cpf =  $dependentsForm["depRegistration"][$i];
+                    $dependentsModel->dep_fone =  $dependentsForm["depPhone"][$i];
+                    $dependentsModel->assoc_codigoid =  $dependentsForm["assocID"];
+
+                    $dependentsModel->save();
+                }
+
+            }
+
+            return response()->json(['status'=> 'success', 'msg'=>'Dependentes salvos com sucesso!']);
+
+        }catch (Exception $e){
+
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+
+        }
+    }
+
+    public function deleteDependents($id)
     {
         try {
-            Depent::updateOrCreate(
-                ['dep_codigoid' => $request->post('') ],
-                [
-                    'dep_nome' => $request->post(),
-                    'dep_fone' => $request->post(),
-                    'dep_rg' => $request->post(),
-                    'dep_cpf' => $request->post(),
-                    'assoc_codigoid' => $request->post(),
 
-                ]
-            );
-            return response()->json(['status'=> 'success', 'msg'=>'Associado salvo com sucesso!']);
-        }catch (Exception $e){
+            return Depent::find($id)->delete();
+
+        }catch (Exception $exception){
+
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+
         }
     }
 
@@ -128,12 +154,26 @@ class AssociateController extends Controller
 
     }
 
-    protected function getAssociate($id)
+    public function getAssociate($id)
     {
         try{
             return response()->json(Associate::find($id));
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
+
+    }
+
+    public function delete($id)
+    {
+        try{
+
+            return Associate::find($id)->delete();
+
+        }catch (Exception $e){
+
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+
         }
 
     }

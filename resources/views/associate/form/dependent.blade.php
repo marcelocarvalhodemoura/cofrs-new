@@ -7,6 +7,7 @@
                 <th>Nome</th>
                 <th>Rg</th>
                 <th>CPF</th>
+                <th>Fone</th>
                 <th>Ação</th>
             </tr>
         </thead>

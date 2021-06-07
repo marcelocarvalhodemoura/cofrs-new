@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Convenant.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Classification.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Classification.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Depent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Depent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Typeassociate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Typeassociate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/UserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/UserType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_19_200946_create_tipousuario_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_19_200946_create_tipousuario_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/dependent.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/dependent.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,11 +154,15 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1sITFnWcuvRtRvbKJwJH5w3uEsQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -222,7 +227,9 @@
       <workItem from="1622547149599" duration="734000" />
       <workItem from="1622548703145" duration="523000" />
       <workItem from="1622572836154" duration="7995000" />
-      <workItem from="1622719355452" duration="3420000" />
+      <workItem from="1622719355452" duration="5096000" />
+      <workItem from="1622832003835" duration="373000" />
+      <workItem from="1622833171908" duration="11530000" />
     </task>
     <servers />
   </component>
@@ -240,6 +247,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -47,13 +47,18 @@ $(document).ready(function() {
     });
 
     /**
-     * Input Mask
+     * Input Mask in Associate Form
      */
     $('#cep').inputmask("99999-999");
     $('#phone').inputmask("(99) 99999-9999");
     $('#phone2').inputmask("(99) 99999-9999");
     $('#cpf').inputmask("999.999.999-99");
     $('#born').inputmask("99/99/9999");
+
+    /**
+     * Input mask in Dependent form
+     */
+    $("#depRegistration").inputmask("999.999.999-99");
 
     /**
      * CEP function
@@ -150,46 +155,56 @@ $(document).ready(function() {
                     }else{
 
                         if(
-                            $("#depName").val() == ""
-                            || $("#depCpf").val() == ""
-                            || $("#depRg").val() == ""
-                            ||$("#depDescription").val() == ""
+                            $("#depName").val() != ""
+                            || $("#depRegistration").val() != ""
+                            || $("#depIdentify").val() != ""
                         ){
+                            //Post Depedents
                             $.ajax({
-                                url:"",
+                                url:"/associates/dependents/store",
                                 method:"POST",
                                 data:$("#formDependents").serialize(),
                                 success: response => {
-                                    console.log(response);
+
+                                    if(response.status === 'success'){
+                                        swal({
+                                            title: 'Bom trabalho!',
+                                            text: response.msg,
+                                            type: response.status,
+                                            padding: '2em'
+                                        });
+                                    }
                                 }
+                            });
+                        }else{
+                            //Post Associate
+                            $.ajax({
+                                url:"/associates/store",
+                                method:'POST',
+                                data: $('#formAssoc').serialize(),
+                                success: response =>{
+                                    //console.log(response);
+                                    if(response.status === 'success'){
+
+                                        table.ajax.reload();
+
+                                        $('#associateFormModal').modal('hide');
+
+                                        swal({
+                                            title: 'Bom trabalho!',
+                                            text: response.msg,
+                                            type: response.status,
+                                            padding: '2em'
+                                        });
+
+                                        $('#formAssoc')[0].reset();
+                                    }
+                                }
+
                             });
                         }
 
-                        //send data
-                        $.ajax({
-                            url:"/associates/store",
-                            method:'POST',
-                            data: $('#formAssoc').serialize(),
-                            success: response =>{
-                                console.log(response);
-                                if(response.status === 'success'){
 
-                                    table.ajax.reload();
-
-                                    $('#associateFormModal').modal('hide');
-
-                                    swal({
-                                        title: 'Bom trabalho!',
-                                        text: response.msg,
-                                        type: response.status,
-                                        padding: '2em'
-                                    });
-
-                                    $('#formAssoc')[0].reset();
-                                }
-                            }
-
-                        });
                     }
 
                     form.classList.add('was-validated')
@@ -214,7 +229,7 @@ $(document).ready(function() {
         if (id > 0) {
 
             $.ajax({
-                url:"/associates/depents/"+id,
+                url:"/associates/dependents/"+id,
                 method:"GET",
                 success: response => {
                     console.log(response);
@@ -226,13 +241,14 @@ $(document).ready(function() {
 
                     }else{
                         response.forEach(element =>{
-                            console.log(element.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+
                             tr += '<tr>';
                             tr += '<td class="text-primary">' + element.dep_nome + '</td>';
                             tr += '<td>' + element.dep_rg + 'º</td>';
                             tr += '<td>' + element.dep_cpf + '</td>';
+                            tr += '<td>' + element.dep_fone + '</td>';
                             tr += '<td>' +
-                                    '<span className="text-danger">'+
+                                    '<span className="text-danger" onclick="remove(this)" data-id="'+element.dep_codigoid+'">'+
                                         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
                                             '<polyline points="3 6 5 6 21 6"></polyline>' +
                                             '<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
@@ -244,7 +260,7 @@ $(document).ready(function() {
                                 '</tr>';
                         });
                     }
-
+                    $("#tableDep tbody tr").remove();
                     //include new rows
                     $("#tableDep tbody").append(tr).fadeIn();
                     //set Id on the hidden input
@@ -269,9 +285,10 @@ $(document).ready(function() {
         $(".table-warning").remove()
 
         let row = '<tr>\n' +
-            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
-            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
-            '                <td><input type="text" name="name[]" class="form-control" id="name" required></td>\n' +
+            '                <td><input type="text" name="depName[]" class="form-control" id="depName" required></td>\n' +
+            '                <td><input type="text" name="depIdentify[]" class="form-control" id="depIdentify" required></td>\n' +
+            '                <td><input type="text" name="depRegistration[]" class="form-control" id="depRegistration" required></td>\n' +
+            '                <td><input type="text" name="depPhone[]" class="form-control" id="depPhone" required></td>\n' +
             '                  <td>' +
             '<span className="text-danger">'+
             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
@@ -284,49 +301,100 @@ $(document).ready(function() {
             '</td>\n'+
             '            </tr>';
 
-        $("#tableDep tbody").fadeIn().append(row);
+        $("#tableDep tbody").fadeIn('slow').append(row);
     });
     /**
      * Remove depents item
      */
-    function remove(item){
+     remove = function(item){
+         swal({
+             title: "Tem certeza?",
+             text: "O registro será removido permanentemente!",
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: 'Delete',
+             padding: '2em'
+         }).then(function(result) {
+             console.log(result);
+             if (result == true) {
+                 var tr = $(item).closest('tr');
+                 $.ajax({
+                     type:"post",
+                     headers: {
+                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+                         "_token": $('input[name="_token"]').val(),
+                         "id":$(item).attr("data-id")
+                     },
+                     url:'/associates/dependents/remove/'+$(item).attr("data-id"),
+                     success: function(response){
+                         console.log(response);
 
-        swal({
-                title: "Tem certeza?",
-                text: "O registro será removido permanentemente!",
+                         tr.fadeOut(400, function() {
+                             tr.fadeOut('slow');
+                             return false;
+                         });
+                     }
+                 });
+                 swal(
+                     'Removido!',
+                     'Registro removido com sucesso.',
+                     'success'
+                 )
+             }
+         });
+
+    }
+
+    /**
+     * Remove associate
+     */
+    $("#btnAssocietaRemove").on('click', function(e){
+        e.preventDefault();
+
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+
+        });
+
+        //validate if exist value
+        if (id > 0) {
+            swal({
+                title: "Confirma?",
+                text: "Após a confirmação o usuário será removido.",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonClass: "btn btn-danger",
-                confirmButtonText: "Sim, remove o item!",
+                cancelButtonText:"Cancelar",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Sim, remova!",
                 closeOnConfirm: false
-            },
-            function(){
-                swal("Removido!", "Registro removido com sucesso.", "success");
-                var tr = $(item).closest('tr');
+            }).then(function(result) {
 
                 $.ajax({
-                    type:"post",
+                    method:"POST",
+                    url:"/associates/delete/"+id,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data:{ id:$(item).attr("data-id") },
-                    url:'/user/remove/'+$(item).attr("data-id"),
+                    data:{ id:id },
                     success: function(response){
-                        console.log(response);
+                        if (response == true){
+                            table.ajax.reload();
+                        }
 
-                        tr.fadeOut(400, function() {
-                            tr.fadeOut('slow');
-                            return false;
-                        });
                     }
                 });
 
-
             });
+        } else {
 
-
-
-    }
+            swal("Atenção !", "Selecione apenas 1 registro por vez", "info");
+        }
+    });
 
     /**
      * Load Associate Edit Form Modal
@@ -349,7 +417,6 @@ $(document).ready(function() {
                 url:"/associates/"+id,
                 method:"GET",
                 success:response => {
-                    console.log(response);
 
                     var born = response.assoc_datanascimento.split('-');
 
