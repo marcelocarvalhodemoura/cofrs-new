@@ -19,7 +19,8 @@
 
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
-<script src="{{asset('plugins/jquery-step/jquery.steps.min.js')}}"></script>
+<script src="{{asset('plugins/select2/select2.min.js')}}"></script>
+<script src="{{asset('plugins/select2/custom-select2.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 

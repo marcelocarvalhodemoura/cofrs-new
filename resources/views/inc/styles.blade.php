@@ -21,7 +21,7 @@
 <link href="{{asset('assets/css/elements/breadcrumb.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="{{ asset('plugins/sweetalerts/sweetalert2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/sweetalerts/sweetalert.css') }}">
-<link rel="stylesheet" type="text/css" href="{{asset('plugins/jquery-step/jquery.steps.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('plugins/select2/select2.min.css')}}">
 @endif
 <!-- END GLOBAL MANDATORY STYLES -->
 

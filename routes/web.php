@@ -8,6 +8,7 @@ use \App\Http\Controllers\TypeAssociateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ConvenantController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -97,14 +98,6 @@ Route::get('/agent/list', [AgentController::class, 'list']);
 /**
  * Convenants Routes
  */
-Route::get('/covenants',function(){
-    $data = [
-        'category_name' => 'covenants',
-        'page_name' => 'covenants',
-        'has_scrollspy' => 0,
-        'scrollspy_offset' => '',
-        'alt_menu' => 0,
-    ];
-    return view('covenants.list')->with($data);
-});
+Route::get('/covenants',[ConvenantController::class, 'index']);
+Route::get('/covenants/associate/list', [ConvenantController::class, 'getAssociates']);
 

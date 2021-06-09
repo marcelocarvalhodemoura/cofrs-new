@@ -48,7 +48,7 @@ class Convenant extends Migration
              */
             $table->foreign('est_codigoid')
                 ->references('est_codigoid')
-                ->on('convenio')
+                ->on('estatus')
                 ->onDelete('cascade');
 
         });
