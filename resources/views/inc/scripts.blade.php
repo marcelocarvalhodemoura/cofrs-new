@@ -20,7 +20,7 @@
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
 <script src="{{asset('plugins/select2/select2.min.js')}}"></script>
-<script src="{{asset('plugins/select2/custom-select2.js')}}"></script>
+
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 
@@ -1080,6 +1080,6 @@
       @break
 
     @default
-    <script>console.log('No custom script available.')</script>
+{{--    <script>console.log('No custom script available.')</script>--}}
 @endswitch
 <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->

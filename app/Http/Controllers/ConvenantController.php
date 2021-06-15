@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Agreement;
 use App\Models\Associate;
-use App\Models\Classification;
+
+use App\Models\Competition;
 use App\Models\Convenant;
-use App\Models\Status;
+use App\Models\Portion;
+
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -18,16 +21,10 @@ class ConvenantController extends Controller
             return redirect()->route('login');
         }
 
-
-        $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
-            ->leftJoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
-            ->leftJoin('estatus', 'estatus.est_codigoid', '=', 'lancamento.est_codigoid')
-        ->get();
-
         $associateList = Associate::all();
-        $classificationList = Classification::all();
+        $competitionList = Competition::all();
         $agreementList = Agreement::all();
-        $statusList = Status::all();
+
 
         $data = [
             'category_name' => 'covenants',
@@ -39,16 +36,44 @@ class ConvenantController extends Controller
 
         $lists = [
             'associateList'=> $associateList,
-            'classificationList'=> $classificationList,
+            'competitionList'=> $competitionList,
             'agreementList' => $agreementList,
-            'statusList' => $statusList
         ];
 
         return view('covenants.list', $lists)->with($data);
     }
 
-    public function getAssociates()
+    public function getCovenants(Request $request)
     {
-        return response()->json(Associate::all());
+        if($request->ajax()){
+
+            $dynamicWhere = [];
+
+            if($request->post('selAssociate')){
+                $dynamicWhere[] = ['associado.assoc_codigoid', $request->selAssociate];
+            }
+
+            if($request->post('selAgreement')){
+                $dynamicWhere[] = ['convenio.con_codigoid', $request->selAgreement];
+            }
+
+            if($request->post('selCompetition')){
+                $dynamicWhere[] = ['lanc.con_codigoid', $request->selCompetition];
+            }
+
+            if($request->post('selStatus')){
+                $dynamicWhere[] = ['parcelamento.par_status', $request->selStatus];
+            }
+
+            $convenantList = Portion::join('lancamento', 'lancamento.lanc_codigoid', '=', 'parcelamento.lanc_codigoid')
+                ->leftjoin('competencia', 'competencia.com_codigoid', '=', 'parcelamento.com_codigoid')
+                ->leftjoin('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
+                ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
+                ->where($dynamicWhere)
+                ->get();
+
+            return response()->json($convenantList);
+        }
+
     }
 }

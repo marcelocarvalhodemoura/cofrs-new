@@ -99,5 +99,6 @@ Route::get('/agent/list', [AgentController::class, 'list']);
  * Convenants Routes
  */
 Route::get('/covenants',[ConvenantController::class, 'index']);
+Route::post('/convenants/list', [ConvenantController::class, 'getCovenants']);
 Route::get('/covenants/associate/list', [ConvenantController::class, 'getAssociates']);
 
