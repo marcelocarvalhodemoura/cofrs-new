@@ -142,8 +142,7 @@ class AssociateController extends Controller
                     'assoc_ativosn' => 1,
                     'assoc_contrato' => $request->post('contract'),
                     'ag_codigoid' => $request->post('typeagent'),
-                    'assoc_removesn' => 0,
-                    'assoc_identificacao' => $request->post('identify')
+                    'assoc_removesn' => 0
                 ]
             );
 

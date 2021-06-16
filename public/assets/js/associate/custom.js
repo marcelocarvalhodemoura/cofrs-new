@@ -89,9 +89,6 @@ $(document).ready(function() {
         });
     });
 
-    $('#formAssoc').on('submit', function(e){
-        e.preventDefault();
-    });
 
     //load Agent
     $.ajax({
@@ -138,79 +135,118 @@ $(document).ready(function() {
         }
     });
 
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
-        'use strict'
 
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
+    $('#formDependents').validate({
+        rule: {
+            depName: "required",
+            depIdentify: "required",
+            depRegistration: "required",
+            depPhone: "required",
+        },
+        messages: {
+            depName:"Nome é um campo obrigatório",
+            depIdentify: "RG é um campo obrigatório",
+            depRegistration: "CPF é um campo Obrigatório",
+            depPhone: "Fone é um campo obrigatório"
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formDependents" ).addClass( "was-validated" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( "#formDependents" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+            $.ajax({
+                url:"/associates/dependents/store",
+                method:"POST",
+                data:$("#formDependents").serialize(),
+                success: response => {
 
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }else{
-
-                        if(
-                            $("#depName").val() != ""
-                            || $("#depRegistration").val() != ""
-                            || $("#depIdentify").val() != ""
-                        ){
-                            //Post Depedents
-                            $.ajax({
-                                url:"/associates/dependents/store",
-                                method:"POST",
-                                data:$("#formDependents").serialize(),
-                                success: response => {
-
-                                    if(response.status === 'success'){
-                                        swal({
-                                            title: 'Bom trabalho!',
-                                            text: response.msg,
-                                            type: response.status,
-                                            padding: '2em'
-                                        });
-                                    }
-                                }
-                            });
-                        }else{
-                            //Post Associate
-                            $.ajax({
-                                url:"/associates/store",
-                                method:'POST',
-                                data: $('#formAssoc').serialize(),
-                                success: response =>{
-                                    //console.log(response);
-                                    if(response.status === 'success'){
-
-                                        table.ajax.reload();
-
-                                        $('#associateFormModal').modal('hide');
-
-                                        swal({
-                                            title: 'Bom trabalho!',
-                                            text: response.msg,
-                                            type: response.status,
-                                            padding: '2em'
-                                        });
-
-                                        $('#formAssoc')[0].reset();
-                                    }
-                                }
-
-                            });
-                        }
-
-
+                    if(response.status === 'success'){
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: response.msg,
+                            type: response.status,
+                            padding: '2em'
+                        });
+                        $("#formDependents")[0].reset();
+                        $('#associateFormModalDependents').modal('hide');
                     }
+                }
+            });
+        }
+    });
+    $('#formAssoc').validate({
+        rule: {
+            name: "required",
+            registration: "required",
+            born: "required",
+            cpf: "required",
+            rg: "required",
+            sexo: "required",
+            job: "required",
+            typeassociate: "required",
+            email:  {
+                required: true,
+                email: true
+            },
+            classification: "required",
+            civilstatus: "required",
+            phone: "required",
+            typeagent: "required",
+            cep: "required"
+        },
+        messages: {
+            name: "Nome é um campo obrigatório",
+            registration: "Identificação é um campo obrigatório",
+            born: "Data de Nascimento é um campo obrigatório",
+            cpf: "CPF é um campo obrigatório",
+            rg: "RG é um campo obrigatório",
+            sexo: "Sexo é um campo obrigatório",
+            job: "Profissão é um campo obrigatório",
+            typeassociate: "Tipo é um campo obrigatório",
+            email: "E-mail é um campo obrigatório e deve ser válido",
+            classification: "Classificação é um campo obrigatório",
+            civilstatus: "Estado Civil é um campo obrigatório",
+            phone: "Fone é um campo obrigatório",
+            typeagent: "Agente é um campo obrigatório",
+            cep: "Cep é um campo obrigatório"
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formAssoc" ).addClass( "was-validated" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( "#formAssoc" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+            $.ajax({
+                url:"/associates/store",
+                method:'POST',
+                data: $('#formAssoc').serialize(),
+                success: response =>{
+                    //console.log(response);
+                    if(response.status === 'success'){
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+                        table.ajax.reload();
+
+                        $('#associateFormModal').modal('hide');
+
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: response.msg,
+                            type: response.status,
+                            padding: '2em'
+                        });
+
+                        $('#formAssoc')[0].reset();
+                    }
+                }
+
+            });
+        }
+    });
 
     /**
      * Dependents modal
@@ -237,7 +273,7 @@ $(document).ready(function() {
 
                     if (response == ""){
 
-                        tr = '<tr class="table-warning"><td colspan="4" align="center">Não há registro de Dependentes</td></tr>';
+                        tr = '<tr class="table-warning"><td colspan="5" align="center">Não há registro de Dependentes</td></tr>';
 
                     }else{
                         response.forEach(element =>{
@@ -282,7 +318,7 @@ $(document).ready(function() {
      */
     $("#btnAddDep").on('click', function(){
 
-        $(".table-warning").remove()
+        $(".table-warning").remove();
 
         let row = '<tr>\n' +
             '                <td><input type="text" name="depName[]" class="form-control" id="depName" required></td>\n' +
@@ -301,7 +337,9 @@ $(document).ready(function() {
             '</td>\n'+
             '            </tr>';
 
-        $("#tableDep tbody").fadeIn('slow').append(row);
+        $("#tableDep tbody").append(row);
+
+
     });
     /**
      * Remove depents item

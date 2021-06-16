@@ -1,4 +1,4 @@
-<form class="needs-validation text-left" novalidate action="javascript:void(0);" id="formAssoc">
+<form class="needs-validation text-left " action="javascript:void(0);" id="formAssoc" novalidate="novalidate">
     @csrf
 
     @include('associate.form._associate-form-line1')
