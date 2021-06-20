@@ -2,147 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/additional-methods.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/additional-methods.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/jquery.validate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/jquery.validate.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ar.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_az.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_az.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_bg.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_bg.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_bn_BD.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_bn_BD.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ca.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ca.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_cs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_cs.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_da.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_da.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_de.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_de.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_el.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_el.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es_AR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es_AR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es_PE.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_es_PE.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_et.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_et.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_eu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_eu.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fa.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fa.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fi.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_fr.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ge.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ge.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_gl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_gl.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_he.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_he.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hr.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hu.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hy_AM.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_hy_AM.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_id.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_id.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_is.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_is.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_it.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_it.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ja.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ja.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ka.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ka.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_kk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_kk.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ko.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ko.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_lt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_lt.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_lv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_lv.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_mk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_mk.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_my.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_my.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_nl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_nl.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_no.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_no.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pl.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pt_BR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pt_BR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pt_PT.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_pt_PT.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ro.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ro.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ru.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ru.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sd.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sd.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_si.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_si.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sk.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sl.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sr.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sr_lat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sr_lat.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sv.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_sv.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_th.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_th.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_tj.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_tj.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_tr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_tr.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_uk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_uk.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ur.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_ur.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_vi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_vi.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_zh.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_zh.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_zh_TW.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/messages_zh_TW.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_de.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_de.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_es_CL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_es_CL.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_fi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_fi.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_it.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_it.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_nl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_nl.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_pt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/validate/localization/methods_pt.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/loader.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/loader.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line1.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line2.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line3.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line3.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line4.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line4.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line5.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line5.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line6.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/_associate-form-line6.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/associate/form/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form-password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form-password.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -369,7 +234,9 @@
       <workItem from="1623440221460" duration="211000" />
       <workItem from="1623707421832" duration="9165000" />
       <workItem from="1623838869483" duration="5195000" />
-      <workItem from="1623879962553" duration="3325000" />
+      <workItem from="1623879962553" duration="3561000" />
+      <workItem from="1623927196687" duration="312000" />
+      <workItem from="1624187607729" duration="6131000" />
     </task>
     <servers />
   </component>

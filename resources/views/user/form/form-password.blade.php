@@ -5,22 +5,10 @@
         <div class=" form-group col-md-6 ">
             <label for="name">Senha</label>
             <input type="password" class="form-control" id="editPassword" placeholder="inform a senha" name="editPassword" required>
-            <div class="valid-feedback">
-
-            </div>
-            <div class="invalid-feedback">
-                <b>Senha</b> é um campo obrigatório!
-            </div>
         </div>
         <div class="col-md-6 mb-4">
             <label for="confsenha">Conf. de Senha</label>
-            <input type="password" class="form-control" id="editPassword" name="editPassword2" data-match="#password" data-match-error="Atenção! As senhas não estão iguais." placeholder="informe conf. de senha" required>
-            <div class="valid-feedback">
-
-            </div>
-            <div class="invalid-feedback">
-                <b>Conf. de Senha</b> é um campo obrigatório e deve ser igual a senha!
-            </div>
+            <input type="password" class="form-control" id="editPassword2" name="editPassword2" data-match="#password" data-match-error="Atenção! As senhas não estão iguais." placeholder="informe conf. de senha" required>
         </div>
     </div>
     <div class="modal-footer">

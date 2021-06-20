@@ -37,91 +37,161 @@ $(document).ready(function(){
      *  Validation Form
      */
 
-    window.addEventListener('load', function() {
+    // window.addEventListener('load', function() {
+    //
+    //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    //     var forms = $("#formUser");
+    //
+    //     // Loop over them and prevent submission
+    //     var validation = Array.prototype.filter.call( forms, function(form) {
+    //
+    //         form.addEventListener('submit', function(event) {
+    //
+    //             if ( form.checkValidity() === false ) {
+    //
+    //                 event.preventDefault();
+    //                 event.stopPropagation();
+    //
+    //             }else{
+    //
+    //                 //send data
+    //
+    //
+    //             }
+    //
+    //             form.classList.add('was-validated');
+    //
+    //         }, false);
+    //
+    //     });
+    //
+    // }, false);
 
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = $("#formUser");
+    /**
+     * Form add User
+     */
+    $("#formUser").validate({
+        rules: {
+            name:"required",
+            user:"required",
+            email:{
+                required: true,
+                email: true
+            },
+            password1:"required",
+            password2: {
+                required: true,
+                equalTo: '#password1'
+            },
+            usertype: "required",
 
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call( forms, function(form) {
+        },
+        messages: {
+            name: "Nome é um campo obrigatório",
+            user: "Usuário é um campo obrigatório",
+            password1: "Senha é um campo obrigatório",
+            password2: {
+                required: "Conf. de Senha é um campo obrigatório",
+                equalTo: "Insira o mesmo valor do campo senha"
+            },
+            email: {
+                required: "E-mail é um campo obrigatório",
+                email: "E-mail inválido"
+            },
+            usertype: "Tipo é um campo obrigatório"
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formUser" ).addClass( "was-validated" );
+        },
+        unhighlight: function () {
+            $( "#formUser" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+            $.ajax({
+                url:'/users/store',
+                method:'POST',
+                data: $('#formUser').serialize(),
+                success: function(data){
 
-            form.addEventListener('submit', function(event) {
+                    if(data.status === 'success'){
 
-                if ( form.checkValidity() === false ) {
+                        table.ajax.reload();
 
-                    event.preventDefault();
-                    event.stopPropagation();
+                        $('#userFormModal').modal('hide');
 
-                }else{
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: "Formulário salvo com sucesso",
+                            type: 'success',
+                            padding: '2em'
+                        });
 
-                    //send data
-                    $.ajax({
-                        url:'/users/store',
-                        method:'POST',
-                        data: $('#formUser').serialize(),
-                        success: function(data){
-
-                            if(data.status === 'success'){
-
-                                table.ajax.reload();
-
-                                $('#userFormModal').modal('hide');
-
-                                swal({
-                                    title: 'Bom trabalho!',
-                                    text: "Formulário salvo com sucesso",
-                                    type: 'success',
-                                    padding: '2em'
-                                });
-
-                                $('#formUser')[0].reset();
-                            }
-                        }
-
-                    });
-
+                        $('#formUser')[0].reset();
+                    }
                 }
 
-                form.classList.add('was-validated');
-
-            }, false);
-
-        });
-
-    }, false);
+            });
+        }
+    });
 
     /**
      * submit User Edit Form
      */
-    $('#formUserEdit').on('submit', function(e){
-        e.preventDefault();
+    $('#formUserEdit').validate({
+        rules: {
+            name:"required",
+            user:"required",
+            email:{
+                required: true,
+                email: true
+            },
+            usertype: "required",
+        },
+        messages: {
+            name: "Nome é um campo obrigatório",
+            user: "Usuário é um campo obrigatório",
+            email: {
+                required: "E-mail é um campo obrigatório",
+                email: "E-mail inválido"
+            },
+            usertype: "Tipo é um campo obrigatório"
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formUserEdit" ).addClass( "was-validated" );
+        },
+        unhighlight: function () {
+            $( "#formUserEdit" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+                //send data
+                $.ajax({
+                    url: '/users/store',
+                    method: 'POST',
+                    data: $("#formUserEdit").serialize(),
+                    success: function (data) {
 
-        //send data
-        $.ajax({
-            url:'/users/store',
-            method:'POST',
-            data: $(this).serialize(),
-            success: function(data){
+                        if (data.status === 'success') {
 
-                if(data.status === 'success'){
+                            table.ajax.reload();
 
-                    table.ajax.reload();
+                            $('#editUserModal').modal('hide');
 
-                    $('#editUserModal').modal('hide');
+                            swal({
+                                title: 'Bom trabalho!',
+                                text: "Formulário salvo com sucesso",
+                                type: 'success',
+                                padding: '2em'
+                            });
 
-                    swal({
-                        title: 'Bom trabalho!',
-                        text: "Formulário salvo com sucesso",
-                        type: 'success',
-                        padding: '2em'
-                    });
+                        }
+                    }
 
-                }
+                });
             }
-
-        });
-
-    });
+        }
+    );
     /**
      * Validate checkbox in the datatables
      *
@@ -190,77 +260,60 @@ $(document).ready(function(){
      * Forgot Password
      */
 
-    window.addEventListener('load', function() {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = $('.password');
+    $("#formSavePassword").validate({
+        rules:{
+            editPassword: "required",
+            editPassword2: {
+                required: true,
+                equalTo: '#editPassword'
+            }
+        },
+        messages: {
+            editPassword: "Senha é um campo obrigatório",
+            editPassword2: {
+                required: "Conf. Senha é um campo obrigatório",
+                equalTo: "Conf. de Senha deve ser igual ao campo Senha"
+            }
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formSavePassword" ).addClass( "was-validated" );
+        },
+        unhighlight: function () {
+            $( "#formSavePassword" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+            const id = $("#editUserID").val();
+
+            $.ajax({
+                url: "/users/pass/"+id,
+                method:"POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: $("#formSavePassword").serialize(),
+                success: function(response){
 
 
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                var  id = $('#editUserID').val();
-                var titleAlert;
-                var msg;
-                var typeAlert;
+                    if(response.status == 'error'){
+                        msg = response.msg;
+                        titleAlert = 'Atenção!';
+                        typeAlert = 'info';
+                    }else{
+                        typeAlert = 'success';
+                        titleAlert = 'Bom trabalho!'
+                        msg = response.msg;
+                        $('#formSavePassword')[0].reset();
+                        $('#passwordModal').modal('hide');
+                    }
 
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }else{
-
-
-                    $.ajax({
-                        url: "/users/pass/"+id,
-                        method:"POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: $("#formSavePassword").serialize(),
-                        success: function(response){
-
-
-                            if(response.status == 'error'){
-                                msg = response.msg;
-                                titleAlert = 'Atenção!';
-                                typeAlert = 'info';
-                            }else{
-                                typeAlert = 'success';
-                                titleAlert = 'Bom trabalho!'
-                                msg = response.msg;
-                                $('#formSavePassword')[0].reset();
-                                $('#passwordModal').modal('hide');
-                            }
-
-                            swal(titleAlert, msg, typeAlert);
-                        }
-
-                    });
+                    swal(titleAlert, msg, typeAlert);
                 }
 
-                form.classList.add('was-validated');
+            });
+        }
+    });
 
-            }, false);
-        });
-    }, false);
-
-    // $('#formSavePassword').on('submit', function(event){
-
-    //     var id = $('#userID').val();
-    //
-    //     $.ajax({
-    //         url: "/users/pass/"+id,
-    //         method:"POST",
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         data: $("#formSavePassword").serialize(),
-    //         success: function(response){
-    //             console.log(response);
-    //         }
-    //
-    //     });
-    //
-    // });
 
     /**
      * Remove user data

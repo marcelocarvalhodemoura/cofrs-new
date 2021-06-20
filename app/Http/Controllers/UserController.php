@@ -116,7 +116,7 @@ class UserController extends Controller
                     'usr_nome'  =>  $request->post('name'),
                     'usr_usuario' => $request->post('user'),
                     'usr_email' => $request->post('email'),
-                    'usr_senha' => Hash::make($request->post('password')),
+                    'usr_senha' => Hash::make($request->post('password1')),
                     'tipusr_codigoid' => $request->post('usertype'),
                     'usr_removesn' => 0
                 ]
