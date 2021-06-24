@@ -2,12 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/create.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/css/loader.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/loader.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form-password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form-password.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/plugins/select2/select2.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/plugins/select2/select2.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/plugins/table/datatable/datatables.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/plugins/table/datatable/datatables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sass/plugins/select2/select2.min.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/plugins/select2/select2.min.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,7 +241,8 @@
       <workItem from="1623838869483" duration="5195000" />
       <workItem from="1623879962553" duration="3561000" />
       <workItem from="1623927196687" duration="312000" />
-      <workItem from="1624187607729" duration="6131000" />
+      <workItem from="1624187607729" duration="6632000" />
+      <workItem from="1624496643847" duration="3684000" />
     </task>
     <servers />
   </component>

@@ -32,7 +32,3 @@ div#load_screen .loader-content {
 .spinner-grow {
   color: #304aca;
 }
-
-.error{
-    color: darkred!important;
-}

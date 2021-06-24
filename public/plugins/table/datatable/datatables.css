@@ -48,7 +48,7 @@ div.dataTables_wrapper div.dataTables_length label {
   font-weight: 600;
 }
 div.dataTables_wrapper div.dataTables_length select {
-  width: 80px;
+  width: 75px;
   display: inline-block;
 }
 div.dataTables_wrapper div.dataTables_filter {

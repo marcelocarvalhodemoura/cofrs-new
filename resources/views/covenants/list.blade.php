@@ -25,6 +25,11 @@
 
                         <p class="">Página do Sistema Cofrs destinada ao gerenciamento de convênios do associados.</p>
                         <br/>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                @include('covenants.modal.create')
+                            </div>
+                        </div>
                         <form id="convenantsForm">
                             @csrf
                             <div class="row">

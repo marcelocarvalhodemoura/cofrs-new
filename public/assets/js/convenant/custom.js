@@ -4,6 +4,11 @@ $(document).ready(function(){
         tags: true,
     });
 
+    $("#btnAddPortion").on('click', (event)=>{
+        $("#convenantModalCreate").modal('show');
+    });
+
+
     $("select.basic").on('change', event=>{
 
         $.ajax({
