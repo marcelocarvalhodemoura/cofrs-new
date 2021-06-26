@@ -21,25 +21,27 @@
             </select>
 
         </div>
+
+        <div class="col-md-4 mb-4">
+            <label for="validationCustom03">Nº de Parcelas <b class="error">*</b></label>
+            <input type="number" class="form-control" id="number" name="number" required>
+        </div>
+    </div>
+    <div class="form-row">
         <div class="col-md-4 mb-4">
             <label for="email">Valor da parcela <b class="error">*</b></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroupPrepend">R$</span>
                 </div>
-                <input type="text" class="form-control" id="portion" name="portion"  required>
+                <input type="money" class="form-control" id="portion" name="portion"  required>
 
             </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-4 mb-4">
-            <label for="validationCustom03">Nº de Parcelas <b class="error">*</b></label>
-            <input type="number" class="form-control" id="number" name="number" required>
-        </div>
+
         <div class="col-md-4 mb-4">
             <label for="validationCustom04">Valor Total <b class="error">*</b></label>
-            <input type="text" class="form-control"  id="total" name="total" placeholder="****" required>
+            <input type="text" class="form-control"  id="total" name="total" required>
         </div>
         <div class="col-md-4 mb-4">
             <label for="validationCustom05">Vencimento Final<b class="error">*</b></label>

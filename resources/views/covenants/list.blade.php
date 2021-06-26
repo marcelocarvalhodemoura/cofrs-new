@@ -116,4 +116,5 @@
 
 @push('scripts')
     <script src="{{ URL::asset('/assets/js/convenant/custom.js') }}"></script>
+    <script src="{{ URL::asset('/assets/js/jquery-maskmoney.js') }}"></script>
 @endpush

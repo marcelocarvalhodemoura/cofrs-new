@@ -14,7 +14,7 @@ class Convenant extends Migration
     public function up()
     {
         Schema::create('lancamento', function(Blueprint $table){
-            $table->increments('lanc_codigoid');
+            $table->increments('id');
             $table->float('lanc_valortoal');
             $table->date('lanc_datavencimento');
             $table->float('lanc_valorparcela');
