@@ -2,17 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/migrations/2021_06_25_231843_portion.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/jquery-maskmoney.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/form/form-installment-payment.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/form/form-upload.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/download-file.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/monthly-payment.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/renegotiation.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/upload-file.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Competition.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Competence.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/loader.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/loader.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/modal/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/modal/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/modal/delete.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/modal/delete.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/modal/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/modal/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/modal/password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/modal/password.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +176,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="eu.ydp.idea.ts.spec.generator.settings.spec.template" value="import {$ClassName$} from '$TestsRelativePath$../src/$classRelativePath$/$ClassName$';&#10;&#10;describe('$ClassName$', () =&gt; {&#10;  let $ObjName$:$ClassName$;&#10;&#10;  beforeEach(() =&gt; {&#10;    $ObjName$ = new $ClassName$();&#10;  });&#10;&#10;  describe('', () =&gt; {&#10;    it('', () =&gt; {&#10;      // given&#10;&#10;      // when&#10;&#10;      // then&#10;    });&#10;  });&#10;});&#10;" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Models" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -244,7 +250,8 @@
       <workItem from="1624187607729" duration="6632000" />
       <workItem from="1624496643847" duration="3922000" />
       <workItem from="1624640347825" duration="1172000" />
-      <workItem from="1624656966819" duration="11891000" />
+      <workItem from="1624656966819" duration="12715000" />
+      <workItem from="1625063175701" duration="10471000" />
     </task>
     <servers />
   </component>

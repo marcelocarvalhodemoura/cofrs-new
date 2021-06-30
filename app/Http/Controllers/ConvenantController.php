@@ -23,9 +23,9 @@ class ConvenantController extends Controller
             return redirect()->route('login');
         }
 
-        $associateList = Associate::all();
+        $associateList = Associate::orderBy('assoc_nome','asc')->get();
         $competitionList = Competence::all();
-        $agreementList = Agreement::all();
+        $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
 
 
         $data = [

@@ -4,15 +4,15 @@
 
     <div class="layout-px-spacing">
         <div class="row  layout-top-spacing">
-
-            <nav class="breadcrumb-two" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="/covenants">Conveniado</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="">Listagem</a></li>
-                </ol>
-            </nav>
-
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12 ">
+                <nav class="breadcrumb-two" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="/covenants">Conveniado</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="">Listagem</a></li>
+                    </ol>
+                </nav>
+            </div>
         </div>
 
         <div class="row layout-top-spacing">
@@ -28,6 +28,11 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 @include('covenants.modal.create')
+                                @include('covenants.modal.monthly-payment')
+                                @include('covenants.modal.renegotiation')
+                                @include('covenants.modal.installment-payment')
+                                @include('covenants.modal.upload-file')
+                                @include('covenants.modal.download-file')
                             </div>
                         </div>
                         <form id="convenantsForm">
@@ -81,6 +86,7 @@
                                 </div>
                             </div>
                         </form>
+                        <hr/>
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -117,4 +123,6 @@
 @push('scripts')
     <script src="{{ URL::asset('/assets/js/convenant/custom.js') }}"></script>
     <script src="{{ URL::asset('/assets/js/jquery-maskmoney.js') }}"></script>
+    <script src="{{ URL::asset('plugins/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ URL::asset('plugins/apex/custom-apexcharts.js') }}"></script>
 @endpush

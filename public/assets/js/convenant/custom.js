@@ -8,6 +8,14 @@ $(document).ready(function(){
         $("#convenantModalCreate").modal('show');
     });
 
+    $("#btnAddUploadFile").on('click', function () {
+        $("#convenantModalUploadFiles").modal('show');
+    });
+
+    $("#btnAddInstallmentPayment").on('click', function(){
+        $("#convenantInstallmentPayment").modal('show');
+    });
+
     $("#formConvenants").validate({
         rules: {
             associate:"required",
@@ -64,14 +72,10 @@ $(document).ready(function(){
 
     $("#portion").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 
-
-
     $("#portion").blur(function(){
-        // console.log("entrei");
-        // // alert("This input field has lost its focus.");
+
         $("#duedate").show();
         $("#total").show();
-
 
         var valorTotal;
         var data = new Date();
@@ -97,16 +101,13 @@ $(document).ready(function(){
         for(i = 0  ; i < $("#number").val() ; i ++){
             if(mes == 12){
                 mes = 1;
-                // alert('mes='+mes);
                 ano = ano + 1;
-                // alert('ano='+ano);
+
             }else{
                 mes = mes + 1;
-                // alert('mes='+mes);
             }
         }
 
-        // //mes = mes + parseInt($("#edtNumeroParcelas").val());
         if(mes < 10){
             dataFormatada =  '10/0' + mes + '/' + ano;
         }else if(mes > 12){
@@ -115,15 +116,44 @@ $(document).ready(function(){
             dataFormatada =  '10/' + mes + '/' + ano;
         }
 
-        // console.log("dataFormatada="+dataFormatada);
         setTimeout(function(){
             $("#duedate").val(dataFormatada);
-            // $("#dataFimDatepickerIcon").fadeOut();
             $("#total").val(parseFloat(valorTotalParcelas).toFixed(2).replace('.', ','));
-            // $("#valorTotalIcon").fadeOut();
         },2000);
     });
 
+    //creat chart on the form
+    var donutChart = {
+        chart: {
+            height: 350,
+            type: 'donut',
+            toolbar: {
+                show: false,
+            }
+        },
+        // colors: ['#4361ee', '#888ea8', '#e3e4eb', '#d3d3d3'],
+        series: [44, 55, 41, 17],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    }
+
+    var donut = new ApexCharts(
+        document.querySelector("#donut-chart"),
+        donutChart
+    );
+
+    donut.render();
+
+    donut.render();
 
     $("select.basic").on('change', event=>{
 
@@ -140,6 +170,8 @@ $(document).ready(function(){
                 response.forEach(function(item){
 
                     var dynamicClass = "";
+                    var portionPrice = item.par_valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                    var priceTotal = item.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
 
                     switch (item.par_status){
                         case 'Pendente':
@@ -160,13 +192,13 @@ $(document).ready(function(){
                     }
 
                     tr += '<tr class="'+ dynamicClass +'"><td>'+item.assoc_nome+'</td>' +
-                        '<td>'+item.par_numero+'</td>' +
+                        '<td>'+item.par_numero+'º</td>' +
                         '<td>'+item.con_nome+'</td>' +
                         '<td>'+item.con_referencia+'</td>' +
                         '<td>'+item.com_nome+'</td>' +
-                        '<td>'+item.par_valor+'</td>' +
-                        '<td>'+item.lanc_valortotal+'</td>' +
-                        '<td>'+item.par_status+'</td>' +
+                        '<td>'+ portionPrice +'</td>' +
+                        '<td>'+  priceTotal +'</td>' +
+                        '<td><b>'+ item.par_status +'</b></td>' +
                         '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'+item.par_codigoid+'"/></td>' +
                         '</tr>';
                 });
