@@ -102,10 +102,6 @@
 
                                     </tbody>
                                 </table>
-{{--                                <div id="accordion" class="dinamicAccordion">--}}
-
-{{--                                </div>--}}
-
                             </div>
                         </div>
                     </div>

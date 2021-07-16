@@ -196,21 +196,24 @@ $(document).ready(function(){
                 });
                 let tr = "";
 
-                $(".dinamicAccordion table.table").remove();
+                $("#tableCovenants tbody tr").remove();
 
                 if(response == ""){
-                    let tr2 ='<table class="table" width="100%">' +
-                            '<tbody>' +
-                                '<tr>'+
-                                    '<td colspan="3" style="text-align: center">'+
-                                        '<b class="btn-link">Não existem dados referentes!</b>'+
-                                    '</td>'+
-                                '</tr>' +
-                           '</tbody>' +
-                        '</table>';
+                    let tr2 = '<tr>' +
+                            '<td colspan="6">' +
+                                '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
+                                    '<tbody>' +
+                                        '<tr>'+
+                                            '<td colspan="3" style="text-align: center">'+
+                                                '<b class="btn-link">Não existem dados referentes!</b>'+
+                                            '</td>'+
+                                        '</tr>' +
+                                   '</tbody>' +
+                                '</table>' +
+                            '</td></tr>';
 
                     setTimeout(function(){
-                       return $(".dinamicAccordion").append(tr2);
+                       return $("#tableCovenants tbody").append(tr2);
                     }, 2000);
                 }
 
@@ -220,33 +223,6 @@ $(document).ready(function(){
 
                     //Total variable convert to money format
                     let total = item.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-
-                    // tr += '<div class="card" >' +
-                    //          '<div class="card-header" id="heading'+item.id+'">\n' +
-                    //
-                    //             '<table width="100%">' +
-                    //                 // '<tbody>' +
-                    // tr +=         '<tr >'+
-                    //                         '<td>'+
-                    //                             '<a class="btn btn-primary collapsed" data-toggle="collapse" href="#collapse'+item.id+'" aria-expanded="false" role="button" aria-controls="collapse'+item.id+'">'+item.assoc_nome +'</a>'+
-                    //
-                    //
-                    //                         '</td>'+
-                    //                         '<td>'+
-                    //                             item.assoc_cpf +
-                    //                         '</td>'+
-                    //                         '<td width="25%">'+
-                    //                             '<b class="shadow-none badge outline-badge-primary">'+item.con_nome +'</b>'+
-                    //                         '</td>'+
-                    //                         '<td width="20%">'+dateFormated[2]+'/'+dateFormated[1]+'/'+dateFormated[0]+'</td>' +
-                    //                         '<td width="10%">'+item.lanc_numerodeparcela+'</td>' +
-                    //                         '<td width="10%">'+total+'</td>' +
-                    //                         ' <div id="collapse'+item.id+'" class="card" style="display: none" >'+
-                    //                         '<div class="card-body">teste' +
-                    //
-                    //                         '</div>'+
-                    //                         '</div>'
-                    //                     '</tr>';
 
                     tr += '<tr>' +
                             '<td colspan="6">' +
@@ -330,7 +306,6 @@ $(document).ready(function(){
 
                 });
                 setTimeout(function(){
-                    // $(".dinamicAccordion").append(tr);
                     $('#tableCovenants tbody').append(tr);
                 }, 2000);
             }
