@@ -116,7 +116,8 @@ class AssociateController extends Controller
                 ['assoc_codigoid' => $request->post('associateId')],
                 [
                     'assoc_nome'  =>  $request->post('name'),
-                    'assoc_matricula' => $request->post('registration'),
+                    'assoc_matricula' => $request->post('identify'),
+                    'assoc_identificacao' => $request->post('registration'),
                     'assoc_cpf' => $request->post('cpf'),
                     'assoc_rg' => $request->post('rg'),
                     'assoc_datanascimento' => $datePtToMysql,
@@ -185,7 +186,7 @@ class AssociateController extends Controller
     {
         //load all Portion
         return $portions = Installment::join('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
-            ->join('parcelamento', 'parcelamento.lanc_codigoid', '=', 'lancamento.lanc_codigoid')
+            ->join('parcelamento', 'parcelamento.lanc_codigoid', '=', 'lancamento.id')
             ->where('assoc_codigoid', '=', $id)
             ->where('par_status', '=', 'Pendente')
             ->get();

@@ -59,20 +59,27 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['convenio.con_codigoid', $request->selAgreement];
             }
 
-            if($request->post('selCompetition')){
-                $dynamicWhere[] = ['lanc.con_codigoid', $request->selCompetition];
-            }
+//            if($request->post('selCompetition')){
+//                $dynamicWhere[] = ['lanc.con_codigoid', $request->selCompetition];
+//            }
 
-            if($request->post('selStatus')){
-                $dynamicWhere[] = ['parcelamento.par_status', $request->selStatus];
-            }
+//            if($request->post('selStatus')){
+//                $dynamicWhere[] = ['parcelamento.par_status', $request->selStatus];
+//            }
 
-            $convenantList = Portion::join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
-                ->leftjoin('competencia', 'competencia.com_codigoid', '=', 'parcelamento.com_codigoid')
-                ->leftjoin('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
+            //load Convenants from table lancamentos
+            $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
                 ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
+                ->leftjoin('estatus', 'estatus.est_codigoid', '=', 'lancamento.est_codigoid')
                 ->where($dynamicWhere)
                 ->get();
+
+            foreach ($convenantList as $index => $item){
+                //load portion within lanc_codigoid iqual to id from lancamento
+                $convenantList[$index]['portion'] = Portion::join('competencia', 'competencia.com_codigoid', '=', 'parcelamento.com_codigoid')
+                    ->where('lanc_codigoid', $item->id)
+                    ->get();
+            }
 
             return response()->json($convenantList);
         }

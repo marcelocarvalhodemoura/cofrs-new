@@ -58,9 +58,6 @@ span.select2.select2-container.select2-container--default.select2-container--ope
   box-shadow: 0 0 5px 2px rgba(194, 213, 255, 0.6196078431);
 }
 
-.select2-container .formConv {
-  z-index: 9999;
-}
 .select2-container .select2-selection--single .select2-selection__rendered {
   display: block;
   overflow: hidden;

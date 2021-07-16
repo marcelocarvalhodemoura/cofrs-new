@@ -89,25 +89,17 @@
                         <hr/>
                         <div class="row">
                             <div class="col-12">
-                                <div class="table-responsive">
-                                    <table class="table mb-4 contextual-table">
-                                        <thead>
-                                        <tr class="">
-                                            <th>Associado</th>
-                                            <th>Parcela</th>
-                                            <th>Convênio</th>
-                                            <th>Referência</th>
-                                            <th>Competência</th>
-                                            <th>Valor</th>
-                                            <th>Total</th>
-                                            <th>Status</th>
-                                            <th><input id="portionSel" value="1" type="checkbox"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                                <table class="table">
+                                    <thead>
+                                        <th>Associado</th>
+                                        <th width="25%">Convênios</th>
+                                        <th width="20%">Vencimento</th>
+                                        <th width="10%">Parcelas</th>
+                                        <th width="10%">Total</th>
+                                    </thead>
+                                </table>
+                                <div id="accordion" class="dinamicAccordion">
 
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>

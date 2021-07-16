@@ -15,9 +15,9 @@
             </div>
             <div class="shadow-bottom"></div>
             <ul class="list-unstyled menu-categories" id="accordionExample">
-                <li class="menu menu-heading">
-                    <div class="heading">ACESSO SISTEMA</div>
-                </li>
+{{--                <li class="menu menu-heading">--}}
+{{--                    <div class="heading">ACESSO SISTEMA</div>--}}
+{{--                </li>--}}
                 <li class="menu ">
                     <a href="/dashboard" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -36,9 +36,9 @@
 
                     </a>
                 </li>
-                <li class="menu menu-heading">
-                    <div class="heading">SERVICOS</div>
-                </li>
+{{--                <li class="menu menu-heading">--}}
+{{--                    <div class="heading">SERVICOS</div>--}}
+{{--                </li>--}}
                 <li class="menu">
                     <a href="/associates" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -69,9 +69,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu menu-heading">
-                    <div class="heading">FINANCEIRO</div>
-                </li>
+{{--                <li class="menu menu-heading">--}}
+{{--                    <div class="heading">FINANCEIRO</div>--}}
+{{--                </li>--}}
                 <li class="menu ">
                     <a href="#finances-kit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -95,9 +95,9 @@
                     </ul>
 
                 </li>
-                <li class="menu menu-heading">
-                    <div class="heading">RELATORIOS</div>
-                </li>
+{{--                <li class="menu menu-heading">--}}
+{{--                    <div class="heading">RELATORIOS</div>--}}
+{{--                </li>--}}
                 <li class="menu ">
                     <a href="/report" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -106,9 +106,9 @@
                         </div>
                     </a>
                 </li>
-                <li class="menu menu-heading">
-                    <div class="heading">SUPORTE</div>
-                </li>
+{{--                <li class="menu menu-heading">--}}
+{{--                    <div class="heading">SUPORTE</div>--}}
+{{--                </li>--}}
                 <li class="menu ">
                     <a href="/support" aria-expanded="false" class="dropdown-toggle">
                         <div class="">

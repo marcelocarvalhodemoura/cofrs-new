@@ -11,7 +11,9 @@
         App.init();
     });
 </script>
+<script src="{{asset('plugins/treeview/custom-jstree.js')}}"></script>
 <script src="{{asset('assets/js/scrollspyNav.js')}}"></script>
+<script src="{{asset('plugins/blockui/jquery.blockUI.min.js')}}"></script>
 <script src="{{asset('plugins/highlight/highlight.pack.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
