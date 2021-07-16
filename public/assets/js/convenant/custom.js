@@ -215,91 +215,123 @@ $(document).ready(function(){
                 }
 
                 response.forEach(function(item){
-                    var total = item.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                    //convert string to array separated to "-" and reverse vector position
+                    let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',','/');
 
-                    tr += '<div class="">'+
-                                '<table class="table" id="heading'+item.id+'">' +
-                                    '<tbody>' +
-                                        '<tr>'+
-                                            '<td class="collapsed" data-toggle="collapse" data-target="#collapse'+item.id+'" aria-expanded="false" aria-controls="collapse'+item.id+'">'+
-                                                '<b class=" btn-link" style="cursor: pointer;">'+item.assoc_nome +'</b>'+
-                                            '</td>'+
-                                            '<td width="25%" class="collapsed" data-toggle="collapse" data-target="#collapse'+item.id+'" aria-expanded="false" aria-controls="collapse'+item.id+'">'+
-                                                '<b class="badge badge-primary btn-link">'+item.con_nome +'</b>'+
-                                            '</td>'+
-                                            '<td width="20%"><b class="badge badge-warning">'+item.lanc_datavencimento+'</b></td>' +
-                                            '<td width="10%"><b class="badge badge-warning">'+item.lanc_numerodeparcela+' parcelas</b></td>' +
-                                            '<td width="10%"><b class="badge badge-warning">R$'+total+'</b></td>' +
-                                        '</tr>' +
-                                    '</tbody>' +
-                                '</table>'+
-                            '</div>'+
-                            ' <div id="collapse'+item.id+'" class="collapse" aria-labelledby="heading'+item.id+'" data-parent="#accordion">'+
-                                '<div className="card-body">'+
-                                    // '<ul>' +
-                                    //     '<li>' +
-                                            '<fieldset>' +
-                                                '<legend><span class="label label-primary">Parcelamento</span></legend>' +
-                                                '<div> '+
-                                                   '<table class="table table-bordered table-hover table-striped mb-4">'+
-                                                         '<thead>'+
-                                                             '<tr>'+
+                    //Total variable convert to money format
+                    let total = item.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
 
-                                                                 '<th>Referência</th>'+
-                                                                 '<th>Competência</th>'+
-                                                                 '<th>Parcela</th>'+
-                                                                 '<th>Valor</th>'+
-                                                                 '<th>Status</th>'+
-                                                                 '<th><input id="portionSel" value="1" type="checkbox"></th>'+
-                                                             '</tr>'+
-                                                         '</thead>'+
-                                                         '<tbody>';
-                                                            item.portion.forEach(function(value){
-                                                                var portionPrice = value.par_valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                                                                var dynamicClass = "";
+                    // tr += '<div class="card" >' +
+                    //          '<div class="card-header" id="heading'+item.id+'">\n' +
+                    //
+                    //             '<table width="100%">' +
+                    //                 // '<tbody>' +
+                    // tr +=         '<tr >'+
+                    //                         '<td>'+
+                    //                             '<a class="btn btn-primary collapsed" data-toggle="collapse" href="#collapse'+item.id+'" aria-expanded="false" role="button" aria-controls="collapse'+item.id+'">'+item.assoc_nome +'</a>'+
+                    //
+                    //
+                    //                         '</td>'+
+                    //                         '<td>'+
+                    //                             item.assoc_cpf +
+                    //                         '</td>'+
+                    //                         '<td width="25%">'+
+                    //                             '<b class="shadow-none badge outline-badge-primary">'+item.con_nome +'</b>'+
+                    //                         '</td>'+
+                    //                         '<td width="20%">'+dateFormated[2]+'/'+dateFormated[1]+'/'+dateFormated[0]+'</td>' +
+                    //                         '<td width="10%">'+item.lanc_numerodeparcela+'</td>' +
+                    //                         '<td width="10%">'+total+'</td>' +
+                    //                         ' <div id="collapse'+item.id+'" class="card" style="display: none" >'+
+                    //                         '<div class="card-body">teste' +
+                    //
+                    //                         '</div>'+
+                    //                         '</div>'
+                    //                     '</tr>';
 
-                                                                switch (value.par_status){
-                                                                    case 'Pendente':
-                                                                        dynamicClass = "warning";
-                                                                        break;
+                    tr += '<tr>' +
+                            '<td colspan="6">' +
+                                '<a href="#tableTest-'+item.id+'" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
+                                    '<table width="100%" class="table">' +
+                                        '<tbody>' +
+                                            '<tr>'+
+                                                '<td class="text-primary">'+item.assoc_nome +'</td>'+
+                                                '<td >'+item.assoc_cpf +'</td>'+
+                                                '<td width="25%"><b class="shadow-none badge outline-badge-primary">'+item.con_nome +'</b></td>'+
+                                                '<td width="20%">'+dateFormated+'</td>'+
+                                                '<td width="10%">'+item.lanc_numerodeparcela+'</td>'+
+                                                '<td width="10%">'+total+'</td>'+
+                                            '</tr>'+
+                                        '</tbody>'+
+                                    '</table>\n' +
+                                '</a>' +
+                                '<ul class="submenu list-unstyled collapse" id="tableTest-'+item.id+'" data-parent="#tableCovenants" style="">\n' +
+                                    '<li class="active">\n' +
+                                        '<div class=card">'+
+                                            '<div class="card-body">' +
+                                                '<h6>Condições de Pagamento</h6>'+
+                                                    '<table class="table table-bordered table-hover table-striped mb-4">'+
+                                                    '<thead>'+
+                                                    '<tr>'+
 
-                                                                    case 'Pago':
-                                                                        dynamicClass = "success";
-                                                                        break;
+                                                    '<th><span class="badge badge-primary">Referência</span></th>'+
+                                                    '<th><span class="badge badge-primary">Competência</span></th>'+
+                                                    '<th><span class="badge badge-primary">Parcela</span></th>'+
+                                                    '<th><span class="badge badge-primary">Valor</span></th>'+
+                                                    '<th><span class="badge badge-primary">Status</span></th>'+
+                                                    '<th><input id="portionSel" value="1" type="checkbox"></th>'+
+                                                    '</tr>'+
+                                                    '</thead>'+
+                                                    '<tbody>';
+                                                        //create portion convenants from associate
+                                                        item.portion.forEach(function(value){
+                                                            var portionPrice = value.par_valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                                                            var dynamicClass = "";
 
-                                                                    case 'Vencido':
-                                                                        dynamicClass = "danger";
-                                                                        break;
+                                                            switch (value.par_status){
+                                                                case 'Pendente':
+                                                                    dynamicClass = "warning";
+                                                                    break;
 
-                                                                    case 'Transferido':
-                                                                        dynamicClass = "info";
-                                                                        break;
-                                                                }
+                                                                case 'Pago':
+                                                                    dynamicClass = "success";
+                                                                    break;
 
-                                                                tr+= '<tr class="table-'+ dynamicClass +'">' +
-                                                                             '<td>'+item.con_referencia+'</td>' +
-                                                                             '<td>'+value.com_nome+'</td>' +
-                                                                             '<td>'+value.par_numero+'</td>' +
-                                                                             '<td>'+portionPrice+'</td>' +
-                                                                             '<td><b class="badge badge-'+ dynamicClass +'">'+ value.par_status +'</b></td>' +
-                                                                             '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'+value.par_codigoid+'"/></td>' +
-                                                                         '</tr>';
-                                                            });
+                                                                case 'Vencido':
+                                                                    dynamicClass = "danger";
+                                                                    break;
+
+                                                                case 'Transferido':
+                                                                    dynamicClass = "info";
+                                                                    break;
+                                                            }
+
+                                                            tr+= '<tr class="table-'+ dynamicClass +'">' +
+                                                                '<td>'+item.con_referencia+'</td>' +
+                                                                '<td>'+value.com_nome+'</td>' +
+                                                                '<td>'+value.par_numero+'</td>' +
+                                                                '<td>'+portionPrice+'</td>' +
+                                                                '<td><b class="badge badge-'+ dynamicClass +'">'+ value.par_status +'</b></td>' +
+                                                                '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'+value.par_codigoid+'"/></td>' +
+                                                                '</tr>';
+                                                        });
 
 
 
-                                                    tr +=  '</tbody>'+
+                                            tr +=  '</tbody>'+
                                                 '</table>'+
                                             '</div>'+
-                                        '</fieldset>'+
-                                    //     '</li>' +
-                                    // '</ul>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>';
+                                        '</div>'+
+                                    '</li>\n' +
+
+                                '</ul>' +
+                            '</td>' +
+                        '</tr>';
+
+
                 });
                 setTimeout(function(){
-                    $(".dinamicAccordion").append(tr);
+                    // $(".dinamicAccordion").append(tr);
+                    $('#tableCovenants tbody').append(tr);
                 }, 2000);
             }
         });

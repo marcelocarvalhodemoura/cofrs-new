@@ -89,18 +89,23 @@
                         <hr/>
                         <div class="row">
                             <div class="col-12">
-                                <table class="table">
+                                <table class="table table-hover" id="tableCovenants">
                                     <thead>
                                         <th>Associado</th>
+                                        <th>CPF</th>
                                         <th width="25%">Convênios</th>
                                         <th width="20%">Vencimento</th>
                                         <th width="10%">Parcelas</th>
                                         <th width="10%">Total</th>
                                     </thead>
-                                </table>
-                                <div id="accordion" class="dinamicAccordion">
+                                    <tbody>
 
-                                </div>
+                                    </tbody>
+                                </table>
+{{--                                <div id="accordion" class="dinamicAccordion">--}}
+
+{{--                                </div>--}}
+
                             </div>
                         </div>
                     </div>
