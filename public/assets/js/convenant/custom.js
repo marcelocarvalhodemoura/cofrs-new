@@ -251,7 +251,7 @@ $(document).ready(function(){
                     tr += '<tr>' +
                             '<td colspan="6">' +
                                 '<a href="#tableTest-'+item.id+'" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
-                                    '<table width="100%" class="table">' +
+                                    '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
                                         '<tbody>' +
                                             '<tr>'+
                                                 '<td class="text-primary">'+item.assoc_nome +'</td>'+
