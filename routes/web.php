@@ -22,10 +22,6 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 
 Route::get('', function() {
     // $category_name = 'auth';
@@ -37,7 +33,7 @@ Route::get('', function() {
         'alt_menu' => 0,
     ];
     // $pageName = 'auth_default';
-    return view('pages.authentication.auth_login_boxed')->with($data);
+    return view('pages.authentication.auth_login')->with($data);
 })->name('login');
 
 Route::post('/auth', [UserController::class, 'authentication']);
