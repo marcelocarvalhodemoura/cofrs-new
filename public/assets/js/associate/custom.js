@@ -282,7 +282,7 @@ $(document).ready(function() {
 
                             tr += '<tr>';
                             tr += '<td class="text-primary">' + element.dep_nome + '</td>';
-                            tr += '<td>' + element.dep_rg + 'º</td>';
+                            tr += '<td>' + element.dep_rg + '</td>';
                             tr += '<td>' + element.dep_cpf + '</td>';
                             tr += '<td>' + element.dep_fone + '</td>';
                             tr += '<td>' +
@@ -319,6 +319,17 @@ $(document).ready(function() {
         }
     });
 
+    /**
+     * Create Mask into dinamic fields
+     */
+    $(document).on("focus", ".registration", function(){
+        $(this).inputmask("999.999.999-99");
+    });
+
+    $(document).on("focus", ".depPhone", function(){
+        $(this).inputmask("(99)99999-9999");
+    });
+
 
     /**
      * Create new rows
@@ -329,9 +340,9 @@ $(document).ready(function() {
 
         let row = '<tr>\n' +
             '                <td><input type="text" name="depName[]" class="form-control" id="depName" required></td>\n' +
-            '                <td><input type="text" name="depIdentify[]" class="form-control" id="depIdentify" required></td>\n' +
-            '                <td><input type="text" name="depRegistration[]" class="form-control" id="depRegistration" required></td>\n' +
-            '                <td><input type="text" name="depPhone[]" class="form-control" id="depPhone" required></td>\n' +
+            '                <td><input type="text" name="depIdentify[]" maxlength="11" class="form-control threshold" id="depIdentify" required></td>\n' +
+            '                <td><input type="text" name="depRegistration[]" class="form-control registration" id="depRegistration" required></td>\n' +
+            '                <td><input type="text" name="depPhone[]" class="form-control depPhone" id="depPhone" required></td>\n' +
             '                  <td>' +
             '<span className="text-danger">'+
             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
