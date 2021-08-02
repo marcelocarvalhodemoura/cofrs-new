@@ -1,15 +1,3 @@
-function showSubItens(item){
-
-
-    // var itemClicked = $(item);
-    //
-    // itemClicked.on('click', function(a){
-        console.log('cliquei no trem !');
-    //     // $(this).children('ul').slideToggle(400, function() {
-    //     //     $(this).parent("li").toggleClass("open")
-    //     // }), a.stopPropagation()
-    // });
-}
 $(document).ready(function(){
     //load select
     $(".basic").select2({
@@ -27,6 +15,75 @@ $(document).ready(function(){
     $("#btnAddInstallmentPayment").on('click', function(){
         $("#convenantInstallmentPayment").modal('show');
     });
+
+    /**
+     * Install Payment
+     */
+    $("#btnAddInstallmentPayment").on('click', ()=>{
+        const id = new Array();
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+            //get value in the input
+            id.push($(this).val());
+        });
+
+        if(id > 0){
+            swal({
+                title: "Confirma?",
+                text: "Após a confirmação a parcela será quitada.",
+                type: "warning",
+                confirmButtonClass: 'btn btn btn-primary',
+                cancelButtonClass: 'btn btn-danger mr-3',
+                buttonsStyling: false,
+                showCancelButton: true,
+                cancelButtonText:"Cancelar",
+                confirmButtonText: "Quite-a!",
+                closeOnConfirm: false
+            }).then(function(result) {
+                $.ajax({
+                    method:"POST",
+                    url:"/convenats/portion/"+id,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{ id:id },
+                    success: function(response){
+                        console.log(response);
+                        if (response.status === 'success'){
+                            $("#actionCheck:checked")
+                                .closest('tr')
+                                .removeClass('table-warning')
+                                .addClass('table-success');
+
+                            let checked = $("#actionCheck:checked").parents('tr').children()[4];
+                            checked.innerHTML='<b class="badge badge-success">Pago</b>';
+
+
+                        }
+
+                    }
+                });
+            });
+        }else{
+            swal({
+                title: "Atenção !",
+                text: "Selecione apenas 1 registro por vez",
+                type:"info",
+                confirmButtonClass: 'btn btn-primary',
+            });
+        }
+    });
+
+
+    /**
+     * Load Table Convenants without data
+     */
+    let tr = '<tr class="table-warning">' +
+                '<td colspan="6" class="text-center">' +
+                        '<strong>Selecione o campo!</strong>' +
+                '</td>' +
+            '</tr>';
+
+    $("#tableCovenants tbody").append(tr);
 
     $("#formConvenants").validate({
         rules: {

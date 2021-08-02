@@ -98,4 +98,5 @@ Route::get('/covenants',[ConvenantController::class, 'index']);
 Route::post('/convenants/store', [ConvenantController::class, 'store']);
 Route::post('/convenants/list', [ConvenantController::class, 'getCovenants']);
 Route::get('/covenants/associate/list', [ConvenantController::class, 'getAssociates']);
+Route::post('/convenats/portion/{id}', [ConvenantController::class, 'changePayment']);
 

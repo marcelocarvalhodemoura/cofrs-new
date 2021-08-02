@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,7 +257,12 @@
       <workItem from="1626271294098" duration="32539000" />
       <workItem from="1626463056708" duration="2620000" />
       <workItem from="1626897252295" duration="519000" />
-      <workItem from="1627039545246" duration="4374000" />
+      <workItem from="1627039545246" duration="5070000" />
+      <workItem from="1627596665876" duration="4199000" />
+      <workItem from="1627686471937" duration="265000" />
+      <workItem from="1627916067234" duration="191000" />
+      <workItem from="1627925586056" duration="648000" />
+      <workItem from="1627939412516" duration="3232000" />
     </task>
     <servers />
   </component>

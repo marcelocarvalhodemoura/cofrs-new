@@ -59,14 +59,6 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['convenio.con_codigoid', $request->selAgreement];
             }
 
-//            if($request->post('selCompetition')){
-//                $dynamicWhere[] = ['lanc.con_codigoid', $request->selCompetition];
-//            }
-
-//            if($request->post('selStatus')){
-//                $dynamicWhere[] = ['parcelamento.par_status', $request->selStatus];
-//            }
-
             //load Convenants from table lancamentos
             $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
                 ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
@@ -84,6 +76,18 @@ class ConvenantController extends Controller
             return response()->json($convenantList);
         }
 
+    }
+
+    public function changePayment($id){
+        try{
+            $affected = Portion::where('par_codigoid', $id)
+                ->update(['par_status' => 'Pago']);
+            if($affected > 0){
+                return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
+            }
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
     }
 
     public function store(Request $request)
@@ -158,10 +162,6 @@ class ConvenantController extends Controller
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
-
-
-
-
 
     }
 }

@@ -338,9 +338,9 @@ $(document).ready(function(){
                     },
                     data:{ id:id },
                     success: function(response){
-                        if (response == true){
+                        // if (response == true){
                             table.ajax.reload();
-                        }
+                        // }
 
                     }
                 });
