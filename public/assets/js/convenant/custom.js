@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     //load select
     $(".basic").select2({
         tags: true,
@@ -49,11 +50,12 @@ $(document).ready(function(){
                     success: function(response){
                         console.log(response);
                         if (response.status === 'success'){
+                            //change color row
                             $("#actionCheck:checked")
                                 .closest('tr')
                                 .removeClass('table-warning')
                                 .addClass('table-success');
-
+                            //change bagde
                             let checked = $("#actionCheck:checked").parents('tr').children()[4];
                             checked.innerHTML='<b class="badge badge-success">Pago</b>';
 
@@ -73,6 +75,65 @@ $(document).ready(function(){
         }
     });
 
+    /**
+     * Renegation
+     */
+    $('#btnAddRenegotiation').on('click', () =>{
+
+        const id = new Array();
+        let lanc_id;
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+            //get value in the input
+            id.push($(this).val());
+            lanc_id = $(this).parent().parent().attr('data-lanc-id');
+        });
+
+        if(id > 0){
+
+            $.ajax({
+                method:'GET',
+                url: '/convenants/renegotiation/'+id+'/'+lanc_id,
+                success: response => {
+                    console.log(response);
+                    if(response.status === 'success'){
+                        //Remove all covenants rows
+                        $("#tableCovenants tbody tr").remove();
+
+                        const tr2 = '<tr>' +
+                            '<td colspan="6">' +
+                            '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
+                            '<tbody>' +
+                            '<tr>'+
+                            '<td colspan="3" style="text-align: center">'+
+                            '<b class="btn-link">Não existem dados referentes!</b>'+
+                            '</td>'+
+                            '</tr>' +
+                            '</tbody>' +
+                            '</table>' +
+                            '</td></tr>';
+
+                        $("#tableCovenants tbody tr").append(tr2);
+
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: response.msg,
+                            type: 'success',
+                            padding: '2em',
+                            confirmButtonClass: 'btn btn-success',
+                        });
+                    }
+                }
+            });
+        }else{
+            swal({
+                title: "Atenção !",
+                text: "Selecione apenas 1 registro por vez",
+                type:"info",
+                confirmButtonClass: 'btn btn-primary',
+            });
+        }
+
+    });
 
     /**
      * Load Table Convenants without data
@@ -338,7 +399,7 @@ $(document).ready(function(){
                                                                     break;
                                                             }
 
-                                                            tr+= '<tr class="table-'+ dynamicClass +'">' +
+                                                            tr+= '<tr class="table-'+ dynamicClass +'" data-lanc-id="'+item.id+'">' +
                                                                 '<td>'+item.con_referencia+'</td>' +
                                                                 '<td>'+value.com_nome+'</td>' +
                                                                 '<td>'+value.par_numero+'</td>' +

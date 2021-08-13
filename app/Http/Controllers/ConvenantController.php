@@ -14,9 +14,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
+use function PHPUnit\Framework\isEmpty;
 
+/**
+ *
+ */
 class ConvenantController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function index(Request $request)
     {
         if (!Session::has('user')) {
@@ -45,6 +53,10 @@ class ConvenantController extends Controller
         return view('covenants.list', $lists)->with($data);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function getCovenants(Request $request)
     {
         if($request->ajax()){
@@ -59,29 +71,53 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['convenio.con_codigoid', $request->selAgreement];
             }
 
-            //load Convenants from table lancamentos
-            $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
-                ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
-                ->leftjoin('estatus', 'estatus.est_codigoid', '=', 'lancamento.est_codigoid')
-                ->where($dynamicWhere)
-                ->get();
-
-            foreach ($convenantList as $index => $item){
-                //load portion within lanc_codigoid iqual to id from lancamento
-                $convenantList[$index]['portion'] = Portion::join('competencia', 'competencia.com_codigoid', '=', 'parcelamento.com_codigoid')
-                    ->where('lanc_codigoid', $item->id)
+            try {
+                //load Convenants from table lancamentos
+                $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
+                    ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
+                    ->leftjoin('estatus', 'estatus.est_codigoid', '=', 'lancamento.est_codigoid')
+                    ->where($dynamicWhere)
                     ->get();
-            }
 
-            return response()->json($convenantList);
+                foreach ($convenantList as $index => $item) {
+                    //load portion within lanc_codigoid iqual to id from lancamento
+                    $convenantList[$index]['portion'] = Portion::join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                        ->where('lanc_codigoid', $item->id)
+                        ->get();
+                }
+
+                return response()->json($convenantList);
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
         }
 
     }
 
+    /**
+     * @param $id
+     * @param string $status
+     * @return mixed
+     */
+    protected function changeStatusPortion($id, $status = 'Pendente'){
+        return  Portion::where('par_codigoid', $id)
+            ->update(
+                [
+                    'par_status' => $status,
+                    'par_valor' => 0.0
+                ]
+            );
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function changePayment($id){
         try{
-            $affected = Portion::where('par_codigoid', $id)
-                ->update(['par_status' => 'Pago']);
+
+            $affected = self::changeStatusPortion($id, 'Pago');
+
             if($affected > 0){
                 return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
             }
@@ -90,10 +126,127 @@ class ConvenantController extends Controller
         }
     }
 
-    public function store(Request $request)
+    /**
+     * @param $compentence
+     * @return mixed
+     */
+    protected function verifyCompetent($compentence)
+    {
+        $competenceList = Competence::where(['com_nome'=>$compentence])->get();
+
+        if(isEmpty($competenceList)){
+
+            $competenceModel = new Competence();
+
+            $newData = explode('/', $compentence);
+
+            $beginMouth = $newData[0] - 1;
+            $beginYear = $newData[1];
+
+            if($beginMouth === 0 ){
+                $beginMouth = 12;
+                $beginYear = $beginYear - 1;
+            }
+
+            $competenceModel->com_nome = $compentence;
+            $competenceModel->com_datainicio = $beginYear.'-'. $beginMouth .'-11';
+            $competenceModel->com_datafinal = $newData[1].'-'.$newData[0].'-10';
+            $competenceModel->save();
+
+
+
+        }
+
+        return Competence::where(['com_nome'=>$compentence])->get();
+    }
+
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function renegotiation($portion_id, $convenants_id)
     {
 
+        try {
+            //Change Status Portion to renegociation
+            self::changeStatusPortion($portion_id, 'Transferido');
+            //Load Portion
+            $portion = Portion::join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                ->where('lanc_codigoid', $convenants_id)
+                ->latest('par_numero')
+                ->first();
 
+            //Load Convenants with portion
+            $convenants = Convenant::where('id', $portion['lanc_codigoid'])->get();
+
+            try {
+
+                $newCompetenceExploded = explode('/', $portion['com_nome']);
+                //Increment 1 mount
+                $newCompetenceExploded[0] = $newCompetenceExploded[0] + 1;
+
+                if($newCompetenceExploded[0] > 12){
+                    $newCompetenceExploded[0] = $newCompetenceExploded[0] - 12;
+                    $newCompetenceExploded[1] = $newCompetenceExploded[1] + 1;
+                }
+
+                $newCompetenceExploded[0] = str_pad($newCompetenceExploded[0], 2, '0', STR_PAD_LEFT);
+
+                /**
+                 * Verify compentece exists
+                 */
+
+                $newCompetence = self::verifyCompetent($newCompetenceExploded[0].'/'.$newCompetenceExploded[1]);
+
+//                dd($newCompetence[0]->id);
+
+                /**
+                 * Select Portion have a Lancamento ID
+                 * Insert a new Portion
+                 */
+
+                $modelPortion = new Portion();
+
+                $modelPortion->par_valor       = $portion["par_valor"];
+                $modelPortion->lanc_codigoid   = $convenants_id;
+                $modelPortion->par_numero      = $portion["par_numero"] + 1;
+                $modelPortion->par_equivalente = $portion["par_numero"] + 1;
+                $modelPortion->com_codigoid    = $newCompetence[0]->id;
+                $modelPortion->par_status      = 'Pendente';
+
+                $modelPortion->save();
+
+                try {
+                    $day = date('d');
+
+                    //Change Due Date from Lancamento table
+                    Convenant::where('id', $portion['lanc_codigoid'])
+                        ->update([
+                            'lanc_datavencimento' =>$newCompetenceExploded[1].'-'. $newCompetenceExploded[0] .'-'. $day,
+                            'lanc_numerodeparcela' => $convenants[0]->lanc_numerodeparcela + 1
+                        ]);
+
+                    return response()->json(['status'=>'success', 'msg'=>'Parcela renegociada com sucesso!']);
+                }catch (Exception $e){
+                    return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+                }
+
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
+
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
+    {
         $convenantModel = new Convenant();
 
         try {
@@ -107,7 +260,6 @@ class ConvenantController extends Controller
 
             $convenantModel->save();
             $lasInsertIdConvenat = Convenant::latest('id')->first();
-
 
             try {
 
@@ -132,16 +284,16 @@ class ConvenantController extends Controller
 
                     $competenceID = Competence::where('com_nome', '=', $monthUpdated.'/'.$yearUpdated)->get();
 
-                    if((int)$competenceID[0]['com_codigoid'] > 0 ){
+                    if((int)$competenceID[0]['id'] > 0 ){
                         $portionModel = new Portion();
 
                         $portionModel->par_numero = $i;
                         $portionModel->par_valor = str_replace(',','.',$request->portion);
-                        $portionModel->lanc_codigoid = $lasInsertIdConvenat->id;
+                        $portionModel->lanc_codigoid = $lasInsertIdConvenat['id'];
                         $portionModel->par_vencimentoparcela = $yearUpdated.'-'.$monthUpdated.'-10';
                         $portionModel->par_observacao = '';
                         $portionModel->par_status = 'Pendente';
-                        $portionModel->com_codigoid = $competenceID[0]['com_codigoid'];
+                        $portionModel->com_codigoid = $competenceID[0]['id'];
                         $portionModel->par_equivalente = $i;
                         $portionModel->par_habilitasn = 0;
 
@@ -152,12 +304,10 @@ class ConvenantController extends Controller
 
 
                 }
-
+                return response()->json(['status'=>'success', 'msg'=> 'Formulário salvo com sucesso']);
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
-
-            return response()->json(['status'=>'success', 'msg'=> 'Formulário salvo com sucesso']);
 
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);

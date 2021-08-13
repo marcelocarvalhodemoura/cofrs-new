@@ -12,6 +12,7 @@ class Convenant extends Model
     public $table = 'lancamento';
 
     protected $fillable = [
+        'id',
         'lanc_valortotal',
         'lanc_numeroparcela',
         'lanc_datavencimento',

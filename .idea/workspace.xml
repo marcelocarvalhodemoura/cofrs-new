@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_08_13_174254_typeuser.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Convenant.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Convenant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_19_200946_create_tipousuario_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_08_13_171918_competence.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -262,7 +263,17 @@
       <workItem from="1627686471937" duration="265000" />
       <workItem from="1627916067234" duration="191000" />
       <workItem from="1627925586056" duration="648000" />
-      <workItem from="1627939412516" duration="3232000" />
+      <workItem from="1627939412516" duration="3637000" />
+      <workItem from="1628008476259" duration="52000" />
+      <workItem from="1628080680118" duration="130000" />
+      <workItem from="1628115747838" duration="4927000" />
+      <workItem from="1628165902833" duration="64000" />
+      <workItem from="1628274230168" duration="1187000" />
+      <workItem from="1628420974580" duration="145000" />
+      <workItem from="1628539130834" duration="7693000" />
+      <workItem from="1628701356114" duration="593000" />
+      <workItem from="1628808128200" duration="494000" />
+      <workItem from="1628858835902" duration="20674000" />
     </task>
     <servers />
   </component>
