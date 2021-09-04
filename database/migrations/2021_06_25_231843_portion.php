@@ -14,10 +14,10 @@ class Portion extends Migration
     public function up()
     {
         Schema::create('parcelamento', function(Blueprint $table){
-            $table->increments('par_codigoid');
+            $table->increments('id');
             $table->integer('par_numero');
             $table->float('par_valor');
-            $table->int('lanc_codigoid');
+            $table->integer('lanc_codigoid');
             $table->text('par_observacao');
             $table->string('par_status');
             $table->integer('com_codigoid');

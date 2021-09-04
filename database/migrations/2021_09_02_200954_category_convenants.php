@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Dependent extends Migration
+class CategoryConvenants extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,13 @@ class Dependent extends Migration
      */
     public function up()
     {
-        /**
-         * Create Dependente Table
-         */
-        Schema::create('dependente', function(Blueprint $table){
+        Schema::create('tipoconvenio', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('dep_nome');
-            $table->integer('dep_rg');
-            $table->string('dep_cpf');
-            $table->integer('usr_codigoid');
+            $table->string('tipconv_nome');
             $table->softDeletes();
             $table->timestamps();
         });
-
     }
-
     /**
      * Reverse the migrations.
      *
@@ -35,9 +27,6 @@ class Dependent extends Migration
      */
     public function down()
     {
-        /**
-         * Drop Agente Table
-         */
-        Schema::dropIfExists('agente');
+        Schema::dropIfExists('tipoconvenio');
     }
 }

@@ -26,7 +26,7 @@
             <select class="custom-select" required id="usertype" name="usertype">
                 <option value="">-Selecione-</option>
                 @foreach ($userType as $item)
-                    <option value="{{ $item->tipusr_codigoid }}">{{ $item->tipusr_nome }}</option>
+                    <option value="{{ $item->id }}">{{ $item->tipusr_nome }}</option>
                 @endforeach
             </select>
 

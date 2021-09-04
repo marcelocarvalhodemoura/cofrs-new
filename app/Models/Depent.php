@@ -11,7 +11,7 @@ class Depent extends Model
 
     public $table = 'dependente';
 
-    protected $primaryKey = 'dep_codigoid';
+    protected $primaryKey = 'id';
     protected $date = ['deleted_at'];
 
     protected $fillable = [

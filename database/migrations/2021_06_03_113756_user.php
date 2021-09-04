@@ -17,25 +17,16 @@ class User extends Migration
          * Create Usuario table
          */
         Schema::create( 'usuario', function(Blueprint $table){
-            $table->increments('usr_codigoid');
+            $table->increments('id');
             $table->string('usr_nome');
             $table->string('usr_usuario');
             $table->string('usr_senha');
             $table->string('usr_email');
-            $table->unsignedBigInteger('tipusr_codigoid');
+            $table->integer('tipusr_codigoid');
             $table->softDeletes();
             $table->timestamps();
         });
 
-        Schema::table('usuario', function(Blueprint $table){
-            /**
-             * create foreing key on the table Usuario
-             */
-            $table->foreign('tipusr_codigoid')
-                ->references('tipusur_codigoid')
-                ->on('tipousuario')
-                ->onDelete('cascade');
-        });
     }
 
     /**

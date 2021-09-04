@@ -17,7 +17,7 @@ class Typeassociate extends Migration
          * Create Tipoassociado Table
          */
         Schema::create('tipoassociado', function(Blueprint $table){
-           $table->increments('tipassoc_codigoid');
+           $table->increments('id');
            $table->string('tipassoc_nome');
            $table->softDeletes();
            $table->timestamps();

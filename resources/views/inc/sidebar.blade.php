@@ -65,7 +65,7 @@
                             <a href="/covenants-type">Tipos de Convênio</a>
                         </li>
                         <li class="">
-                            <a href="/categories">Categorias de Convênio</a>
+                            <a href="/categories-convenants">Categorias de Convênio</a>
                         </li>
                     </ul>
                 </li>

@@ -27,12 +27,14 @@ class UserController extends Controller
         if($request->ajax()){
 
             //load all users and usertypes
-            $userList = User::join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')->get();
+            $userList = User::select('*', 'usuario.id AS user_id')
+                ->join('tipousuario', 'tipousuario.id', '=', 'usuario.tipusr_codigoid')
+                ->get();
 
             return DataTables::of($userList)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->usr_codigoid.'"/>';
+                    $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->user_id.'"/>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -67,7 +69,7 @@ class UserController extends Controller
     public function authentication(Request $request)
     {
         // Load information by usernam from User table
-        $userModel = User::join('tipousuario', 'tipousuario.tipusr_codigoid', '=', 'usuario.tipusr_codigoid')
+        $userModel = User::join('tipousuario', 'tipousuario.id', '=', 'usuario.tipusr_codigoid')
             ->where('usr_usuario', '=', $request->username)
             ->get();
 
@@ -103,7 +105,7 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        return response()->json(User::find($id));
+        return response()->json(User::where('id', '=',$id)->get());
     }
 
     public function store(Request $request)
@@ -111,7 +113,7 @@ class UserController extends Controller
 
         try {
             User::updateOrCreate(
-                ['usr_codigoid' => $request->post('userId')],
+                ['id' => $request->post('userId')],
                 [
                     'usr_nome'  =>  $request->post('name'),
                     'usr_usuario' => $request->post('user'),

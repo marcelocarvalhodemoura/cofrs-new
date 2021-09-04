@@ -11,7 +11,7 @@ class User extends Model
 
     public $table = 'usuario';
 
-    protected $primaryKey = 'usr_codigoid';
+    protected $primaryKey = 'id';
     protected $date = ['deleted_at'];
 
     /**

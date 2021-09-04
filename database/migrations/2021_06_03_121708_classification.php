@@ -18,7 +18,7 @@ class Classification extends Migration
          */
 
         Schema::create('classificacao', function(Blueprint $table){
-           $table->increments('cla_codigoid');
+           $table->increments('id');
            $table->string('cla_nome');
            $table->softDeletes();
            $table->timestamps();

@@ -92,7 +92,6 @@ $(document).ready(function(){
                             title: 'Bom trabalho!',
                             text: "Formulário salvo com sucesso",
                             type: 'success',
-                            padding: '2em'
                         });
 
                         $('#formUser')[0].reset();
@@ -151,7 +150,6 @@ $(document).ready(function(){
                                 text: "Formulário salvo com sucesso",
                                 type: 'success',
                                 confirmButtonClass: 'btn btn-primary',
-                                padding: '2em'
                             });
 
                         }
@@ -184,12 +182,12 @@ $(document).ready(function(){
                 method:'GET',
                 success: function(response){
 
-                    $('input#name.form-control').val(response.usr_nome);
-                    $('input#user.form-control').val(response.usr_usuario);
-                    $('input#email.form-control').val(response.usr_email);
-                    $('select#usertype.custom-select').val(response.tipusr_codigoid);
+                    $('input#name.form-control').val(response[0].usr_nome);
+                    $('input#user.form-control').val(response[0].usr_usuario);
+                    $('input#email.form-control').val(response[0].usr_email);
+                    $('select#usertype.custom-select').val(response[0].tipusr_codigoid);
 
-                    $('#formUserEdit').append('<input type="hidden" id="userId" name="userId" value="'+response.usr_codigoid+'"/>');
+                    $('#formUserEdit').append('<input type="hidden" id="userId" name="userId" value="'+response[0].id+'"/>');
                 }
             });
 

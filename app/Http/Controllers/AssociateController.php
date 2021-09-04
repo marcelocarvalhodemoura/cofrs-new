@@ -26,7 +26,9 @@ class AssociateController extends Controller
         if($request->ajax()){
 
             //load all associates
-            $associateList = Associate::join('tipoassociado', 'associado.tipassoc_codigoid', '=', 'tipoassociado.tipassoc_codigoid')->get();
+            $associateList = Associate::select('*', 'associado.id AS assoc_codigoid')
+                ->join('tipoassociado', 'associado.tipassoc_codigoid', '=', 'tipoassociado.id')
+                ->get();
 
             return DataTables::of($associateList)
                 ->addIndexColumn()
@@ -113,7 +115,7 @@ class AssociateController extends Controller
 
         try {
             Associate::updateOrCreate(
-                ['assoc_codigoid' => $request->post('associateId')],
+                ['id' => $request->post('associateId')],
                 [
                     'assoc_nome'  =>  $request->post('name'),
                     'assoc_matricula' => $request->post('identify'),

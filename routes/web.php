@@ -9,6 +9,7 @@ use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConvenantController;
+use App\Http\Controllers\CategoryConvenantController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -101,3 +102,9 @@ Route::get('/covenants/associate/list', [ConvenantController::class, 'getAssocia
 Route::post('/convenats/portion/{id}', [ConvenantController::class, 'changePayment']);
 Route::get('/convenants/renegotiation/{id}/{id2}', [ConvenantController::class, 'renegotiation']);
 
+/**
+ * Category Convenants
+ */
+Route::get('/categories-convenants', [CategoryConvenantController::class, 'index']);
+Route::post('/categories-convenants/store', [CategoryConvenantController::class, 'store']);
+Route::get('/categories-convenants/load/{id}', [CategoryConvenantController::class, 'getCategoriesCovenants']);

@@ -14,7 +14,7 @@ class Typeuser extends Migration
     public function up()
     {
         Schema::create('tipousuario', function (Blueprint $table) {
-            $table->increments('tipusr_codigoid');
+            $table->increments('id');
             $table->string('tipusr_nome');
             $table->softDeletes();
             $table->timestamps();

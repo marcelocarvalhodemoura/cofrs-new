@@ -17,7 +17,7 @@ class Agent extends Migration
          * Create table Agente
          */
         Schema::create('agente', function(Blueprint $table){
-            $table->increments('ag_codigoid');
+            $table->increments('id');
             $table->string('ag_nome');
             $table->softDeletes();
             $table->timestamps();

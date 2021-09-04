@@ -5,9 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/assets/js/categories-convenants/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/categoryconvenants/modal/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/categoryconvenants/modal/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssociateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Associate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Associate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Depent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Depent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_113756_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_113756_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_121353_agent.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_121353_agent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_121708_classification.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_121708_classification.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_122051_dependent.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_122051_dependent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_122819_typeassociate.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_122819_typeassociate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_25_231843_portion.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_25_231843_portion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_08_13_174254_typeuser.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_08_13_174254_typeuser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/associate/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/associate/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/user/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/user/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form-edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/form/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -270,7 +291,9 @@
       <workItem from="1628808128200" duration="494000" />
       <workItem from="1628858835902" duration="21673000" />
       <workItem from="1628970110571" duration="1588000" />
-      <workItem from="1630505166007" duration="541000" />
+      <workItem from="1630505166007" duration="869000" />
+      <workItem from="1630611953086" duration="3060000" />
+      <workItem from="1630776981180" duration="11790000" />
     </task>
     <servers />
   </component>

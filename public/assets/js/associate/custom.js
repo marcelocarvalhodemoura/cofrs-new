@@ -100,7 +100,7 @@ $(document).ready(function() {
             var optionAgent = '<option value="">-Selecione-</option>';
 
             response.forEach(element =>{
-               optionAgent += '<option value="'+element.ag_codigoid+'">'+element.ag_nome+'</option>';
+               optionAgent += '<option value="'+element.id+'">'+element.ag_nome+'</option>';
             });
 
             $("#typeagent").append(optionAgent);
@@ -115,7 +115,7 @@ $(document).ready(function() {
             var optionClassification = '<option value="">-Selecione-</option>';
 
             response.forEach(element => {
-               optionClassification += '<option value="'+element.cla_codigoid+'">'+element.cla_nome+'</option>';
+               optionClassification += '<option value="'+element.id+'">'+element.cla_nome+'</option>';
             });
 
             $("#classification").append(optionClassification);
@@ -130,7 +130,7 @@ $(document).ready(function() {
             var option = '<option value="">-Selecione-</option>';
 
             response.forEach(element => {
-                option += '<option value="'+element.tipassoc_codigoid+'">'+element.tipassoc_nome+'</option>';
+                option += '<option value="'+element.id+'">'+element.tipassoc_nome+'</option>';
             });
 
             $("#typeassociate").append(option);
@@ -286,7 +286,7 @@ $(document).ready(function() {
                             tr += '<td>' + element.dep_cpf + '</td>';
                             tr += '<td>' + element.dep_fone + '</td>';
                             tr += '<td>' +
-                                    '<span className="text-danger" onclick="remove(this)" data-id="'+element.dep_codigoid+'">'+
+                                    '<span className="text-danger" onclick="remove(this)" data-id="'+element.id+'">'+
                                         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 icon">' +
                                             '<polyline points="3 6 5 6 21 6"></polyline>' +
                                             '<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
@@ -366,14 +366,14 @@ $(document).ready(function() {
          swal({
              title: "Tem certeza?",
              text: "O registro será removido permanentemente!",
-             type: 'warning',
+             type: "warning",
              confirmButtonClass: 'btn btn btn-primary',
              cancelButtonClass: 'btn btn-danger mr-3',
              buttonsStyling: false,
              showCancelButton: true,
              cancelButtonText:"Cancelar",
              confirmButtonText: "Remova!",
-             padding: '2em'
+             closeOnConfirm: false
          }).then(function(result) {
              console.log(result);
              if (result == true) {
@@ -400,7 +400,7 @@ $(document).ready(function() {
                  swal(
                      'Removido!',
                      'Registro removido com sucesso.',
-                     'success'
+                     'success',
                  )
              }
          });
@@ -490,8 +490,8 @@ $(document).ready(function() {
                     var bornFormated = born[2]+'/'+born[1]+'/'+born[0];
 
                     $("#name").val(response.assoc_nome);
-                    $("#identify").val(response.assoc_identificacao);
-                    $("#registration").val(response.assoc_matricula);
+                    $("#identify").val(response.assoc_matricula);
+                    $("#registration").val(response.assoc_identificacao);
                     $("#born").val(bornFormated);
                     $("#email").val(response.assoc_email);
                     $("#cpf").val(response.assoc_cpf);
@@ -516,7 +516,7 @@ $(document).ready(function() {
                     $("#bank_agency").val(response.assoc_agencia);
                     $("#count").val(response.assoc_conta);
 
-                    $("#formAssoc").append('<input type="hidden" id="associateId" name="associateId" value="' + response.assoc_codigoid + '">');
+                    $("#formAssoc").append('<input type="hidden" id="associateId" name="associateId" value="' + response.id + '">');
                 }
             });
 
