@@ -6,7 +6,7 @@
             <select class="form-control" required id="associate" name="associate">
                 <option value="">-Selecione-</option>
                 @foreach ($associateList as $item)
-                    <option value="{{ $item->assoc_codigoid }}">{{ $item->assoc_nome }}</option>
+                    <option value="{{ $item->id }}">{{ $item->assoc_nome }}</option>
                 @endforeach
             </select>
 
@@ -16,7 +16,7 @@
             <select class="form-control" required id="convenants" name="convenants" style="z-index: 99999!important;">
                 <option value="">-Selecione-</option>
                 @foreach ($agreementList as $item)
-                    <option value="{{ $item->con_codigoid }}">{{ $item->con_nome }}</option>
+                    <option value="{{ $item->id }}">{{ $item->con_nome }}</option>
                 @endforeach
             </select>
 

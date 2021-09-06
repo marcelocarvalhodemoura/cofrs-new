@@ -16,13 +16,14 @@ class Portion extends Migration
         Schema::create('parcelamento', function(Blueprint $table){
             $table->increments('id');
             $table->integer('par_numero');
+            $table->date('par_vencimentoparcela');
             $table->float('par_valor');
             $table->integer('lanc_codigoid');
+            $table->boolean('par_habilitasn');
             $table->text('par_observacao');
             $table->string('par_status');
             $table->integer('com_codigoid');
             $table->integer('par_equivalente');
-            $table->tinyInteger('par_habilitash');
             $table->softDeletes();
             $table->timestamps();
         });

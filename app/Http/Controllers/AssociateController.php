@@ -187,7 +187,7 @@ class AssociateController extends Controller
     public function associateConvenants($id)
     {
         //load all Portion
-        return $portions = Installment::join('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
+        return $portions = Installment::join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
             ->join('parcelamento', 'parcelamento.lanc_codigoid', '=', 'lancamento.id')
             ->where('assoc_codigoid', '=', $id)
             ->where('par_status', '=', 'Pendente')

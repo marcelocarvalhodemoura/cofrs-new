@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -53,6 +55,11 @@ class ConvenantController extends Controller
         return view('covenants.list', $lists)->with($data);
     }
 
+    public function uploadFile(Request $request)
+    {
+
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
@@ -64,27 +71,33 @@ class ConvenantController extends Controller
             $dynamicWhere = [];
 
             if($request->post('selAssociate')){
-                $dynamicWhere[] = ['associado.assoc_codigoid', $request->selAssociate];
+                $dynamicWhere[] = ['lancamento.assoc_codigoid', '=', $request->selAssociate];
             }
 
             if($request->post('selAgreement')){
-                $dynamicWhere[] = ['convenio.con_codigoid', $request->selAgreement];
+                $dynamicWhere[] = ['lancamento.con_codigoid','=', $request->selAgreement];
             }
+
+//            if($request->selCompetition){
+//                $dynamicWhere[] = ['lancamento.con_codigoid', '=', $request->selCompetition];
+//            }
 
             try {
                 //load Convenants from table lancamentos
-                $convenantList = Convenant::join('associado', 'associado.assoc_codigoid', '=', 'lancamento.assoc_codigoid')
-                    ->leftjoin('convenio', 'convenio.con_codigoid', '=', 'lancamento.con_codigoid')
-                    ->leftjoin('estatus', 'estatus.est_codigoid', '=', 'lancamento.est_codigoid')
+                $convenantList = Convenant::join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                    ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+//                    ->leftjoin('estatus', 'estatus.id', '=', 'lancamento.est_codigoid')
                     ->where($dynamicWhere)
                     ->get();
 
                 foreach ($convenantList as $index => $item) {
                     //load portion within lanc_codigoid iqual to id from lancamento
-                    $convenantList[$index]['portion'] = Portion::join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                    $convenantList[$index]['portion'] = Portion::select('*', 'parcelamento.id AS par_codigoid')->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('lanc_codigoid', $item->id)
                         ->get();
                 }
+
+//                dd($convenantList[0]['portion']);
 
                 return response()->json($convenantList);
             }catch (Exception $e){
@@ -99,14 +112,21 @@ class ConvenantController extends Controller
      * @param string $status
      * @return mixed
      */
-    protected function changeStatusPortion($id, $status = 'Pendente'){
-        return  Portion::where('par_codigoid', $id)
-            ->update(
-                [
-                    'par_status' => $status,
-                    'par_valor' => 0.0
-                ]
-            );
+    protected function changeStatusPortion($id, $status){
+        try{
+            // load portion
+            $portion = Portion::where('id', $id)
+                ->update(
+                    [
+                        'par_status' => $status
+                    ]
+                );
+
+            return $portion;
+        } catch (Exception $e) {
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
+
     }
 
     /**
@@ -148,16 +168,20 @@ class ConvenantController extends Controller
                 $beginYear = $beginYear - 1;
             }
 
-            $competenceModel->com_nome = $compentence;
-            $competenceModel->com_datainicio = $beginYear.'-'. $beginMouth .'-11';
-            $competenceModel->com_datafinal = $newData[1].'-'.$newData[0].'-10';
-            $competenceModel->save();
+            try {
+                $competenceModel->com_nome = $compentence;
+                $competenceModel->com_datainicio = $beginYear.'-'. $beginMouth .'-11';
+                $competenceModel->com_datafinal = $newData[1].'-'.$newData[0].'-10';
+                $competenceModel->save();
 
-
+                return Competence::where(['com_nome'=>$compentence])->get();
+            }catch (Exception $exception){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
 
         }
 
-        return Competence::where(['com_nome'=>$compentence])->get();
+
     }
 
 
@@ -172,7 +196,8 @@ class ConvenantController extends Controller
             //Change Status Portion to renegociation
             self::changeStatusPortion($portion_id, 'Transferido');
             //Load Portion
-            $portion = Portion::join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+            $portion = Portion::select('*', 'competencia.id AS com_codigoid')
+                ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                 ->where('lanc_codigoid', $convenants_id)
                 ->latest('par_numero')
                 ->first();

@@ -15,12 +15,13 @@ class Convenant extends Migration
     {
         Schema::create('lancamento', function(Blueprint $table){
             $table->increments('id');
-            $table->float('lanc_valortoal');
+            $table->float('lanc_valortotal');
             $table->date('lanc_datavencimento');
-            $table->float('lanc_valorparcela');
+            $table->float('lanc_valordeparcela');
             $table->integer('assoc_codigoid');
             $table->integer('con_codigoid');
             $table->integer('lanc_contrato');
+            $table->integer('lanc_numerodeparcela');
             $table->unsignedBigInteger('est_codigoid');
             $table->softDeletes();
             $table->timestamps();

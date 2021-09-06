@@ -65,11 +65,11 @@ $(document).ready(function(){
                     $("#tipconv_codigoid").remove();
 
                     if(response.status === 'success'){
+                        table.ajax.reload();
                         swal({
                             title: 'Bom trabalho!',
                             text: response.msg,
-                            type: response.status,
-                            padding: '2em'
+                            type: response.status
                         });
 
                         $("#formCategoryConvenant")[0].reset();

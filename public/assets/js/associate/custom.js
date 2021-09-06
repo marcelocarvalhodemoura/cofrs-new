@@ -169,8 +169,7 @@ $(document).ready(function() {
                         swal({
                             title: 'Bom trabalho!',
                             text: response.msg,
-                            type: response.status,
-                            padding: '2em'
+                            type: response.status
                         });
                         $("#formDependents")[0].reset();
                         $('#associateFormModalDependents').modal('hide');
@@ -239,7 +238,6 @@ $(document).ready(function() {
                             title: 'Bom trabalho!',
                             text: response.msg,
                             type: response.status,
-                            padding: '2em'
                         });
 
                         $('#formAssoc')[0].reset();

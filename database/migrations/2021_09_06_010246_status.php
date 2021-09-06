@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Dependent extends Migration
+class Status extends Migration
 {
     /**
      * Run the migrations.
@@ -14,19 +14,14 @@ class Dependent extends Migration
     public function up()
     {
         /**
-         * Create Dependente Table
+         * Create estatus table
          */
-        Schema::create('dependente', function(Blueprint $table){
+        Schema::create( 'estatus', function(Blueprint $table){
             $table->increments('id');
-            $table->string('dep_nome');
-            $table->integer('dep_rg');
-            $table->string('dep_cpf');
-            $table->string('dep_fone');
-            $table->integer('assoc_codigoid');
+            $table->string('est_nome');
             $table->softDeletes();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -37,8 +32,8 @@ class Dependent extends Migration
     public function down()
     {
         /**
-         * Drop Agente Table
+         * Drop estatus Table
          */
-        Schema::dropIfExists('agente');
+        Schema::drop('estatus');
     }
 }

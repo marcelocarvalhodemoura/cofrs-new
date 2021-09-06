@@ -11,8 +11,6 @@ class Associate extends Model
 
     public $table = 'associado';
 
-    protected $primaryKey = 'id';
-
     /**
      * The attributes that are mass assignable.
      *

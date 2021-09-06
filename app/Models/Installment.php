@@ -17,7 +17,7 @@ class Installment extends Model
     /**
      * @var string
      */
-    protected $primaryKey = 'lanc_codigoid';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.

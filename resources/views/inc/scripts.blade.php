@@ -22,6 +22,7 @@
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
 <script src="{{asset('plugins/select2/select2.min.js')}}"></script>
 <script src="{{ asset('assets/js/validate/jquery.validate.min.js') }}"></script>
+<script src="{{asset('plugins/file-upload/file-upload-with-preview.min.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 

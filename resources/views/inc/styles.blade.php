@@ -27,7 +27,8 @@
 <link href="{{asset('plugins/sweetalerts/sweetalert.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('assets/css/components/custom-sweetalert.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="{{asset('plugins/select2/select2.min.css')}}">
-
+<link href="{{asset('assets/css/scrollspyNav.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('plugins/file-upload/file-upload-with-preview.min.css')}}" rel="stylesheet" type="text/css" />
 @endif
 <!-- END GLOBAL MANDATORY STYLES -->
 

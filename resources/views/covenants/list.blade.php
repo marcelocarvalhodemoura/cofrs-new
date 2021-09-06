@@ -43,7 +43,7 @@
                                     <select class="form-control  basic" id="selAssociate" name="selAssociate" >
                                         <option value="">Selecione</option>
                                         @foreach( $associateList as $assoc )
-                                            <option value="{{ $assoc->assoc_codigoid }}">{{ $assoc->assoc_nome }}</option>
+                                            <option value="{{ $assoc->id }}">{{ $assoc->assoc_nome }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -52,7 +52,7 @@
                                     <select class="form-control  basic" id="selCompetition">
                                         <option value="">Selecione</option>
                                         @foreach( $competitionList as $com )
-                                            <option value="{{ $com->com_codigoid }}">{{ $com->com_nome }}</option>
+                                            <option value="{{ $com->id }}">{{ $com->com_nome }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -61,7 +61,7 @@
                                     <select class="form-control  basic" id="selAgreement" name="selAgreement">
                                         <option value="">Selecione</option>
                                         @foreach( $agreementList as $agree )
-                                            <option value="{{ $agree->con_codigoid }}">{{ $agree->con_nome }}</option>
+                                            <option value="{{ $agree->id }}">{{ $agree->con_nome }}</option>
                                         @endforeach
                                     </select>
                                 </div>

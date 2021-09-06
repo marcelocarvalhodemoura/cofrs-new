@@ -94,7 +94,7 @@ $(document).ready(function(){
                 method:'GET',
                 url: '/convenants/renegotiation/'+id+'/'+lanc_id,
                 success: response => {
-                    console.log(response);
+
                     if(response.status === 'success'){
                         //Remove all covenants rows
                         $("#tableCovenants tbody tr").remove();
@@ -118,7 +118,6 @@ $(document).ready(function(){
                             title: 'Bom trabalho!',
                             text: response.msg,
                             type: 'success',
-                            padding: '2em',
                             confirmButtonClass: 'btn btn-success',
                         });
                     }
@@ -190,7 +189,6 @@ $(document).ready(function(){
                             title: 'Bom trabalho!',
                             text: response.msg,
                             type: 'success',
-                            padding: '2em',
                             confirmButtonClass: 'btn btn-success',
                         });
 
@@ -287,6 +285,9 @@ $(document).ready(function(){
 
     donut.render();
 
+    //Second upload
+    var secondUpload = new FileUploadWithPreview('mySecondImage');
+
     $("select.basic").on('change', event=>{
 
         $.ajax({
@@ -336,6 +337,7 @@ $(document).ready(function(){
                 }
 
                 response.forEach(function(item){
+                    console.log(item);
                     //convert string to array separated to "-" and reverse vector position
                     let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',','/');
 
