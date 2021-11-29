@@ -13,8 +13,81 @@ $(document).ready(function(){
         $("#convenantModalUploadFiles").modal('show');
     });
 
+    $("#btnAddDownloadFile").on('click', function(){
+        $("#convenantModalDownloadFiles").modal('show');
+    });
+
     $("#btnAddInstallmentPayment").on('click', function(){
         $("#convenantInstallmentPayment").modal('show');
+    });
+
+    $('#btnAddMonthlyPayment').on('click', (event)=>{
+        event.preventDefault();
+        $("#monthlyPayment").modal('show');
+
+
+        // $.ajax({
+        //     method:'GET',
+        //     url: '/convenants/monthly',
+        //     success: response => {
+        //         console.log(response);
+        //         swal({
+        //             title: "Confirma?",
+        //             text: `Existem ${response.data} usuários sem mensalidades. Deseja incluí-las?`,
+        //             type: "info",
+        //             confirmButtonClass: 'btn btn btn-primary',
+        //             cancelButtonClass: 'btn btn-danger mr-3',
+        //             buttonsStyling: false,
+        //             showCancelButton: true,
+        //             cancelButtonText:"Cancelar",
+        //             confirmButtonText: "Quite-a!",
+        //             closeOnConfirm: false
+        //         }).then(function(result) {
+        //             if(result === true){
+        //                 $.ajax({
+        //                     method: "POST",
+        //                     url: "/convenants/monthly/add",
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //                     },
+        //                     success: response => {
+        //                         console.log(response);
+        //                     }
+        //                 });
+        //             }
+        //
+        //         });
+        //     }
+        // });
+    });
+
+    $('#btnSavePayment').on('click', function(event){
+        event.preventDefault();
+
+        var data = new FormData();
+        data.append('file', document.getElementById('file').files[0]);
+
+        $.ajax({
+            method:'POST',
+            url:'/convenants/monthly/add',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:data,
+            processData: false,
+            contentType: false,
+            success : function(data) {
+                /* Retorno do PHP */
+                console.log(data);
+                $('#monthlyPayment').modal('hide');
+                swal({
+                    title: 'Bom trabalho!',
+                    text: data[0].msg,
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-success',
+                });
+            }
+        });
     });
 
     /**
@@ -27,7 +100,7 @@ $(document).ready(function(){
             id.push($(this).val());
         });
 
-        if(id > 0){
+        if(id.length > 0){
             swal({
                 title: "Confirma?",
                 text: "Após a confirmação a parcela será quitada.",
@@ -42,22 +115,31 @@ $(document).ready(function(){
             }).then(function(result) {
                 $.ajax({
                     method:"POST",
-                    url:"/convenats/portion/"+id,
+                    url:"/convenats/portion",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     data:{ id:id },
                     success: function(response){
-                        console.log(response);
+
                         if (response.status === 'success'){
-                            //change color row
-                            $("#actionCheck:checked")
-                                .closest('tr')
-                                .removeClass('table-warning')
-                                .addClass('table-success');
-                            //change bagde
-                            let checked = $("#actionCheck:checked").parents('tr').children()[4];
-                            checked.innerHTML='<b class="badge badge-success">Pago</b>';
+                            //remove current line
+                            $("#tableCovenants tbody tr").remove();
+
+                            const tr2 = '<tr>' +
+                                '<td colspan="6">' +
+                                '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
+                                '<tbody>' +
+                                '<tr>'+
+                                '<td colspan="3" style="text-align: center">'+
+                                '<b class="btn-link">Não existem dados referentes!</b>'+
+                                '</td>'+
+                                '</tr>' +
+                                '</tbody>' +
+                                '</table>' +
+                                '</td></tr>';
+                            // add line - not found
+                            $("#tableCovenants tbody tr").append(tr2);
 
 
                         }
@@ -73,6 +155,8 @@ $(document).ready(function(){
                 confirmButtonClass: 'btn btn-primary',
             });
         }
+
+
     });
 
     /**
@@ -81,18 +165,19 @@ $(document).ready(function(){
     $('#btnAddRenegotiation').on('click', () =>{
 
         const id = new Array();
-        let lanc_id;
+        let lanc_id = 0;
         $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
             //get value in the input
             id.push($(this).val());
             lanc_id = $(this).parent().parent().attr('data-lanc-id');
+
         });
 
-        if(id > 0){
+        if(id.length > 0 && id.length < 2){
 
             $.ajax({
                 method:'GET',
-                url: '/convenants/renegotiation/'+id+'/'+lanc_id,
+                url: '/convenants/renegotiation/'+id[0]+'/'+lanc_id,
                 success: response => {
 
                     if(response.status === 'success'){
@@ -144,6 +229,24 @@ $(document).ready(function(){
             '</tr>';
 
     $("#tableCovenants tbody").append(tr);
+
+    $("#portion").prop('disabled', true);
+    $("#total").prop('disabled', true);
+    $("#duedate").prop('disabled', true);
+    $("#loader1").hide();
+    $("#loader2").hide();
+
+    $('#number').on('click', ()=>{
+        $("#portion").prop('disabled', false);
+        $("#duedate").prop('disabled', true);
+        $("#total").prop('disabled', true);
+
+        $("#duedate").val('');
+        $("#total").val('');
+
+    });
+
+
 
     $("#formConvenants").validate({
         rules: {
@@ -203,8 +306,21 @@ $(document).ready(function(){
 
     $("#portion").blur(function(){
 
-        $("#duedate").show();
-        $("#total").show();
+        $("#loader1").fadeIn();
+        $("#loader2").fadeIn();
+
+        setTimeout(()=>{
+
+            $("#loader1").fadeOut();
+            $("#loader2").fadeOut();
+
+            $("#duedate").prop('disabled', false);
+            $("#total").prop('disabled', false);
+
+            $("#duedate").fadeIn();
+            $("#total").fadeIn();
+        }, 2000);
+
 
         var valorTotal;
         var data = new Date();
@@ -220,7 +336,7 @@ $(document).ready(function(){
             valorTotalParcelas = (valorFormatado * $("#number").val());
             $("#duedate").val('...');
             $("#total").val('...');
-            // console.log(valorTotalParcelas);
+
         }else{
             $("#duedate").hide();
             $("#total").hide();
@@ -337,7 +453,7 @@ $(document).ready(function(){
                 }
 
                 response.forEach(function(item){
-                    console.log(item);
+
                     //convert string to array separated to "-" and reverse vector position
                     let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',','/');
 
@@ -380,6 +496,7 @@ $(document).ready(function(){
                                                     '<tbody>';
                                                         //create portion convenants from associate
                                                         item.portion.forEach(function(value){
+
                                                             var portionPrice = value.par_valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                                                             var dynamicClass = "";
 
@@ -401,7 +518,7 @@ $(document).ready(function(){
                                                                     break;
                                                             }
 
-                                                            tr+= '<tr class="table-'+ dynamicClass +'" data-lanc-id="'+item.id+'">' +
+                                                            tr+= '<tr class="table-'+ dynamicClass +'" data-lanc-id="'+item.lanc_codigoid+'">' +
                                                                 '<td>'+item.con_referencia+'</td>' +
                                                                 '<td>'+value.com_nome+'</td>' +
                                                                 '<td>'+value.par_numero+'</td>' +

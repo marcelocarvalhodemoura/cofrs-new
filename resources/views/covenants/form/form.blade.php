@@ -39,13 +39,20 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <label for="validationCustom04">Valor Total <b class="error">*</b></label>
             <input type="text" class="form-control"  id="total" name="total" required>
+
         </div>
-        <div class="col-md-4 mb-4">
+        <div class="col-md-1 mb-4">
+            <div class="spinner-border text-primary align-self-center" id="loader1" style="margin-top: 35px;">Loading...</div>
+        </div>
+        <div class="col-md-3 mb-4">
             <label for="validationCustom05">Vencimento Final<b class="error">*</b></label>
             <input type="text" class="form-control"  id="duedate" name="duedate" placeholder="00/00/0000" required>
+        </div>
+        <div class="col-md-1 mb-4">
+            <div class="spinner-border text-primary align-self-center" id="loader2" style="margin-top: 35px;">Loading...</div>
         </div>
     </div>
     <div class="modal-footer">

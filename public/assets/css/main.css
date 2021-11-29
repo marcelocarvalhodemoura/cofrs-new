@@ -230,7 +230,7 @@ span.red {
 /*      Form Group Label       */
 .form-group label, label {
   font-size: 15px;
-  color: #acb0c3;
+  color: #888ea8;
   letter-spacing: 1px;
 }
 
@@ -2006,13 +2006,13 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   color: #fff;
 }
 
-/*  
+/*
     ==========================
-        Background Colors  
+        Background Colors
     ==========================
 */
-/*  
-    Default  
+/*
+    Default
 */
 .bg-primary {
   background-color: #1b55e2 !important;
@@ -2056,8 +2056,8 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   color: #fff;
 }
 
-/*  
-    Light Background  
+/*
+    Light Background
 */
 .bg-light-primary {
   background-color: #c2d5ff !important;
@@ -2101,7 +2101,7 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   color: #fff;
 }
 
-/*  
+/*
     Progress Bar
 */
 .progress {

@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @include('covenants.form.form')
+                @include('covenants.form.form-download')
 
             </div>
 

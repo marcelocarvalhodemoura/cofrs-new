@@ -29,6 +29,29 @@
 <link rel="stylesheet" type="text/css" href="{{asset('plugins/select2/select2.min.css')}}">
 <link href="{{asset('assets/css/scrollspyNav.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('plugins/file-upload/file-upload-with-preview.min.css')}}" rel="stylesheet" type="text/css" />
+{{-- Elements Loader  --}}
+<link href="{{asset('plugins/loaders/custom-loader.css')}}" rel="stylesheet" type="text/css" />
+
+<style>
+
+    div#load_screen .loader {
+        border: none;
+        border-radius: 50%;
+        border-top: none;
+        width: 18px;
+        height: 18px;
+        -webkit-animation: none;
+        animation: none;
+    }
+
+    div#load_screen .loader {
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+        margin: 0 auto;
+    }
+
+</style>
 @endif
 <!-- END GLOBAL MANDATORY STYLES -->
 

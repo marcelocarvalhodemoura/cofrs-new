@@ -9,12 +9,15 @@ use App\Models\Competence;
 use App\Models\Convenant;
 use App\Models\Portion;
 
-use http\Env\Response;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Typeassociate;
+use App\Models\Classification;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -78,26 +81,21 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['lancamento.con_codigoid','=', $request->selAgreement];
             }
 
-//            if($request->selCompetition){
-//                $dynamicWhere[] = ['lancamento.con_codigoid', '=', $request->selCompetition];
-//            }
-
             try {
                 //load Convenants from table lancamentos
-                $convenantList = Convenant::join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                $convenantList = Convenant::select('*', 'lancamento.id AS lanc_codigoid')
+                    ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
-//                    ->leftjoin('estatus', 'estatus.id', '=', 'lancamento.est_codigoid')
                     ->where($dynamicWhere)
                     ->get();
 
                 foreach ($convenantList as $index => $item) {
                     //load portion within lanc_codigoid iqual to id from lancamento
-                    $convenantList[$index]['portion'] = Portion::select('*', 'parcelamento.id AS par_codigoid')->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
-                        ->where('lanc_codigoid', $item->id)
+                    $convenantList[$index]['portion'] = Portion::select('*', 'parcelamento.id AS par_codigoid')
+                        ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                        ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
                         ->get();
                 }
-
-//                dd($convenantList[0]['portion']);
 
                 return response()->json($convenantList);
             }catch (Exception $e){
@@ -133,17 +131,22 @@ class ConvenantController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function changePayment($id){
-        try{
+    public function changePayment(Request $request){
+        $arrayId = $request->id;
 
-            $affected = self::changeStatusPortion($id, 'Pago');
+        foreach ($arrayId as $id){
+            try{
 
-            if($affected > 0){
-                return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
+                $affected = self::changeStatusPortion($id, 'Pago');
+
+                if($affected > 0){
+                    return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
+                }
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
-        }catch (Exception $e){
-            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
+
     }
 
     /**
@@ -185,13 +188,119 @@ class ConvenantController extends Controller
     }
 
 
+    public function getMonthlyPayment()
+    {
+        $dataConvenants = Convenant::where('con_codigoid', '=', 31)->count();
+
+        $data = [
+            'data' => $dataConvenants,
+        ];
+
+        return response()->json($data,'200');
+    }
+
+    public function storeMonthlyPayment(Request $request)
+    {
+
+        $row = 1;
+
+        if($request->file('file')->getClientOriginalExtension() !== "csv"){
+            return response()->json(['status'=>'error', 'message'=>'Arquivo inválido']);
+        }
+
+        if (($handle = fopen($request->file('file'), "r")) !== FALSE) {
+
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
+                if($row != 1){
+                    foreach ($data as $content){
+
+                       $contentExploded = explode(";", $content);
+
+                       $dataAssociate = Associate::where('assoc_cpf', $contentExploded[4])->get();
+
+                       if(empty($dataAssociate[0])){
+
+                           $tipoAssocModel = Typeassociate::select('*')
+                               ->where('tipassoc_nome','=', $contentExploded[8])
+                               ->get();
+                           $contentExploded[8] = $tipoAssocModel[0]->id;
+
+
+                           $classificationModel = Classification::select('*')
+                               ->where('cla_nome', '=',$contentExploded[10])
+                               ->get();
+                           $contentExploded[10] = $classificationModel[0]->id;
+
+                           $dateBirthday =  explode('/', $contentExploded[3]);
+
+                           $dateBirthdayFormated = implode('-', array_reverse($dateBirthday));
+
+                           $formDataExplode = explode('/', $contentExploded[19]);
+
+                           $dataFormated = implode('-', array_reverse($formDataExplode));
+
+                           $associateModel = new Associate();
+
+                           $associateModel->assoc_nome = $contentExploded[0];
+                           $associateModel->assoc_identificacao = $contentExploded[1];
+                           $associateModel->assoc_matricula = $contentExploded[2];
+                           $associateModel->assoc_datanascimento = $dateBirthdayFormated;
+                           $associateModel->assoc_cpf = $contentExploded[4];
+                           $associateModel->assoc_rg = $contentExploded[5];
+                           $associateModel->assoc_sexo = $contentExploded[6];
+                           $associateModel->assoc_profissao = $contentExploded[7];
+                           $associateModel->tipassoc_codigoid = $contentExploded[8];
+                           $associateModel->assoc_email = $contentExploded[9];
+                           $associateModel->cla_codigoid = $contentExploded[10];
+                           $associateModel->assoc_estadocivil = $contentExploded[11];
+                           $associateModel->assoc_fone = $contentExploded[12];
+                           $associateModel->assoc_agencia = $contentExploded[13];
+                           $associateModel->assoc_cep = $contentExploded[14];
+                           $associateModel->assoc_endereco = $contentExploded[15];
+                           $associateModel->assoc_bairro = $contentExploded[16];
+                           $associateModel->assoc_uf = $contentExploded[17];
+                           $associateModel->assoc_cidade = $contentExploded[18];
+                           $associateModel->assoc_dataativacao = $dataFormated;
+                           $associateModel->assoc_contrato = $contentExploded[20];
+
+                           $associateModel->save();
+
+
+                       }//end IF empty($dataAssociate[0])
+
+
+                    }//End Foreach($data as $content)
+
+                }//end IF($row != 1)
+
+                $row++;
+
+            }//End While
+
+            $responseData = [
+                'status' => 'success',
+                'msg' => 'Arquivo processado com sucesso!',
+            ];
+        }else{
+            $responseData = [
+                'status' => 'error',
+                'msg' => 'Arquivo não pode ser processado!',
+            ];
+        }// End IF !== FALSE
+
+        fclose($handle);
+
+        return response()->json([$responseData], 200);
+    }
+
+
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse|void
      */
     public function renegotiation($portion_id, $convenants_id)
     {
-
         try {
             //Change Status Portion to renegociation
             self::changeStatusPortion($portion_id, 'Transferido');
@@ -223,8 +332,6 @@ class ConvenantController extends Controller
                  */
 
                 $newCompetence = self::verifyCompetent($newCompetenceExploded[0].'/'.$newCompetenceExploded[1]);
-
-//                dd($newCompetence[0]->id);
 
                 /**
                  * Select Portion have a Lancamento ID
