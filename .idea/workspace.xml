@@ -5,18 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/covenants/form/form-download.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/covenants/form/form-payment.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/TypeCategoryConvenantController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/TypeCategoryConvenant.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/js/categories-type-convenants/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/form/form.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/list.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/modal/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/modal/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cofrs-new.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cofrs-new.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sass/assets/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/assets/main.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/download-file.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/download-file.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/installment-payment.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/styles.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/monthly-payment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/monthly-payment.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -158,6 +164,13 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/vendor/laravel/ui" />
       <path value="$PROJECT_DIR$/vendor/yajra/laravel-datatables-oracle" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/php-enum" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/vendor/maennchen/zipstream-php" />
     </include_path>
   </component>
   <component name="ProjectId" id="1sITFnWcuvRtRvbKJwJH5w3uEsQ" />
@@ -294,7 +307,10 @@
       <workItem from="1637013057199" duration="3585000" />
       <workItem from="1637932057858" duration="4809000" />
       <workItem from="1637937947746" duration="10985000" />
-      <workItem from="1638215539096" duration="1614000" />
+      <workItem from="1638215539096" duration="2208000" />
+      <workItem from="1638533052657" duration="6433000" />
+      <workItem from="1638666217196" duration="626000" />
+      <workItem from="1639151007814" duration="8663000" />
     </task>
     <servers />
   </component>

@@ -10,6 +10,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConvenantController;
 use App\Http\Controllers\CategoryConvenantController;
+use App\Http\Controllers\TypeCategoryConvenantController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -110,3 +111,10 @@ Route::post('/convenants/monthly/add',[ConvenantController::class, 'storeMonthly
 Route::get('/categories-convenants', [CategoryConvenantController::class, 'index']);
 Route::post('/categories-convenants/store', [CategoryConvenantController::class, 'store']);
 Route::get('/categories-convenants/load/{id}', [CategoryConvenantController::class, 'getCategoriesCovenants']);
+
+/**
+ * Type Categories of Convenants
+ */
+
+Route::get('/covenants-type', [TypeCategoryConvenantController::class, 'index']);
+Route::post('/convenants-type/store', [TypeCategoryConvenantController::class, 'store']);

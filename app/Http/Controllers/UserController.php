@@ -91,6 +91,7 @@ class UserController extends Controller
 
         //Create any sessions
         Session::put([
+            'id'  => $userModel[0]->id,
             'user'=> $userModel[0]->usr_usuario,
             'name'=> $userModel[0]->usr_nome,
             'type'=> $userModel[0]->tipusr_nome,

@@ -6,14 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class TypeCategoryConvenant extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    public $table = 'usuario';
+    /**
+     * @var string
+     */
+    public $table = 'convenio';
 
-    protected $primaryKey = 'id';
+    /**
+     * @var string
+     */
+//    protected $primaryKey = 'tipassoc_codigoid';
     protected $date = ['deleted_at'];
 
     /**
@@ -22,10 +28,9 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'usr_nome',
-        'usr_usuario',
-        'usr_email',
-        'usr_senha',
-        'tipusr_codigoid'
+        'con_nome',
+        'tipconv_codigoid',
+        'con_referencia',
+        'con_prolabore',
     ];
 }

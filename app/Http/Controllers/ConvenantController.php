@@ -15,6 +15,7 @@ use App\Models\Classification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
+use SimpleXLSX;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
@@ -202,94 +203,76 @@ class ConvenantController extends Controller
     public function storeMonthlyPayment(Request $request)
     {
 
-        $row = 1;
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($request->file);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
-        if($request->file('file')->getClientOriginalExtension() !== "csv"){
-            return response()->json(['status'=>'error', 'message'=>'Arquivo inválido']);
+
+        foreach ($sheetData as $content){
+
+            if($content['E'] !== "CPF"){
+
+                $dataAssociate = Associate::where('assoc_cpf', $content['E'])->get();
+//                $dataAssociate = Associate::where('assoc_cpf','=', '001.145.770-80')->get();
+
+               if(empty(json_decode($dataAssociate)) === true){
+                   $tipoAssocModel = Typeassociate::select('*')
+                       ->where('tipassoc_nome','=', $content['I'])
+                       ->get();
+
+                   $content['I'] = $tipoAssocModel[0]->id;
+
+
+                   $classificationModel = Classification::select('*')
+                       ->where('cla_nome', '=',$content['K'])
+                       ->get();
+                   $content['K'] = $classificationModel[0]->id;
+
+                   $dateBirthday =  explode('/', $content['D']);
+
+                   $dateBirthdayFormated = implode('-', array_reverse($dateBirthday));
+
+                   $formDataExplode = explode('/', $content['T']);
+
+                   $dataFormated = implode('-', array_reverse($formDataExplode));
+
+                   $associateModel = new Associate();
+
+                   $associateModel->assoc_nome = $content['A'];
+                   $associateModel->assoc_identificacao = $content['B'];
+                   $associateModel->assoc_matricula = $content['C'];
+                   $associateModel->assoc_datanascimento = $dateBirthdayFormated;
+                   $associateModel->assoc_cpf = $content['E'];
+                   $associateModel->assoc_rg = $content['F'];
+                   $associateModel->assoc_sexo = $content['G'];
+                   $associateModel->assoc_profissao = $content['H'];
+                   $associateModel->tipassoc_codigoid = $content['I'];
+                   $associateModel->assoc_email = $content['J'];
+                   $associateModel->cla_codigoid = $content['K'];
+                   $associateModel->assoc_estadocivil = $content['L'];
+                   $associateModel->assoc_fone = $content['M'];
+                   $associateModel->assoc_agencia = $content['N'];
+                   $associateModel->assoc_cep = $content['O'];
+                   $associateModel->assoc_endereco = $content['P'];
+                   $associateModel->assoc_bairro = $content['Q'];
+                   $associateModel->assoc_uf = $content['R'];
+                   $associateModel->assoc_cidade = $content['S'];
+                   $associateModel->assoc_dataativacao = $dataFormated;
+                   $associateModel->assoc_contrato = $content['U'];
+
+                   $associateModel->save();
+
+               }
+
+            }
+
         }
 
-        if (($handle = fopen($request->file('file'), "r")) !== FALSE) {
 
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $responseData = [
+            'status' => 'success',
+            'msg' => 'Arquivo processado com sucesso!',
+        ];
 
-                if($row != 1){
-                    foreach ($data as $content){
-
-                       $contentExploded = explode(";", $content);
-
-                       $dataAssociate = Associate::where('assoc_cpf', $contentExploded[4])->get();
-
-                       if(empty($dataAssociate[0])){
-
-                           $tipoAssocModel = Typeassociate::select('*')
-                               ->where('tipassoc_nome','=', $contentExploded[8])
-                               ->get();
-                           $contentExploded[8] = $tipoAssocModel[0]->id;
-
-
-                           $classificationModel = Classification::select('*')
-                               ->where('cla_nome', '=',$contentExploded[10])
-                               ->get();
-                           $contentExploded[10] = $classificationModel[0]->id;
-
-                           $dateBirthday =  explode('/', $contentExploded[3]);
-
-                           $dateBirthdayFormated = implode('-', array_reverse($dateBirthday));
-
-                           $formDataExplode = explode('/', $contentExploded[19]);
-
-                           $dataFormated = implode('-', array_reverse($formDataExplode));
-
-                           $associateModel = new Associate();
-
-                           $associateModel->assoc_nome = $contentExploded[0];
-                           $associateModel->assoc_identificacao = $contentExploded[1];
-                           $associateModel->assoc_matricula = $contentExploded[2];
-                           $associateModel->assoc_datanascimento = $dateBirthdayFormated;
-                           $associateModel->assoc_cpf = $contentExploded[4];
-                           $associateModel->assoc_rg = $contentExploded[5];
-                           $associateModel->assoc_sexo = $contentExploded[6];
-                           $associateModel->assoc_profissao = $contentExploded[7];
-                           $associateModel->tipassoc_codigoid = $contentExploded[8];
-                           $associateModel->assoc_email = $contentExploded[9];
-                           $associateModel->cla_codigoid = $contentExploded[10];
-                           $associateModel->assoc_estadocivil = $contentExploded[11];
-                           $associateModel->assoc_fone = $contentExploded[12];
-                           $associateModel->assoc_agencia = $contentExploded[13];
-                           $associateModel->assoc_cep = $contentExploded[14];
-                           $associateModel->assoc_endereco = $contentExploded[15];
-                           $associateModel->assoc_bairro = $contentExploded[16];
-                           $associateModel->assoc_uf = $contentExploded[17];
-                           $associateModel->assoc_cidade = $contentExploded[18];
-                           $associateModel->assoc_dataativacao = $dataFormated;
-                           $associateModel->assoc_contrato = $contentExploded[20];
-
-                           $associateModel->save();
-
-
-                       }//end IF empty($dataAssociate[0])
-
-
-                    }//End Foreach($data as $content)
-
-                }//end IF($row != 1)
-
-                $row++;
-
-            }//End While
-
-            $responseData = [
-                'status' => 'success',
-                'msg' => 'Arquivo processado com sucesso!',
-            ];
-        }else{
-            $responseData = [
-                'status' => 'error',
-                'msg' => 'Arquivo não pode ser processado!',
-            ];
-        }// End IF !== FALSE
-
-        fclose($handle);
 
         return response()->json([$responseData], 200);
     }

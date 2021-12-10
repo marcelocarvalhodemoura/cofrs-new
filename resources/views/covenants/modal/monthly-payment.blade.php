@@ -1,4 +1,4 @@
-<button type="button" id="btnAddMonthlyPayment" class="btn btn-primary bs-popover rounded mb-2 mr-2" data-placement="top"  data-container="body" data-trigger="hover" data-content="Adição massiva de Mensalidade" data-target="#convenantModalUploadFiles">
+<button type="button" id="btnAddMonthlyPayment" class="btn btn-primary bs-popover rounded mb-2 mr-2" data-placement="top"  data-container="body" data-trigger="hover" data-content="Adição Massiva de Associado" data-target="#convenantModalUploadFiles">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
         <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
         <polyline points="2 17 12 22 22 17"></polyline>
@@ -10,7 +10,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Adição massiva de mensalidade</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Adição massiva </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
