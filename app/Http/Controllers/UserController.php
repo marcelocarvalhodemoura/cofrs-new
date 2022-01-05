@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         if (!Session::has('user')) {
             return redirect()->route('login');
@@ -24,7 +25,7 @@ class UserController extends Controller
         //load all UserTypes
         $userType = UserType::all();
 
-        if($request->ajax()){
+        if ($request->ajax()) {
 
             //load all users and usertypes
             $userList = User::select('*', 'usuario.id AS user_id')
@@ -33,8 +34,8 @@ class UserController extends Controller
 
             return DataTables::of($userList)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->user_id.'"/>';
+                ->addColumn('action', function ($row) {
+                    $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="' . $row->user_id . '"/>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -74,7 +75,7 @@ class UserController extends Controller
             ->get();
 
         // Verify that model is empty
-        if($userModel == '[]'){
+        if ($userModel == '[]') {
             return response()->json([
                 'status' => 'error',
                 'msg' => 'Usuário inválido'
@@ -82,7 +83,7 @@ class UserController extends Controller
         }
 
         // Check that password isn't a HASH
-        if(!Hash::check($request->password, $userModel[0]->usr_senha)){
+        if (!Hash::check($request->password, $userModel[0]->usr_senha)) {
             return response()->json([
                 'status' => 'error',
                 'msg' => 'Senha inválida'
@@ -92,9 +93,9 @@ class UserController extends Controller
         //Create any sessions
         Session::put([
             'id'  => $userModel[0]->id,
-            'user'=> $userModel[0]->usr_usuario,
-            'name'=> $userModel[0]->usr_nome,
-            'type'=> $userModel[0]->tipusr_nome,
+            'user' => $userModel[0]->usr_usuario,
+            'name' => $userModel[0]->usr_nome,
+            'type' => $userModel[0]->tipusr_nome,
         ]);
 
 
@@ -106,7 +107,7 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        return response()->json(User::where('id', '=',$id)->get());
+        return response()->json(User::where('id', '=', $id)->get());
     }
 
     public function store(Request $request)
@@ -125,11 +126,10 @@ class UserController extends Controller
                 ]
             );
 
-            return response()->json(['status'=> 'success', 'msg'=>'Usuário salvo com sucesso!']);
-        }catch (Exception $e){
-            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            return response()->json(['status' => 'success', 'msg' => 'Usuário salvo com sucesso!']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
-
     }
 
 
@@ -138,10 +138,10 @@ class UserController extends Controller
      */
     public function forgotPassword(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
 
-            if($request->post('editPassword') != $request->post('editPassword2')){
-                return response()->json(['status'=>'error', 'msg'=>'Senha e Conf. de Senha devem ser iguais!']);
+            if ($request->post('editPassword') != $request->post('editPassword2')) {
+                return response()->json(['status' => 'error', 'msg' => 'Senha e Conf. de Senha devem ser iguais!']);
             }
 
             try {
@@ -152,15 +152,11 @@ class UserController extends Controller
 
                 $userModel->save();
 
-                return response()->json(['status'=> 'success', 'msg'=>'Usuário atualizado com sucesso!']);
-
-            }catch (Exception $e){
-                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+                return response()->json(['status' => 'success', 'msg' => 'Usuário atualizado com sucesso!']);
+            } catch (Exception $e) {
+                return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
             }
-
         }
-
-
     }
 
     /**
@@ -175,8 +171,8 @@ class UserController extends Controller
         try {
             User::find($id)->delete();
             return true;
-        }catch (Exception $e){
-            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }
 }
