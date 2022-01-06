@@ -120,7 +120,7 @@ Route::get('/covenants-type', [TypeCategoryConvenantController::class, 'index'])
 Route::post('/convenants-type/store', [TypeCategoryConvenantController::class, 'store']);
 
 /**
- * Agent Route
+ * Banks Route
  */
 
-Route::get('/agent/list', [BanksController::class, 'list']);
+Route::get('/banks', [BanksController::class, 'index']);
