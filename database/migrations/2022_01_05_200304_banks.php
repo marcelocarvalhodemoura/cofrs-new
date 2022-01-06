@@ -18,6 +18,7 @@ class Banks extends Migration
             $table->string('name_bank');
             $table->integer('bank_agency');
             $table->integer('bank_account');
+            $table->bool('bank_status')->default(1)->nullable(false);
             $table->softDeletes();
             $table->timestamps();
         });

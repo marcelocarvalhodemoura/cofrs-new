@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConvenantController;
 use App\Http\Controllers\CategoryConvenantController;
 use App\Http\Controllers\TypeCategoryConvenantController;
+use App\Http\Controllers\BanksController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -124,3 +125,5 @@ Route::post('/convenants-type/store', [TypeCategoryConvenantController::class, '
  */
 
 Route::get('/banks', [BanksController::class, 'index']);
+Route::post('/banks/store', [BanksController::class, 'store']);
+Route::get('/banks/load/{id}', [BanksController::class, 'getItem']);

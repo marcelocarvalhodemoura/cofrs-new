@@ -20,5 +20,6 @@ class Banks extends Model
     'name_bank',
     'bank_agency',
     'bank_account',
+    'bank_status',
   ];
 }
