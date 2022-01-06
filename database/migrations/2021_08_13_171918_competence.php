@@ -14,12 +14,13 @@ class Competence extends Migration
     public function up()
     {
         //
-        Schema::create('competencia', function(Blueprint $table){
+        Schema::create('competencia', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
             $table->increments('id');
             $table->date('com_datainicio');
             $table->date('com_datafinal');
-            $table->string('com_nome');
-            $table->softDeletes();
+            $table->string('com_nome', 45);
             $table->timestamps();
         });
     }
