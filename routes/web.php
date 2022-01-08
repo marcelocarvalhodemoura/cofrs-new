@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConvenantController;
 use App\Http\Controllers\CategoryConvenantController;
 use App\Http\Controllers\TypeCategoryConvenantController;
+use App\Http\Controllers\BanksController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Session;
 */
 
 
-Route::get('', function() {
+Route::get('', function () {
     // $category_name = 'auth';
     $data = [
         'category_name' => 'auth',
@@ -67,7 +68,7 @@ Route::post('/users/store', [UserController::class, 'store']);
 /**
  * Associates Routes
  */
-Route::get('/associates',[AssociateController::class, 'index']);
+Route::get('/associates', [AssociateController::class, 'index']);
 Route::post('/associates/store', [AssociateController::class, 'store']);
 Route::post('/associates/delete/{id}', [AssociateController::class, 'delete']);
 Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
@@ -96,14 +97,14 @@ Route::get('/agent/list', [AgentController::class, 'list']);
 /**
  * Convenants Routes
  */
-Route::get('/covenants',[ConvenantController::class, 'index']);
+Route::get('/covenants', [ConvenantController::class, 'index']);
 Route::post('/convenants/store', [ConvenantController::class, 'store']);
 Route::post('/convenants/list', [ConvenantController::class, 'getCovenants']);
 Route::get('/covenants/associate/list', [ConvenantController::class, 'getAssociates']);
 Route::post('/convenats/portion', [ConvenantController::class, 'changePayment']);
 Route::get('/convenants/renegotiation/{id}/{id2}', [ConvenantController::class, 'renegotiation']);
-Route::get('/convenants/monthly',[ConvenantController::class, 'getMonthlyPayment']);
-Route::post('/convenants/monthly/add',[ConvenantController::class, 'storeMonthlyPayment']);
+Route::get('/convenants/monthly', [ConvenantController::class, 'getMonthlyPayment']);
+Route::post('/convenants/monthly/add', [ConvenantController::class, 'storeMonthlyPayment']);
 
 /**
  * Category Convenants
@@ -118,3 +119,11 @@ Route::get('/categories-convenants/load/{id}', [CategoryConvenantController::cla
 
 Route::get('/covenants-type', [TypeCategoryConvenantController::class, 'index']);
 Route::post('/convenants-type/store', [TypeCategoryConvenantController::class, 'store']);
+
+/**
+ * Banks Route
+ */
+
+Route::get('/banks', [BanksController::class, 'index']);
+Route::post('/banks/store', [BanksController::class, 'store']);
+Route::get('/banks/load/{id}', [BanksController::class, 'getItem']);

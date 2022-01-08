@@ -1,8 +1,8 @@
 //load datatables
-$(document).ready(function(){
+$(document).ready(function () {
     //load datables library
     var table = $('#usertable').DataTable({
-        dom:"<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l>" +
+        dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l>" +
             "<'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
             "<'table-responsive'tr>" +
             "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
@@ -10,11 +10,11 @@ $(document).ready(function(){
         serverSide: true,
         ajax: "/users",
         columns: [
-            {data: 'usr_nome', name: 'usr_nome'},
-            {data: 'usr_usuario', name: 'usr_usuario'},
-            {data: 'usr_email', name: 'usr_email'},
-            {data: 'tipusr_nome', name: 'tipusr_nome'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            { data: 'usr_nome', name: 'usr_nome' },
+            { data: 'usr_usuario', name: 'usr_usuario' },
+            { data: 'usr_email', name: 'usr_email' },
+            { data: 'tipusr_nome', name: 'tipusr_nome' },
+            { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         "oLanguage": {
             "sProcessing": "Processando...",
@@ -28,8 +28,8 @@ $(document).ready(function(){
             "sSearch": "Buscar:",
             "sUrl": "",
             "oPaginate": {
-                "sPrevious":    "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-left\"><line x1=\"19\" y1=\"12\" x2=\"5\" y2=\"12\"></line><polyline points=\"12 19 5 12 12 5\"></polyline></svg>",
-                "sNext":     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-right\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>"
+                "sPrevious": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-left\"><line x1=\"19\" y1=\"12\" x2=\"5\" y2=\"12\"></line><polyline points=\"12 19 5 12 12 5\"></polyline></svg>",
+                "sNext": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-right\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>"
             }
         },
     });
@@ -40,13 +40,13 @@ $(document).ready(function(){
      */
     $("#formUser").validate({
         rules: {
-            name:"required",
-            user:"required",
-            email:{
+            name: "required",
+            user: "required",
+            email: {
                 required: true,
                 email: true
             },
-            password1:"required",
+            password1: "required",
             password2: {
                 required: true,
                 equalTo: '#password1'
@@ -70,19 +70,19 @@ $(document).ready(function(){
         },
         errorElement: "span",
         highlight: function () {
-            $( "#formUser" ).addClass( "was-validated" );
+            $("#formUser").addClass("was-validated");
         },
         unhighlight: function () {
-            $( "#formUser" ).addClass( "was-validated" );
+            $("#formUser").addClass("was-validated");
         },
         submitHandler: function () {
             $.ajax({
-                url:'/users/store',
-                method:'POST',
+                url: '/users/store',
+                method: 'POST',
                 data: $('#formUser').serialize(),
-                success: function(data){
+                success: function (data) {
 
-                    if(data.status === 'success'){
+                    if (data.status === 'success') {
 
                         table.ajax.reload();
 
@@ -107,9 +107,9 @@ $(document).ready(function(){
      */
     $('#formUserEdit').validate({
         rules: {
-            name:"required",
-            user:"required",
-            email:{
+            name: "required",
+            user: "required",
+            email: {
                 required: true,
                 email: true
             },
@@ -126,78 +126,78 @@ $(document).ready(function(){
         },
         errorElement: "span",
         highlight: function () {
-            $( "#formUserEdit" ).addClass( "was-validated" );
+            $("#formUserEdit").addClass("was-validated");
         },
         unhighlight: function () {
-            $( "#formUserEdit" ).addClass( "was-validated" );
+            $("#formUserEdit").addClass("was-validated");
         },
         submitHandler: function () {
-                //send data
-                $.ajax({
-                    url: '/users/store',
-                    method: 'POST',
-                    data: $("#formUserEdit").serialize(),
-                    success: function (data) {
+            //send data
+            $.ajax({
+                url: '/users/store',
+                method: 'POST',
+                data: $("#formUserEdit").serialize(),
+                success: function (data) {
 
-                        if (data.status === 'success') {
+                    if (data.status === 'success') {
 
-                            table.ajax.reload();
+                        table.ajax.reload();
 
-                            $('#editUserModal').modal('hide');
+                        $('#editUserModal').modal('hide');
 
-                            swal({
-                                title: 'Bom trabalho!',
-                                text: "Formulário salvo com sucesso",
-                                type: 'success',
-                                confirmButtonClass: 'btn btn-primary',
-                            });
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: "Formulário salvo com sucesso",
+                            type: 'success',
+                            confirmButtonClass: 'btn btn-primary',
+                        });
 
-                        }
                     }
+                }
 
-                });
-            }
+            });
         }
+    }
     );
     /**
      * Validate checkbox in the datatables
      *
      * @type {any[]}
      */
-    $('#btnUserEdit').on('click', function (e){
+    $('#btnUserEdit').on('click', function (e) {
 
         var id = new Array();
 
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
             //alert(usuarioMarcados);
         });
 
         //validate if exist value
-        if(id > 0){
+        if (id > 0) {
 
             $.ajax({
-                url:'/users/load/'+id,
-                method:'GET',
-                success: function(response){
+                url: '/users/load/' + id,
+                method: 'GET',
+                success: function (response) {
 
                     $('input#name.form-control').val(response[0].usr_nome);
                     $('input#user.form-control').val(response[0].usr_usuario);
                     $('input#email.form-control').val(response[0].usr_email);
                     $('select#usertype.custom-select').val(response[0].tipusr_codigoid);
 
-                    $('#formUserEdit').append('<input type="hidden" id="userId" name="userId" value="'+response[0].id+'"/>');
+                    $('#formUserEdit').append('<input type="hidden" id="userId" name="userId" value="' + response[0].id + '"/>');
                 }
             });
 
             $('#editUserModal').modal()
-        }else{
+        } else {
 
             swal({
                 title: "Atenção !",
                 text: "Selecione apenas 1 registro por vez",
-                type:"info",
+                type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
         }
@@ -209,25 +209,25 @@ $(document).ready(function(){
      * Modal Change Pass
      *
      */
-    $('#btnPasswordModal').on('click', function(e){
+    $('#btnPasswordModal').on('click', function (e) {
         var id = new Array();
 
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
             //alert(usuarioMarcados);
         });
 
         //validate if exist value
-        if(id > 0){
+        if (id > 0) {
             $('#passwordModal').modal('show');
             $("#editUserID").val(id);
-        }else{
+        } else {
 
             swal({
                 title: "Atenção !",
                 text: "Selecione apenas 1 registro por vez",
-                type:"info",
+                type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
         }
@@ -238,7 +238,7 @@ $(document).ready(function(){
      */
 
     $("#formSavePassword").validate({
-        rules:{
+        rules: {
             editPassword: "required",
             editPassword2: {
                 required: true,
@@ -254,29 +254,29 @@ $(document).ready(function(){
         },
         errorElement: "span",
         highlight: function () {
-            $( "#formSavePassword" ).addClass( "was-validated" );
+            $("#formSavePassword").addClass("was-validated");
         },
         unhighlight: function () {
-            $( "#formSavePassword" ).addClass( "was-validated" );
+            $("#formSavePassword").addClass("was-validated");
         },
         submitHandler: function () {
             const id = $("#editUserID").val();
 
             $.ajax({
-                url: "/users/pass/"+id,
-                method:"POST",
+                url: "/users/pass/" + id,
+                method: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: $("#formSavePassword").serialize(),
-                success: function(response){
+                success: function (response) {
 
 
-                    if(response.status == 'error'){
+                    if (response.status == 'error') {
                         msg = response.msg;
                         titleAlert = 'Atenção!';
                         typeAlert = 'info';
-                    }else{
+                    } else {
                         typeAlert = 'success';
                         titleAlert = 'Bom trabalho!'
                         msg = response.msg;
@@ -287,7 +287,7 @@ $(document).ready(function(){
                     swal({
                         title: titleAlert,
                         text: msg,
-                        type:typeAlert,
+                        type: typeAlert,
                         confirmButtonClass: 'btn btn-primary',
                     });
                 }
@@ -301,19 +301,19 @@ $(document).ready(function(){
      * Remove user data
      */
 
-    $('#bntUserDelete').on('click', function(e){
+    $('#bntUserDelete').on('click', function (e) {
         e.preventDefault();
 
         var id = new Array();
 
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
             //alert(usuarioMarcados);
         });
 
         //validate if exist value
-        if(id > 0){
+        if (id > 0) {
 
             swal({
                 title: "Confirma?",
@@ -323,32 +323,32 @@ $(document).ready(function(){
                 cancelButtonClass: 'btn btn-danger mr-3',
                 buttonsStyling: false,
                 showCancelButton: true,
-                cancelButtonText:"Cancelar",
+                cancelButtonText: "Cancelar",
                 confirmButtonText: "Remova!",
                 closeOnConfirm: false
-            }).then(function(result) {
+            }).then(function (result) {
 
                 $.ajax({
-                    method:"POST",
-                    url:"/users/delete/"+id,
+                    method: "POST",
+                    url: "/users/delete/" + id,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data:{ id:id },
-                    success: function(response){
+                    data: { id: id },
+                    success: function (response) {
                         // if (response == true){
-                            table.ajax.reload();
+                        table.ajax.reload();
                         // }
 
                     }
                 });
 
             });
-        }else{
+        } else {
             swal({
                 title: "Atenção !",
                 text: "Selecione apenas 1 registro por vez",
-                type:"info",
+                type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
         }
