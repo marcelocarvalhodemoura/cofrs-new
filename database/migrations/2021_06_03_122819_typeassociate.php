@@ -16,11 +16,11 @@ class Typeassociate extends Migration
         /**
          * Create Tipoassociado Table
          */
-        Schema::create('tipoassociado', function(Blueprint $table){
-           $table->increments('id');
-           $table->string('tipassoc_nome');
-           $table->softDeletes();
-           $table->timestamps();
+        Schema::create('tipoassociado', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->increments('id');
+            $table->string('tipassoc_nome', 30);
         });
     }
 

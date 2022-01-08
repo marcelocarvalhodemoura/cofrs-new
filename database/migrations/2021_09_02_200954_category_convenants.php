@@ -14,8 +14,10 @@ class CategoryConvenants extends Migration
     public function up()
     {
         Schema::create('tipoconvenio', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
             $table->increments('id');
-            $table->string('tipconv_nome');
+            $table->string('tipconv_nome', 45);
             $table->softDeletes();
             $table->timestamps();
         });
