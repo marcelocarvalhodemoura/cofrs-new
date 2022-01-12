@@ -10,8 +10,7 @@ $(document).ready(function () {
     ajax: "/banks",
     columns: [
       { data: 'name_bank', name: 'name_bank' },
-      { data: 'bank_agency', name: 'bank_agency' },
-      { data: 'bank_account', name: 'bank_account' },
+      { data: 'febraban_code', name: 'febraban_code' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     "oLanguage": {
@@ -38,13 +37,9 @@ $(document).ready(function () {
   $("#formItem").validate({
     rules: {
       name_bank: "required",
-      bank_agency: "required",
-      bank_account: "required",
     },
     messages: {
       name_bank: "Banco é um campo obrigatório",
-      bank_agency: "Agência é um campo obrigatório",
-      bank_account: "Conta é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -86,13 +81,9 @@ $(document).ready(function () {
   $("#formItemEdit").validate({
     rules: {
       name_bank: "required",
-      bank_agency: "required",
-      bank_account: "required",
     },
     messages: {
       name_bank: "Banco é um campo obrigatório",
-      bank_agency: "Agência é um campo obrigatório",
-      bank_account: "Conta é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -151,8 +142,7 @@ $(document).ready(function () {
         success: function (response) {
 
           $('input#name_bank.form-control').val(response[0].name_bank);
-          $('input#bank_agency.form-control').val(response[0].bank_agency);
-          $('input#bank_account.form-control').val(response[0].bank_account);
+          $('input#febraban_code.form-control').val(response[0].febraban_code);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');
         }

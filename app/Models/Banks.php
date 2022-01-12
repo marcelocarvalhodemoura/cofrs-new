@@ -18,8 +18,6 @@ class Banks extends Model
    */
   protected $fillable = [
     'name_bank',
-    'bank_agency',
-    'bank_account',
-    'bank_status',
+    'febraban_code',
   ];
 }

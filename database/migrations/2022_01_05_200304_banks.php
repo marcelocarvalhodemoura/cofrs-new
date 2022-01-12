@@ -15,10 +15,8 @@ class Banks extends Migration
     {
         Schema::create('banks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name_bank');
-            $table->integer('bank_agency');
-            $table->integer('bank_account');
-            $table->bool('bank_status')->default(1)->nullable(false);
+            $table->string('name_bank', 255)->nullable(false);
+            $table->string('febraban_code', 50)->nullable(true);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -58,8 +58,7 @@ class BanksController extends Controller
                 ['id' => $request->post('id')],
                 [
                     'name_bank'  =>  $request->post('name_bank'),
-                    'bank_agency' => $request->post('bank_agency'),
-                    'bank_account' => $request->post('bank_account'),
+                    'febraban_code' => $request->post('febraban_code'),
                 ]
             );
 

@@ -38,8 +38,7 @@
                             <table class="table table-hover" id="table">
                                 <thead>
                                     <th>Banco</th>
-                                    <th>Agência</th>
-                                    <th>Conta</th>
+                                    <th>Cod. Febraban</th>
                                     <th>Ação</th>
                                 </thead>
                                 <tbody>
