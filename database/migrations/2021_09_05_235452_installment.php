@@ -16,17 +16,19 @@ class Installment extends Migration
         /**
          * Create convenio table
          */
-        Schema::create('convenio', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->string('con_nome', 45);
-            $table->integer('tipconv_codigoid');
-            $table->string('con_referencia');
-            $table->float('con_prolabore');
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('convenio')) {
+            Schema::create('convenio', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->string('con_nome', 45);
+                $table->integer('tipconv_codigoid');
+                $table->string('con_referencia');
+                $table->float('con_prolabore');
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

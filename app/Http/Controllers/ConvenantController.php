@@ -203,9 +203,9 @@ class ConvenantController extends Controller
     public function storeMonthlyPayment(Request $request)
     {
 
+
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($request->file);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
 
         foreach ($sheetData as $content){
 
@@ -234,45 +234,47 @@ class ConvenantController extends Controller
                    $formDataExplode = explode('/', $content['T']);
 
                    $dataFormated = implode('-', array_reverse($formDataExplode));
+                   try{
+                       $associateModel = new Associate();
 
-                   $associateModel = new Associate();
+                       $associateModel->assoc_nome = $content['A'];
+                       $associateModel->assoc_identificacao = $content['B'];
+                       $associateModel->assoc_matricula = $content['C'];
+                       $associateModel->assoc_datanascimento = $dateBirthdayFormated;
+                       $associateModel->assoc_cpf = $content['E'];
+                       $associateModel->assoc_rg = $content['F'];
+                       $associateModel->assoc_sexo = $content['G'];
+                       $associateModel->assoc_profissao = $content['H'];
+                       $associateModel->tipassoc_codigoid = $content['I'];
+                       $associateModel->assoc_email = $content['J'];
+                       $associateModel->cla_codigoid = $content['K'];
+                       $associateModel->assoc_estadocivil = $content['L'];
+                       $associateModel->assoc_fone = $content['M'];
+                       $associateModel->assoc_agencia = $content['N'];
+                       $associateModel->assoc_cep = $content['O'];
+                       $associateModel->assoc_endereco = $content['P'];
+                       $associateModel->assoc_bairro = $content['Q'];
+                       $associateModel->assoc_uf = $content['R'];
+                       $associateModel->assoc_cidade = $content['S'];
+                       $associateModel->assoc_dataativacao = $dataFormated;
+                       $associateModel->assoc_contrato = $content['U'];
 
-                   $associateModel->assoc_nome = $content['A'];
-                   $associateModel->assoc_identificacao = $content['B'];
-                   $associateModel->assoc_matricula = $content['C'];
-                   $associateModel->assoc_datanascimento = $dateBirthdayFormated;
-                   $associateModel->assoc_cpf = $content['E'];
-                   $associateModel->assoc_rg = $content['F'];
-                   $associateModel->assoc_sexo = $content['G'];
-                   $associateModel->assoc_profissao = $content['H'];
-                   $associateModel->tipassoc_codigoid = $content['I'];
-                   $associateModel->assoc_email = $content['J'];
-                   $associateModel->cla_codigoid = $content['K'];
-                   $associateModel->assoc_estadocivil = $content['L'];
-                   $associateModel->assoc_fone = $content['M'];
-                   $associateModel->assoc_agencia = $content['N'];
-                   $associateModel->assoc_cep = $content['O'];
-                   $associateModel->assoc_endereco = $content['P'];
-                   $associateModel->assoc_bairro = $content['Q'];
-                   $associateModel->assoc_uf = $content['R'];
-                   $associateModel->assoc_cidade = $content['S'];
-                   $associateModel->assoc_dataativacao = $dataFormated;
-                   $associateModel->assoc_contrato = $content['U'];
+                       $associateModel->save();
+                   }catch(Exception $e){
+                       return  response()->json($e, 400);
+                   }
 
-                   $associateModel->save();
 
                }
 
             }
 
-        }
-
+        }// Foreach end
 
         $responseData = [
             'status' => 'success',
             'msg' => 'Arquivo processado com sucesso!',
         ];
-
 
         return response()->json([$responseData], 200);
     }
