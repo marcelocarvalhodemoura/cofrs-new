@@ -104,7 +104,7 @@
                 </a>
                 <ul class="collapse submenu list-unstyled " id="finances-kit" data-parent="#accordionExample">
                     <li class="">
-                        <a href="/cashflow">Fluxo de Caixa</a>
+                        <a href="/Cashflow">Fluxo de Caixa</a>
                     </li>
                     <li class="">
                         <a href="/BankAccount">Contas</a>

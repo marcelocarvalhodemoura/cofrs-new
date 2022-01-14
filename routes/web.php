@@ -12,8 +12,8 @@ use App\Http\Controllers\ConvenantController;
 use App\Http\Controllers\CategoryConvenantController;
 use App\Http\Controllers\TypeCategoryConvenantController;
 use App\Http\Controllers\BanksController;
-use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CashflowController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -138,3 +138,8 @@ Route::get('/AccountType/load/{id}', [AccountTypeController::class, 'getItem']);
 Route::get('/BankAccount', [BankAccountController::class, 'index']);
 Route::post('/BankAccount/store', [BankAccountController::class, 'store']);
 Route::get('/BankAccount/load/{id}', [BankAccountController::class, 'getItem']);
+
+
+Route::get('/Cashflow', [CashflowController::class, 'index']);
+Route::post('/Cashflow/store', [CashflowController::class, 'store']);
+Route::get('/Cashflow/load/{id}', [CashflowController::class, 'getItem']);
