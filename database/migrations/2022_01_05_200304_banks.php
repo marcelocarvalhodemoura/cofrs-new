@@ -13,15 +13,17 @@ class Banks extends Migration
      */
     public function up()
     {
-        Schema::create('banks', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name_bank');
-            $table->integer('bank_agency');
-            $table->integer('bank_account');
-            $table->bool('bank_status')->default(1)->nullable(false);
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('banks')) {
+            Schema::create('banks', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name_bank');
+                $table->integer('bank_agency');
+                $table->integer('bank_account');
+                $table->boolean('bank_status')->default(1)->nullable(false);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -5,25 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/TypeCategoryConvenantController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/TypeCategoryConvenant.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/assets/js/categories-type-convenants/custom.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/form/form.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/list.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/modal/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/typecategoryconvenants/modal/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cofrs-new.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cofrs-new.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/monthly-payment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/monthly-payment.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/navbar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts2.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_113756_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_113756_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_121353_agent.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_121353_agent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_121708_classification.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_121708_classification.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_122051_dependent.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_122051_dependent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_03_122819_typeassociate.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_03_122819_typeassociate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_05_225712_convenant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_25_231843_portion.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_25_231843_portion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_08_13_171918_competence.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_08_13_171918_competence.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_08_13_174254_typeuser.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_08_13_174254_typeuser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_09_02_200954_category_convenants.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_09_02_200954_category_convenants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_09_05_225510_associate.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_09_05_225510_associate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_09_05_235452_installment.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_09_05_235452_installment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_09_06_010246_status.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_09_06_010246_status.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_01_05_200304_banks.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_01_05_200304_banks.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -311,6 +310,9 @@
       <workItem from="1638533052657" duration="6433000" />
       <workItem from="1638666217196" duration="626000" />
       <workItem from="1639151007814" duration="8663000" />
+      <workItem from="1641912068385" duration="1098000" />
+      <workItem from="1641995377351" duration="554000" />
+      <workItem from="1642178106558" duration="2657000" />
     </task>
     <servers />
   </component>

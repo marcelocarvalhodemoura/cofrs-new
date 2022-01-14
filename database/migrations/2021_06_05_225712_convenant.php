@@ -13,21 +13,24 @@ class Convenant extends Migration
      */
     public function up()
     {
-        Schema::create('lancamento', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->float('lanc_valortotal', 0, 0);
-            $table->integer('lanc_numerodeparcela');
-            $table->date('lanc_datavencimento');
-            $table->integer('con_codigoid');
-            $table->integer('assoc_codigoid');
-            $table->integer('est_codigoid', false, false);
-            $table->softDeletes();
-            $table->timestamps();
-        });
-        //gambiarra porque o laravel cria como double
-        DB::statement('ALTER TABLE lancamento CHANGE lanc_valortotal lanc_valortotal FLOAT NOT NULL');
+        if(!Schema::hasTable('lancamento')) {
+
+            Schema::create('lancamento', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->float('lanc_valortotal', 0, 0);
+                $table->integer('lanc_numerodeparcela');
+                $table->date('lanc_datavencimento');
+                $table->integer('con_codigoid');
+                $table->integer('assoc_codigoid');
+                $table->integer('est_codigoid', false, false);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+            //gambiarra porque o laravel cria como double
+            DB::statement('ALTER TABLE lancamento CHANGE lanc_valortotal lanc_valortotal FLOAT NOT NULL');
+        }
     }
 
     /**

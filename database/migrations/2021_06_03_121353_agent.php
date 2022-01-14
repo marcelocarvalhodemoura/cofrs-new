@@ -16,12 +16,16 @@ class Agent extends Migration
         /**
          * Create table Agente
          */
-        Schema::create('agente', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->string('ag_nome', 100);
-        });
+        if(!Schema::hasTable('agente')) {
+            Schema::create('agente', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->string('ag_nome', 100);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
