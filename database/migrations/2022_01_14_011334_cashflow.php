@@ -42,7 +42,7 @@ class Cashflow extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE movimentacao CHANGE valor valor FLOAT NOT NULL');
+        DB::statement('ALTER TABLE movimentacao CHANGE valor valor DECIMAL(25,2) NOT NULL');
     }
 
     /**

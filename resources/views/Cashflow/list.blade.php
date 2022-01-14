@@ -41,7 +41,7 @@
                                     <th>Conta Bancária</th>
                                     <th>Descricao</th>
                                     <th>Vencimento</th>
-                                    <th>Valor</th>
+                                    <th>Valor (R$)</th>
                                     <th>Status</th>
                                     <th>Ação</th>
                                 </thead>

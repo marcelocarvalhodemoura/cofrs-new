@@ -8,12 +8,24 @@ $(document).ready(function () {
     processing: true,
     serverSide: true,
     ajax: "/Cashflow",
+    columnDefs: [
+      { type: 'date-br', targets: 4 }
+    ],
     columns: [
       { data: 'banco', name: 'banco' },
       { data: 'count', name: 'count' },
       { data: 'descricao', name: 'descricao' },
-      { data: 'data_vencimento', name: 'data_vencimento' },
-      { data: 'valor', name: 'valor' },
+      {
+        data: 'data_vencimento', name: 'data_vencimento', render: function (data) {
+          dt = new Date(data);
+          return dt.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+        }
+      },
+      {
+        data: 'valor', name: 'valor', className: "text-right", render(data) {
+          return "R$ " + formataNumero(data);
+        }
+      },
       {
         data: 'est_nome', name: 'est_nome', render: function (data, type) {
           if (data == 'Pago') {
@@ -50,6 +62,34 @@ $(document).ready(function () {
     },
   });
 
+  $('.money').maskMoney({ allowNegative: true, allowZero: true, allowEmpty: true, thousands: '.', decimal: ',' });
+
+  $(".calendar").datepicker({
+    dateFormat: 'dd/mm/yy',
+    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+  });
+
+  jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+    "date-br-pre": function (a) {
+      if (a == null || a == "") {
+        return 0;
+      }
+      var brDatea = a.split('/');
+      return (brDatea[2] + brDatea[1] + brDatea[0]) * 1;
+    },
+
+    "date-br-asc": function (a, b) {
+      return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+
+    "date-br-desc": function (a, b) {
+      return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+  });
   /**
    * Form add 
    */
@@ -176,10 +216,12 @@ $(document).ready(function () {
         method: 'GET',
         success: function (response) {
 
+          dt = new Date(response[0].data_vencimento);
+
           $('#formItemEdit #id_conta').val(response[0].id_conta);
           $('#formItemEdit #id_estatus').val(response[0].id_estatus);
           $('#formItemEdit #descricao').val(response[0].descricao);
-          $('#formItemEdit #data_vencimento').val(response[0].data_vencimento);
+          $('#formItemEdit #data_vencimento').val(dt.toLocaleDateString('pt-BR', { timeZone: 'UTC' }));
           $('#formItemEdit #valor').val(response[0].valor);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');
@@ -202,3 +244,11 @@ $(document).ready(function () {
 
 
 });
+
+function formataNumero(numero) {
+  var negativo = numero < 0 ? "-" : "";
+  var i = parseInt(numero = Math.abs(+ numero || 0).toFixed(2), 10) + "";
+  var j = (j = i.length) > 3 ? j % 3 : 0;
+
+  return negativo + (j ? i.substr(0, j) + "." : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + ".") + (2 ? "," + Math.abs(numero - i).toFixed(2).slice(2) : "");
+}

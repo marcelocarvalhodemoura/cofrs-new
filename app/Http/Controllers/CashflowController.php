@@ -64,6 +64,13 @@ class CashflowController extends Controller
           return $btn;
         })
         ->rawColumns(['action'])
+        ->setRowClass(function ($row) {
+          if ($row->valor < 0) {
+            return "bg-danger";
+          } else {
+            return "";
+          }
+        })
         ->make(true);
     }
 
@@ -91,8 +98,8 @@ class CashflowController extends Controller
           'id_conta'  =>  $request->post('id_conta'),
           'id_estatus' => $request->post('id_estatus'),
           'descricao' => $request->post('descricao'),
-          'data_vencimento' => $request->post('data_vencimento'),
-          'valor' => $request->post('valor'),
+          'data_vencimento' => implode('-', array_reverse(explode('/', $request->post('data_vencimento')))),
+          'valor' => str_replace(',', '.', str_replace('.', '', $request->post('valor'))),
         ]
       );
 

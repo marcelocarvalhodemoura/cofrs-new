@@ -27,14 +27,14 @@
     </div>
     <div class="col-md-4 mb-4">
       <label for="data_vencimento">Data de Vencimento <b class="error">*</b></label>
-      <input type="text" class="form-control" id="data_vencimento" name="data_vencimento" placeholder="Data de Vencimento" value="" required>
+      <input type="text" class="form-control calendar" id="data_vencimento" name="data_vencimento" placeholder="Data de Vencimento" value="" required>
 
     </div>
     <div class="col-md-12 mb-4">
       <label for="valor">Valor <b class="error">*</b></label>
       <div class="input-group">
         <span class="input-group-text" id="basic-addon3">R$</span>
-        <input type="text" class="form-control" id="valor" name="valor" placeholder="Valor" value="" required>
+        <input type="money" class="form-control money" id="valor" name="valor" placeholder="Valor" value="" required>
       </div>
     </div>
   </div>
