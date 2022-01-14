@@ -7,10 +7,29 @@ $(document).ready(function () {
       "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
     processing: true,
     serverSide: true,
-    ajax: "/banks",
+    ajax: "/Cashflow",
     columns: [
-      { data: 'name_bank', name: 'name_bank' },
-      { data: 'febraban_code', name: 'febraban_code' },
+      { data: 'banco', name: 'banco' },
+      { data: 'count', name: 'count' },
+      { data: 'descricao', name: 'descricao' },
+      { data: 'data_vencimento', name: 'data_vencimento' },
+      { data: 'valor', name: 'valor' },
+      {
+        data: 'est_nome', name: 'est_nome', render: function (data, type) {
+          if (data == 'Pago') {
+            bg = 'bg-success';
+          } else if (data == 'Pendente') {
+            bg = 'bg-warning text-dark';
+          } else if (data == 'Transferido') {
+            bg = 'bg-info text-dark';
+          } else if (data == 'Cancelado') {
+            bg = 'bg-secondary';
+          } else if (data == 'Atrasado') {
+            bg = 'bg-danger';
+          }
+          return '<span class="badge ' + bg + '">' + data + '</span>';
+        }
+      },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     "oLanguage": {
@@ -36,10 +55,18 @@ $(document).ready(function () {
    */
   $("#formItem").validate({
     rules: {
-      name_bank: "required",
+      id_conta: "required",
+      id_estatus: "required",
+      descricao: "required",
+      data_vencimento: "required",
+      valor: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      id_conta: "Conta é um campo obrigatório",
+      id_estatus: "Status é um campo obrigatório",
+      descricao: "Descrição é um campo obrigatório",
+      data_vencimento: "Vencimento é um campo obrigatório",
+      valor: "Valor é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -50,7 +77,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/Cashflow/store',
         method: 'POST',
         data: $('#formItem').serialize(),
         success: function (data) {
@@ -80,10 +107,18 @@ $(document).ready(function () {
    */
   $("#formItemEdit").validate({
     rules: {
-      name_bank: "required",
+      id_conta: "required",
+      id_estatus: "required",
+      descricao: "required",
+      data_vencimento: "required",
+      valor: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      id_conta: "Conta é um campo obrigatório",
+      id_estatus: "Status é um campo obrigatório",
+      descricao: "Descrição é um campo obrigatório",
+      data_vencimento: "Vencimento é um campo obrigatório",
+      valor: "Valor é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -94,7 +129,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/Cashflow/store',
         method: 'POST',
         data: $('#formItemEdit').serialize(),
         success: function (data) {
@@ -137,12 +172,15 @@ $(document).ready(function () {
     //validate if exist value
     if (id > 0) {
       $.ajax({
-        url: '/banks/load/' + id,
+        url: '/Cashflow/load/' + id,
         method: 'GET',
         success: function (response) {
 
-          $('input#name_bank.form-control').val(response[0].name_bank);
-          $('input#febraban_code.form-control').val(response[0].febraban_code);
+          $('#formItemEdit #id_conta').val(response[0].id_conta);
+          $('#formItemEdit #id_estatus').val(response[0].id_estatus);
+          $('#formItemEdit #descricao').val(response[0].descricao);
+          $('#formItemEdit #data_vencimento').val(response[0].data_vencimento);
+          $('#formItemEdit #valor').val(response[0].valor);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');
         }

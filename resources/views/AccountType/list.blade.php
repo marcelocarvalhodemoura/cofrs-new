@@ -8,8 +8,8 @@
             <nav class="breadcrumb-two" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/banks">Contabilidade</a></li>
-                    <li class="breadcrumb-item active"><a href="/banks">Bancos</a></li>
+                    <li class="breadcrumb-item"><a href="/AccountType">Contabilidade</a></li>
+                    <li class="breadcrumb-item active"><a href="/AccountType">Bancos</a></li>
                     <li class="breadcrumb-item" aria-current="page"><a href="">Listagem</a></li>
                 </ol>
             </nav>
@@ -22,14 +22,14 @@
             <div class="widget-content-area br-4">
                 <div class="widget-one">
 
-                    <h5>Bancos da instituição</h5>
+                    <h5>Tipos de conta</h5>
 
-                    <p class="">Página do Sistema Cofrs destinada ao gerenciamento das contas bancárias.</p>
+                    <p class="">Página do Sistema Cofrs destinada ao gerenciamento dos tipos de contas bancárias.</p>
                     <br />
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            @include('banks.modal.create')
-                            @include('banks.modal.edit')
+                            @include('AccountType.modal.create')
+                            @include('AccountType.modal.edit')
                         </div>
                     </div>
                     <hr />
@@ -37,8 +37,7 @@
                         <div class="col-12">
                             <table class="table table-hover" id="table">
                                 <thead>
-                                    <th>Banco</th>
-                                    <th>Cod. Febraban</th>
+                                    <th>Tipo</th>
                                     <th>Ação</th>
                                 </thead>
                                 <tbody>
@@ -57,5 +56,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ URL::asset('/assets/js/banks/custom.js') }}"></script>
+<script src="{{ URL::asset('/assets/js/AccountType/custom.js') }}"></script>
 @endpush

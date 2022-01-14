@@ -7,10 +7,12 @@ $(document).ready(function () {
       "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
     processing: true,
     serverSide: true,
-    ajax: "/banks",
+    ajax: "/BankAccount",
     columns: [
       { data: 'name_bank', name: 'name_bank' },
       { data: 'febraban_code', name: 'febraban_code' },
+      { data: 'counttype_nome', name: 'counttype_nome' },
+      { data: 'count', name: 'count' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     "oLanguage": {
@@ -36,10 +38,16 @@ $(document).ready(function () {
    */
   $("#formItem").validate({
     rules: {
-      name_bank: "required",
+      id_banco: "required",
+      id_tipoconta: "required",
+      agencia: "required",
+      conta: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      id_banco: "Banco é um campo obrigatório",
+      id_tipoconta: "Tipo de conta é um campo obrigatório",
+      agencia: "Agência é um campo obrigatório",
+      conta: "Conta é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -50,7 +58,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/BankAccount/store',
         method: 'POST',
         data: $('#formItem').serialize(),
         success: function (data) {
@@ -80,10 +88,16 @@ $(document).ready(function () {
    */
   $("#formItemEdit").validate({
     rules: {
-      name_bank: "required",
+      id_banco: "required",
+      id_tipoconta: "required",
+      agencia: "required",
+      conta: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      id_banco: "Banco é um campo obrigatório",
+      id_tipoconta: "Tipo de conta é um campo obrigatório",
+      agencia: "Agência é um campo obrigatório",
+      conta: "Conta é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -94,7 +108,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/BankAccount/store',
         method: 'POST',
         data: $('#formItemEdit').serialize(),
         success: function (data) {
@@ -137,12 +151,14 @@ $(document).ready(function () {
     //validate if exist value
     if (id > 0) {
       $.ajax({
-        url: '/banks/load/' + id,
+        url: '/BankAccount/load/' + id,
         method: 'GET',
         success: function (response) {
 
-          $('input#name_bank.form-control').val(response[0].name_bank);
-          $('input#febraban_code.form-control').val(response[0].febraban_code);
+          $('select#id_banco.custom-select').val(response[0].id_banco);
+          $('select#id_tipoconta.custom-select').val(response[0].id_tipoconta);
+          $('input#agencia.form-control').val(response[0].agencia);
+          $('input#conta.form-control').val(response[0].conta);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');
         }

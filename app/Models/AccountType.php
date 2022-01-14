@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Banks extends Model
+class AccountType extends Model
 {
   use HasFactory;
 
-  public $table = 'banks';
+  public $table = 'tipoconta';
 
   /**
    * The attributes that are mass assignable.
@@ -17,7 +17,6 @@ class Banks extends Model
    * @var array
    */
   protected $fillable = [
-    'name_bank',
-    'febraban_code',
+    'counttype_nome',
   ];
 }

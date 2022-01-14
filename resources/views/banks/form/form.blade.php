@@ -9,12 +9,8 @@
     </div>
     <div class="form-row">
         <div class="col-md-6 mb-4">
-            <label for="bank_agency">Agência <b class="error">*</b></label>
-            <input type="text" class="form-control" id="bank_agency" name="bank_agency" placeholder="Agência" value="" required>
-        </div>
-        <div class="col-md-6 mb-4">
-            <label for="bank_account">Número da conta <b class="error">*</b></label>
-            <input type="text" class="form-control" id="bank_account" name="bank_account" placeholder="Número da conta" value="" required>
+            <label for="febraban_code">Cod. Febraban <b class="error">*</b></label>
+            <input type="text" class="form-control" id="febraban_code" name="febraban_code" placeholder="Cod. Febraban" value="">
         </div>
     </div>
     <div class="modal-footer">

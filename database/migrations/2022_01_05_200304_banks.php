@@ -24,6 +24,7 @@ class Banks extends Migration
                 $table->timestamps();
             });
         }
+
     }
 
     /**

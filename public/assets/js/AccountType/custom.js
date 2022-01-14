@@ -7,10 +7,9 @@ $(document).ready(function () {
       "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
     processing: true,
     serverSide: true,
-    ajax: "/banks",
+    ajax: "/AccountType",
     columns: [
-      { data: 'name_bank', name: 'name_bank' },
-      { data: 'febraban_code', name: 'febraban_code' },
+      { data: 'counttype_nome', name: 'counttype_nome' },
       { data: 'action', name: 'action', orderable: false, searchable: false },
     ],
     "oLanguage": {
@@ -36,10 +35,10 @@ $(document).ready(function () {
    */
   $("#formItem").validate({
     rules: {
-      name_bank: "required",
+      counttype_nome: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      counttype_nome: "Tipo é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -50,7 +49,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/AccountType/store',
         method: 'POST',
         data: $('#formItem').serialize(),
         success: function (data) {
@@ -80,10 +79,10 @@ $(document).ready(function () {
    */
   $("#formItemEdit").validate({
     rules: {
-      name_bank: "required",
+      counttype_nome: "required",
     },
     messages: {
-      name_bank: "Banco é um campo obrigatório",
+      counttype_nome: "Tipo é um campo obrigatório",
     },
     errorElement: "span",
     highlight: function () {
@@ -94,7 +93,7 @@ $(document).ready(function () {
     },
     submitHandler: function () {
       $.ajax({
-        url: '/banks/store',
+        url: '/AccountType/store',
         method: 'POST',
         data: $('#formItemEdit').serialize(),
         success: function (data) {
@@ -137,12 +136,11 @@ $(document).ready(function () {
     //validate if exist value
     if (id > 0) {
       $.ajax({
-        url: '/banks/load/' + id,
+        url: '/AccountType/load/' + id,
         method: 'GET',
         success: function (response) {
 
-          $('input#name_bank.form-control').val(response[0].name_bank);
-          $('input#febraban_code.form-control').val(response[0].febraban_code);
+          $('input#counttype_nome.form-control').val(response[0].counttype_nome);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');
         }
