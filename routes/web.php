@@ -14,6 +14,7 @@ use App\Http\Controllers\TypeCategoryConvenantController;
 use App\Http\Controllers\BanksController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\AccountTypeController;
 use Illuminate\Support\Facades\Session;
 
 /*

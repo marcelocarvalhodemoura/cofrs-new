@@ -20,25 +20,27 @@ class BankAccount extends Migration
      */
     public function up()
     {
-        Schema::create('contas', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->integer('id_banco')->unsigned();
-            $table->foreign('id_banco')->references('id')->on('banks')
-                ->constrained()
-                ->onUpdate('no action')
-                ->onDelete('no action');
-            $table->integer('id_tipoconta')->unsigned();
-            $table->foreign('id_tipoconta')->references('id')->on('tipoconta')
-                ->constrained()
-                ->onUpdate('no action')
-                ->onDelete('no action');
-            $table->string('agencia', 20)->nullable(false);
-            $table->string('conta', 50)->nullable(true);
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('contas')){
+            Schema::create('contas', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->integer('id_banco')->unsigned();
+                $table->foreign('id_banco')->references('id')->on('banks')
+                    ->constrained()
+                    ->onUpdate('no action')
+                    ->onDelete('no action');
+                $table->integer('id_tipoconta')->unsigned();
+                $table->foreign('id_tipoconta')->references('id')->on('tipoconta')
+                    ->constrained()
+                    ->onUpdate('no action')
+                    ->onDelete('no action');
+                $table->string('agencia', 20)->nullable(false);
+                $table->string('conta', 50)->nullable(true);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

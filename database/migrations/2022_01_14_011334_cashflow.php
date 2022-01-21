@@ -21,28 +21,30 @@ class Cashflow extends Migration
      */
     public function up()
     {
-        Schema::create('movimentacao', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->integer('id_conta')->unsigned();
-            $table->foreign('id_conta')->references('id')->on('contas')
-                ->constrained()
-                ->onUpdate('no action')
-                ->onDelete('no action');
-            $table->integer('id_estatus')->unsigned();
-            $table->foreign('id_estatus')->references('id')->on('estatus')
-                ->constrained()
-                ->onUpdate('no action')
-                ->onDelete('no action');
-            $table->string('descricao', 255);
-            $table->date('data_vencimento');
-            $table->float('valor', 0, 0);
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('movimentacao')) {
+            Schema::create('movimentacao', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->integer('id_conta')->unsigned();
+                $table->foreign('id_conta')->references('id')->on('contas')
+                    ->constrained()
+                    ->onUpdate('no action')
+                    ->onDelete('no action');
+                $table->integer('id_estatus')->unsigned();
+                $table->foreign('id_estatus')->references('id')->on('estatus')
+                    ->constrained()
+                    ->onUpdate('no action')
+                    ->onDelete('no action');
+                $table->string('descricao', 255);
+                $table->date('data_vencimento');
+                $table->float('valor', 0, 0);
+                $table->softDeletes();
+                $table->timestamps();
+            });
 
-        DB::statement('ALTER TABLE movimentacao CHANGE valor valor DECIMAL(25,2) NOT NULL');
+            DB::statement('ALTER TABLE movimentacao CHANGE valor valor DECIMAL(25,2) NOT NULL');
+        }
     }
 
     /**

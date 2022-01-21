@@ -20,14 +20,17 @@ class AccountType extends Migration
      */
     public function up()
     {
-        Schema::create('tipoconta', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->increments('id');
-            $table->string('counttype_nome', 50);
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('tipoconta')){
+            Schema::create('tipoconta', function (Blueprint $table) {
+                $table->charset = 'utf8mb4';
+                $table->collation = 'utf8mb4_unicode_ci';
+                $table->increments('id');
+                $table->string('counttype_nome', 50);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**
