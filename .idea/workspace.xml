@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_01_05_200304_banks.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_01_05_200304_banks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_01_13_204343_account_type.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_01_13_204343_account_type.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_01_13_204406_bank_account.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_01_13_204406_bank_account.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_01_14_011334_cashflow.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_01_14_011334_cashflow.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/scripts.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/list.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,7 +301,7 @@
       <workItem from="1642251223874" duration="4124000" />
       <workItem from="1642335918327" duration="27000" />
       <workItem from="1642535901386" duration="177000" />
-      <workItem from="1642776704284" duration="705000" />
+      <workItem from="1642776704284" duration="4225000" />
     </task>
     <servers />
   </component>

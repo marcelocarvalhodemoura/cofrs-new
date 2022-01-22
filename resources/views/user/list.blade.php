@@ -60,6 +60,5 @@
 @endsection
 
 @push('scripts')
-    <script src=" {{ URL::asset('/assets/js/user/custom.js') }}">
-                                </script>
-                                @endpush
+    <script src=" {{ URL::asset('/assets/js/user/custom.js') }}"></script>
+@endpush

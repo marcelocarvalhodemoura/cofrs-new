@@ -18,7 +18,7 @@
 <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{asset('plugins/jquery-maskmoney/jquery-maskmoney.js')}}"></script>
-<!--<script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>-->
+<script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
 
 <script src="{{asset('plugins/sweetalerts/sweetalert2.min.js')}}"></script>
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
