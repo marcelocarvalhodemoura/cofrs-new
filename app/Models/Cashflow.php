@@ -21,6 +21,7 @@ class Cashflow extends Model
     'id_estatus',
     'descricao',
     'data_vencimento',
+    'credito',
     'valor',
   ];
 }

@@ -22,6 +22,15 @@ $(document).ready(function () {
         }
       },
       {
+        data: 'credito', name: 'credito', render: function (data) {
+          if (data == 1) {
+            return 'Crédito';
+          } else {
+            return 'Débito';
+          }
+        }
+      },
+      {
         data: 'valor', name: 'valor', className: "text-right", render(data) {
           return "R$ " + formataNumero(data);
         }
@@ -222,6 +231,7 @@ $(document).ready(function () {
           $('#formItemEdit #id_estatus').val(response[0].id_estatus);
           $('#formItemEdit #descricao').val(response[0].descricao);
           $('#formItemEdit #data_vencimento').val(dt.toLocaleDateString('pt-BR', { timeZone: 'UTC' }));
+          $('#formItemEdit #credito').val(response[0].credito);
           $('#formItemEdit #valor').val(response[0].valor);
 
           $('#formItemEdit').append('<input type="hidden" id="id" name="id" value="' + response[0].id + '"/>');

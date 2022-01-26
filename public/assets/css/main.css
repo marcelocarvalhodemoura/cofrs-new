@@ -2419,3 +2419,8 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 .position-relative {
   position: relative;
 }
+
+.tr_red td {
+  color: #FF2222 !important;
+  font-weight: bold;
+}

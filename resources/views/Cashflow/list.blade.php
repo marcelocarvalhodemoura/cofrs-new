@@ -41,6 +41,7 @@
                                     <th>Conta Bancária</th>
                                     <th>Descricao</th>
                                     <th>Vencimento</th>
+                                    <th>Operação</th>
                                     <th>Valor (R$)</th>
                                     <th>Status</th>
                                     <th>Ação</th>

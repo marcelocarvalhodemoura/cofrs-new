@@ -36,14 +36,13 @@ class Cashflow extends Migration
                     ->constrained()
                     ->onUpdate('no action')
                     ->onDelete('no action');
-                $table->string('descricao', 255);
+                $table->text('descricao');
                 $table->date('data_vencimento');
-                $table->float('valor', 0, 0);
+                $table->tinyInteger('credito')->default(0)->nullable(false);
+                $table->decimal('valor', 25, 2)->nullable(false)->unsigned();
                 $table->softDeletes();
                 $table->timestamps();
             });
-
-            DB::statement('ALTER TABLE movimentacao CHANGE valor valor DECIMAL(25,2) NOT NULL');
         }
     }
 

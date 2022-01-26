@@ -9,7 +9,7 @@
             <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-one">
                     <div class="widget-heading">
-                        <h6 class="">Statistics</h6>
+                        <h6 class="">Statistics2</h6>
                     </div>
                     <div class="w-chart">
                         <div class="w-chart-section">
