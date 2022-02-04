@@ -13,17 +13,17 @@ class Banks extends Migration
      */
     public function up()
     {
-//        if(!Schema::hasTable('banks')) {
-            Schema::create('banks', function (Blueprint $table) {
-                $table->charset = 'utf8mb4';
-                $table->collation = 'utf8mb4_unicode_ci';
-                $table->increments('id');
-                $table->string('name_bank', 255)->nullable(false);
-                $table->string('febraban_code', 50)->nullable(true);
-                $table->softDeletes();
-                $table->timestamps();
-            });
-//        }
+
+        Schema::create('banks', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->increments('id');
+            $table->string('name_bank', 255)->nullable(false);
+            $table->string('febraban_code', 50)->nullable(true);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
 
     }
 

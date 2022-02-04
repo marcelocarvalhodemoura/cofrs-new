@@ -12,6 +12,7 @@ use App\Models\Portion;
 use App\Models\Typeassociate;
 use App\Models\Classification;
 
+use App\Models\TypeCategoryConvenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
@@ -200,11 +201,15 @@ class ConvenantController extends Controller
         return response()->json($data,'200');
     }
 
-    public function storeMonthlyPayment(Request $request)
+    /**
+     * Process xlsx to add associate
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public static function associateProcessed($file)
     {
 
-
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($request->file);
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
         foreach ($sheetData as $content){
@@ -212,62 +217,61 @@ class ConvenantController extends Controller
             if($content['E'] !== "CPF"){
 
                 $dataAssociate = Associate::where('assoc_cpf', $content['E'])->get();
-//                $dataAssociate = Associate::where('assoc_cpf','=', '001.145.770-80')->get();
 
-               if(empty(json_decode($dataAssociate)) === true){
-                   $tipoAssocModel = Typeassociate::select('*')
-                       ->where('tipassoc_nome','=', $content['I'])
-                       ->get();
+                if(empty(json_decode($dataAssociate)) === true){
 
-                   $content['I'] = $tipoAssocModel[0]->id;
+                    $tipoAssocModel = Typeassociate::select('*')
+                        ->where('tipassoc_nome','=', $content['I'])
+                        ->get();
 
+                    $content['I'] = $tipoAssocModel[0]->id;
 
-                   $classificationModel = Classification::select('*')
-                       ->where('cla_nome', '=',$content['K'])
-                       ->get();
-                   $content['K'] = $classificationModel[0]->id;
+                    $classificationModel = Classification::select('*')
+                        ->where('cla_nome', '=',$content['K'])
+                        ->get();
 
-                   $dateBirthday =  explode('/', $content['D']);
+                    $content['K'] = $classificationModel[0]->id;
 
-                   $dateBirthdayFormated = implode('-', array_reverse($dateBirthday));
+                    $dateBirthday =  explode('/', $content['D']);
 
-                   $formDataExplode = explode('/', $content['T']);
+                    $dateBirthdayFormated = implode('-', array_reverse($dateBirthday));
 
-                   $dataFormated = implode('-', array_reverse($formDataExplode));
-                   try{
-                       $associateModel = new Associate();
+                    $formDataExplode = explode('/', $content['T']);
 
-                       $associateModel->assoc_nome = $content['A'];
-                       $associateModel->assoc_identificacao = $content['B'];
-                       $associateModel->assoc_matricula = $content['C'];
-                       $associateModel->assoc_datanascimento = $dateBirthdayFormated;
-                       $associateModel->assoc_cpf = $content['E'];
-                       $associateModel->assoc_rg = $content['F'];
-                       $associateModel->assoc_sexo = $content['G'];
-                       $associateModel->assoc_profissao = $content['H'];
-                       $associateModel->tipassoc_codigoid = $content['I'];
-                       $associateModel->assoc_email = $content['J'];
-                       $associateModel->cla_codigoid = $content['K'];
-                       $associateModel->assoc_estadocivil = $content['L'];
-                       $associateModel->assoc_fone = $content['M'];
-                       $associateModel->assoc_agencia = $content['N'];
-                       $associateModel->assoc_cep = $content['O'];
-                       $associateModel->assoc_endereco = $content['P'];
-                       $associateModel->assoc_bairro = $content['Q'];
-                       $associateModel->assoc_uf = $content['R'];
-                       $associateModel->assoc_cidade = $content['S'];
-                       $associateModel->assoc_dataativacao = $dataFormated;
-                       $associateModel->assoc_contrato = $content['U'];
+                    $dataFormated = implode('-', array_reverse($formDataExplode));
 
-                       $associateModel->save();
-                   }catch(Exception $e){
-                       return  response()->json($e, 400);
-                   }
+                    try{
+                        $associateModel = new Associate();
 
+                        $associateModel->assoc_nome = $content['A'];
+                        $associateModel->assoc_identificacao = $content['B'];
+                        $associateModel->assoc_matricula = $content['C'];
+                        $associateModel->assoc_datanascimento = $dateBirthdayFormated;
+                        $associateModel->assoc_cpf = $content['E'];
+                        $associateModel->assoc_rg = $content['F'];
+                        $associateModel->assoc_sexo = $content['G'];
+                        $associateModel->assoc_profissao = $content['H'];
+                        $associateModel->tipassoc_codigoid = $content['I'];
+                        $associateModel->assoc_email = $content['J'];
+                        $associateModel->cla_codigoid = $content['K'];
+                        $associateModel->assoc_estadocivil = $content['L'];
+                        $associateModel->assoc_fone = $content['M'];
+                        $associateModel->assoc_agencia = $content['N'];
+                        $associateModel->assoc_cep = $content['O'];
+                        $associateModel->assoc_endereco = $content['P'];
+                        $associateModel->assoc_bairro = $content['Q'];
+                        $associateModel->assoc_uf = $content['R'];
+                        $associateModel->assoc_cidade = $content['S'];
+                        $associateModel->assoc_dataativacao = $dataFormated;
+                        $associateModel->assoc_contrato = $content['U'];
 
-               }
+                        $associateModel->save();
 
-            }
+                    }catch(Exception $e){
+                        return  response()->json($e, 400);
+                    }
+                }
+            }// Column is CPF
 
         }// Foreach end
 
@@ -277,6 +281,143 @@ class ConvenantController extends Controller
         ];
 
         return response()->json([$responseData], 200);
+    }
+
+    public static function convenantsProcessed($file)
+    {
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        foreach ($sheetData as $content){
+            if($content['A'] !== 'ID'){
+
+                $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
+
+                if($dataAssociado[0]['assoc_nome']){
+                    $valorTotal = intval($content['E']) * intval($content['D']);
+
+                    $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
+//                    $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', 'Teste')->get();
+
+                    $dataExplodida = explode('/', $content['F']);
+
+                    $dataExplodida[1] = intval($dataExplodida[1]) + intval($content['D']);
+
+                    if($dataExplodida[1] > 12){
+                        $dataExplodida[1] = $dataExplodida[1] - intval($content['D']);
+                    }
+
+                    $lancamento = Convenant::create([
+                        'lanc_valortotal' => $valorTotal,
+                        'lanc_numerodeparcela' => intval($content['D']),
+                        'lanc_datavencimento' => $dataExplodida[2].'-'.$dataExplodida[1].'-'.$dataExplodida[0],
+                        'con_codigoid' => $dataConvenio[0]['id'],
+                        'assoc_codigoid' => $dataAssociado[0]['id'],
+                        'est_codigoid' => 2
+                    ]);
+
+
+
+                    if($lancamento){
+
+                        for ($i = 0; $i < intval($content['D']); $i++){
+                            $mes = $dataExplodida[1] + $i;
+
+                            if($mes < 10){
+                                $mes = '0'.$mes;
+                            }
+
+                            $dataCompetencia = Competence::where('com_nome', '=', $mes.'/'.$dataExplodida[2])->get();
+
+                            $parcelamento = Portion::create([
+                                'par_numero' => $i,
+                                'par_valor' => intval($content['E']),
+                                'lanc_codigoid' => $lancamento->id,
+                                'par_vencimentoparcela' => $dataExplodida[2].'-'.$mes.'-'.$dataExplodida[0],
+                                'par_observacao' => 'Processado através da planilha',
+                                'par_status' => 'Pendente',
+                                'com_codigoid' => $dataCompetencia[0]['id'],
+                                'par_equivalente' => $i,
+                                'par_habilitasn' => 0
+                            ]);
+                        }
+
+                    }
+
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        if($spreadsheet){
+
+            return 'success';
+        }else{
+            return false;
+        }
+
+    }
+
+    /**
+     * File Process
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function storeMonthlyPayment(Request $request)
+    {
+
+        if($request->massive === "convenio"){
+
+            $process = self::convenantsProcessed($request->file);
+
+            if($process == 'success'){
+                $responseData = [
+                    'status' => 'success',
+                    'msg' => 'Arquivo de Convênios processado com sucesso!',
+                ];
+
+                return response()->json([$responseData], 200);
+            }else{
+                $responseData = [
+                    'status' => 'warning',
+                    'msg' => 'Arquivo Inválido!',
+                ];
+
+                return response()->json([$responseData], 200);
+            }
+
+        }else if($request->massive === "associado"){
+
+            $process = self::associateProcessed($request->file);
+
+            if($process == true){
+                $responseData = [
+                    'status' => 'success',
+                    'msg' => 'Arquivo de Convênios processado com sucesso!',
+                ];
+
+                return response()->json([$responseData], 200);
+            }else{
+                $responseData = [
+                    'status' => 'warning',
+                    'msg' => 'Arquivo Inválido!',
+                ];
+
+                return response()->json([$responseData], 200);
+            }
+
+        }else{
+
+            $responseData = [
+                'status' => 'warning',
+                'msg' => 'Informe o tipo e envie arquivo válido!',
+            ];
+
+            return response()->json([$responseData], 200);
+        }
+
+
     }
 
 

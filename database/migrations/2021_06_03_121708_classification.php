@@ -16,16 +16,16 @@ class Classification extends Migration
         /**
          * Create table Classificacao
          */
-        if(!Schema::hasTable('classificacao')) {
-            Schema::create('classificacao', function (Blueprint $table) {
-                $table->charset = 'utf8mb4';
-                $table->collation = 'utf8mb4_unicode_ci';
-                $table->increments('id');
-                $table->string('cla_nome', 30);
-                $table->softDeletes();
-                $table->timestamps();
-            });
-        }
+
+        Schema::create('classificacao', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->increments('id');
+            $table->string('cla_nome', 30);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
     }
 
     /**
