@@ -25,7 +25,7 @@ class DashboardController extends Controller
         ->groupBy('credito')
         ->get();
 
-        $op_cresc = Cashflow::select('credito', 
+        $op_cresc = Cashflow::select('credito',
             DB::raw("SUM(valor) as valor"),
             DB::raw("YEAR(data_vencimento) as ano"),
             DB::raw("MONTH(data_vencimento) as mes"))
@@ -56,7 +56,6 @@ class DashboardController extends Controller
                 $crescimento_operacoes[$item->credito][$item->mes.'/'.$item->ano] = $item->valor;
             }
         }
-        //dd($crescimento_operacoes);
 
         $associados = Associate::select(DB::raw("COUNT(associado.id) AS quantidade"),DB::raw("COUNT(lancamento.id) AS conveniados"))
         ->leftJoin('lancamento','assoc_codigoid','=','associado.id')

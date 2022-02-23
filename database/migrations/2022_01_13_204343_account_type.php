@@ -20,7 +20,7 @@ class AccountType extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('tipoconta')){
+
             Schema::create('tipoconta', function (Blueprint $table) {
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_unicode_ci';
@@ -29,7 +29,7 @@ class AccountType extends Migration
                 $table->softDeletes();
                 $table->timestamps();
             });
-        }
+
 
     }
 

@@ -16,46 +16,46 @@ class Associate extends Migration
         /**
          * Create associado table
          */
-        if(!Schema::hasTable('associado')) {
-            Schema::create('associado', function (Blueprint $table) {
-                $table->charset = 'utf8mb4';
-                $table->collation = 'utf8mb4_unicode_ci';
-                $table->increments('id');
-                $table->string('assoc_nome');
-                $table->string('assoc_matricula');
-                $table->string('assoc_cpf');
-                $table->string('assoc_rg');
-                $table->date('assoc_datanascimento');
-                $table->string('assoc_sexo');
-                $table->string('assoc_profissao');
-                $table->string('assoc_fone');
-                $table->string('assoc_email');
-                $table->string('assoc_cep');
-                $table->string('assoc_endereco');
-                $table->string('assoc_complemento');
-                $table->string('assoc_bairro');
-                $table->string('assoc_uf', 3);
-                $table->string('assoc_cidade');
-                $table->text('assoc_observacao');
-                $table->integer('tipassoc_codigoid');
-                $table->integer('cla_codigoid');
-                $table->string('assoc_banco');
-                $table->string('assoc_agencia');
-                $table->string('assoc_conta');
-                $table->string('assoc_tipoconta');
-                $table->string('assoc_estadocivil');
-                $table->string('assoc_fone2');
-                $table->boolean('assoc_ativosn');
-                $table->date('assoc_dataativacao');
-                $table->date('assoc_datadesligamento');
-                $table->string('assoc_contrato');
-                $table->integer('ag_codigoid');
-                $table->boolean('assoc_removesn');
-                $table->string('assoc_identificacao');
-                $table->softDeletes();
-                $table->timestamps();
-            });
-        }
+
+        Schema::create('associado', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->increments('id');
+            $table->string('assoc_nome');
+            $table->string('assoc_matricula')->nullable();
+            $table->string('assoc_cpf');
+            $table->string('assoc_rg');
+            $table->date('assoc_datanascimento');
+            $table->string('assoc_sexo');
+            $table->string('assoc_profissao');
+            $table->string('assoc_fone');
+            $table->string('assoc_email');
+            $table->string('assoc_cep');
+            $table->string('assoc_endereco');
+            $table->string('assoc_complemento');
+            $table->string('assoc_bairro');
+            $table->string('assoc_uf', 3);
+            $table->string('assoc_cidade');
+            $table->text('assoc_observacao')->nullable();
+            $table->integer('tipassoc_codigoid');
+            $table->integer('cla_codigoid');
+            $table->string('assoc_banco')->nullable();
+            $table->string('assoc_agencia')->nullable();
+            $table->string('assoc_conta')->nullable();
+            $table->string('assoc_tipoconta');
+            $table->string('assoc_estadocivil');
+            $table->string('assoc_fone2')->nullable();
+            $table->boolean('assoc_ativosn');
+            $table->date('assoc_dataativacao');
+            $table->date('assoc_datadesligamento');
+            $table->string('assoc_contrato')->nullable();
+            $table->integer('ag_codigoid');
+            $table->boolean('assoc_removesn');
+            $table->string('assoc_identificacao');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
     }
 
     /**

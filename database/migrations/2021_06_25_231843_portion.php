@@ -13,7 +13,7 @@ class Portion extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('parcelamento')) {
+
             Schema::create('parcelamento', function (Blueprint $table) {
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_unicode_ci';
@@ -32,7 +32,7 @@ class Portion extends Migration
             });
             //gambiarra porque o laravel cria como double
             DB::statement('ALTER TABLE parcelamento CHANGE par_valor par_valor FLOAT');
-        }
+
     }
 
     /**

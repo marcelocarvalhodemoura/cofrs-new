@@ -66,7 +66,7 @@ $(document).ready(function(){
 
         var data = new FormData();
         data.append('file', document.getElementById('file').files[0]);
-
+        data.append('massive',$('input[name="massive[]"]:checked').val());
         $.ajax({
             method:'POST',
             url:'/convenants/monthly/add',
@@ -76,14 +76,20 @@ $(document).ready(function(){
             data:data,
             processData: false,
             contentType: false,
-            success : function(data) {
+            success : function(response) {
+                console.log(response);
+                let title;
+                if(response[0].status === 'success'){
+                    title = 'Bom trabalho!';
+                }else{
+                    title ='Atenção!';
+                }
                 /* Retorno do PHP */
-                console.log(data);
                 $('#monthlyPayment').modal('hide');
                 swal({
-                    title: 'Bom trabalho!',
-                    text: data[0].msg,
-                    type: 'success',
+                    title: title,
+                    text: response[0].msg,
+                    type: response[0].status,
                     confirmButtonClass: 'btn btn-success',
                 });
             }

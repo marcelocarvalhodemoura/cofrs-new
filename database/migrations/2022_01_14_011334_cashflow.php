@@ -21,29 +21,29 @@ class Cashflow extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('movimentacao')) {
-            Schema::create('movimentacao', function (Blueprint $table) {
-                $table->charset = 'utf8mb4';
-                $table->collation = 'utf8mb4_unicode_ci';
-                $table->increments('id');
-                $table->integer('id_conta')->unsigned();
-                $table->foreign('id_conta')->references('id')->on('contas')
-                    ->constrained()
-                    ->onUpdate('no action')
-                    ->onDelete('no action');
-                $table->integer('id_estatus')->unsigned();
-                $table->foreign('id_estatus')->references('id')->on('estatus')
-                    ->constrained()
-                    ->onUpdate('no action')
-                    ->onDelete('no action');
-                $table->text('descricao');
-                $table->date('data_vencimento');
-                $table->tinyInteger('credito')->default(0)->nullable(false);
-                $table->decimal('valor', 25, 2)->nullable(false)->unsigned();
-                $table->softDeletes();
-                $table->timestamps();
-            });
-        }
+
+        Schema::create('movimentacao', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->increments('id');
+            $table->integer('id_conta')->unsigned();
+            $table->foreign('id_conta')->references('id')->on('contas')
+                ->constrained()
+                ->onUpdate('no action')
+                ->onDelete('no action');
+            $table->integer('id_estatus')->unsigned();
+            $table->foreign('id_estatus')->references('id')->on('estatus')
+                ->constrained()
+                ->onUpdate('no action')
+                ->onDelete('no action');
+            $table->text('descricao');
+            $table->date('data_vencimento');
+            $table->tinyInteger('credito')->default(0)->nullable(false);
+            $table->decimal('valor', 25, 2)->nullable(false)->unsigned();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
     }
 
     /**

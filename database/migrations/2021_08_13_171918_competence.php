@@ -13,7 +13,7 @@ class Competence extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('competencia')) {
+
             Schema::create('competencia', function (Blueprint $table) {
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_unicode_ci';
@@ -23,7 +23,7 @@ class Competence extends Migration
                 $table->string('com_nome', 45);
                 $table->timestamps();
             });
-        }
+
     }
 
     /**
