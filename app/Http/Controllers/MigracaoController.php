@@ -28,6 +28,9 @@ class MigracaoController extends Controller{
   }
 
   public function index(){
+    DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+
     //agente
     DB::statement('truncate table agente');
     $sql = "INSERT INTO agente (id, ag_nome) values ";
@@ -62,6 +65,9 @@ class MigracaoController extends Controller{
   }
 
   public function contas() {
+    //contapagar NÃO POSSUI DADOS NA ORIGEM
+    //contasreceber NÃO POSSUI DADOS NA ORIGEM
+
     /* PRECISA VER O QUE A TABELA DE CONTAS FAZ e caixa (no old)
     DB::statement('truncate table contas');
 
@@ -134,6 +140,50 @@ class MigracaoController extends Controller{
     DB::statement(substr($sql,0,-1));
     echo 'Tabela associado migrada </br />';
 
+
+    //dependentes NÃO POSSUI DADOS NA ORIGEM
+
+    return $this->competencias();
+  }
+
+  public function competencias(){
+    //competencia
+    DB::statement('truncate table competencia');
+    $sql = "INSERT INTO competencia (id, com_datainicio, com_datafinal, com_nome) values ";
+    $dados = $this->origem->query("SELECT * FROM competencia");
+    foreach($dados as $v){
+      $sql .= " (".$v['com_codigoid'].", '".$v['com_datainicio']."', '".$v['com_datafinal']."', '".$v['com_nome']."'),";
+    }
+    DB::statement(substr($sql,0,-1));
+    echo 'Tabela competencia migrada </br />';
+
+    //lancamento
+    /*
+    O que é a coluna est_codigoid? Ela correponde ao lanc_contrato do banco antigo?
+
+    DB::statement('truncate table lancamento');
+    $sql = "INSERT INTO lancamento (id, lanc_valortotal, lanc_numerodeparcela, lanc_datavencimento, con_codigoid, assoc_codigoid, est_codigoid) values ";
+    $dados = $this->origem->query("SELECT * FROM lancamento");
+    foreach($dados as $v){
+      $sql .= " (".$v['lanc_codigoid'].", '".$v['lanc_valortotal']."', '".$v['lanc_numerodeparcela']."', '".$v['lanc_datavencimento']."', '".$v['con_codigoid']."', '".$v['assoc_codigoid']."', '".$v['lanc_contrato']."'),";
+    }
+    //, '".$v['lanc_valorparcela']."'
+    DB::statement(substr($sql,0,-1));
+    echo 'Tabela lancamento migrada </br />';
+    */
+
+    //parcelamento
+    DB::statement('truncate table parcelamento');
+    $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn) values ";
+    $dados = $this->origem->query("SELECT * FROM parcelamento");
+    foreach($dados as $v){
+      $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."'),";
+    }
+    //, '".$v['lanc_valorparcela']."'
+    DB::statement(substr($sql,0,-1));
+    echo 'Tabela parcelamento migrada </br />';
+
+    DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
   }
 }
