@@ -122,10 +122,10 @@
     },
     series: [{
       name: 'Créditos',
-      data: ['{!!implode("','",($crescimento_operacoes[1]))!!}']
+      data: ['{!!implode("','",($crescimento_operacoes[0]))!!}']
     }, {
       name: 'Débitos',
-      data: ['{!!implode("','",($crescimento_operacoes[0]))!!}']
+      data: ['{!!implode("','",($crescimento_operacoes[1]))!!}']
     }],
     xaxis: {
       categories: ['{!!implode("','",array_keys($crescimento_operacoes[0]))!!}'],

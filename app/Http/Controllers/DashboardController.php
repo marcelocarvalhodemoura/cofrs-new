@@ -51,7 +51,7 @@ class DashboardController extends Controller
             $dt->modify('+1 month');
         }
         //preencho o array com os valores que tiver
-        if(is_array($op_cresc)){
+        if($op_cresc){
             foreach($op_cresc as $item){
                 $crescimento_operacoes[$item->credito][$item->mes.'/'.$item->ano] = $item->valor;
             }
