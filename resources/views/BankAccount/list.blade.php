@@ -59,5 +59,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ URL::asset('/assets/js/BankAccount/custom.js') }}"></script>
+<script src="{{ URL::asset('/assets/js/bankAccount/custom.js') }}"></script>
 @endpush
