@@ -897,7 +897,7 @@ code {
 .sidebar-wrapper .profile-info figure {
   width: 100%;
   height: 82px;
-  background: url("../../../storage/img/255x255.jpg") center center/cover no-repeat;
+  /* background: url("../../../storage/img/255x255.jpg") center center/cover no-repeat; */
   margin-bottom: 0;
 }
 .sidebar-wrapper .profile-info .user-info {

@@ -32,6 +32,7 @@
  <link href="{{asset('plugins/file-upload/file-upload-with-preview.min.css')}}" rel="stylesheet" type="text/css" />
  {{-- Elements Loader  --}}
  <link href="{{asset('plugins/loaders/custom-loader.css')}}" rel="stylesheet" type="text/css" />
+ <link href="{{asset('plugins/jquery-upload-file/uploadfile.css')}}" rel="stylesheet" type="text/css" />
 
  <style>
    div#load_screen .loader {
@@ -1098,6 +1099,8 @@
  {{-- Forms File Upload --}}
  <link href="{{asset('assets/css/scrollspyNav.css')}}" rel="stylesheet" type="text/css" />
  <link href="{{asset('plugins/file-upload/file-upload-with-preview.min.css')}}" rel="stylesheet" type="text/css" />
+
+
  @break
 
  @case('input_group')

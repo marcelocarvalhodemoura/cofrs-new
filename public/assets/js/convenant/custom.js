@@ -1,11 +1,11 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     //load select
     $(".basic").select2({
         tags: true,
     });
 
-    $("#btnAddPortion").on('click', (event)=>{
+    $("#btnAddPortion").on('click', (event) => {
         $("#convenantModalCreate").modal('show');
     });
 
@@ -13,15 +13,15 @@ $(document).ready(function(){
         $("#convenantModalUploadFiles").modal('show');
     });
 
-    $("#btnAddDownloadFile").on('click', function(){
+    $("#btnAddDownloadFile").on('click', function () {
         $("#convenantModalDownloadFiles").modal('show');
     });
 
-    $("#btnAddInstallmentPayment").on('click', function(){
+    $("#btnAddInstallmentPayment").on('click', function () {
         $("#convenantInstallmentPayment").modal('show');
     });
 
-    $('#btnAddMonthlyPayment').on('click', (event)=>{
+    $('#btnAddMonthlyPayment').on('click', (event) => {
         event.preventDefault();
         $("#monthlyPayment").modal('show');
 
@@ -61,28 +61,35 @@ $(document).ready(function(){
         // });
     });
 
-    $('#btnSavePayment').on('click', function(event){
+    $('#btnSavePayment').on('click', function (event) {
         event.preventDefault();
 
         var data = new FormData();
-        data.append('file', document.getElementById('file').files[0]);
-        data.append('massive',$('input[name="massive[]"]:checked').val());
+
+        alert($('#fileuploader input[name="file"]')[0].files[0].name);
+
+        data.append('file', document.getElementById('.fileuploader input[name="file"]').files[0]);
+
+        //data.append('file', document.getElementById('file').files[0]);
+        //data.append('file', document.getElementById('file').files[0]);
+        //data.append('massive', $('input[name="massive[]"]:checked').val());
+
         $.ajax({
-            method:'POST',
-            url:'/convenants/monthly/add',
+            method: 'POST',
+            url: '/convenants/monthly/add',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data:data,
+            data: data,
             processData: false,
             contentType: false,
-            success : function(response) {
+            success: function (response) {
                 console.log(response);
                 let title;
-                if(response[0].status === 'success'){
+                if (response[0].status === 'success') {
                     title = 'Bom trabalho!';
-                }else{
-                    title ='Atenção!';
+                } else {
+                    title = 'Atenção!';
                 }
                 /* Retorno do PHP */
                 $('#monthlyPayment').modal('hide');
@@ -96,17 +103,64 @@ $(document).ready(function(){
         });
     });
 
+
+    var uploadObj = $("#fileuploader").uploadFile({
+        url: '/convenants/monthly/add',
+        fileName: "file",
+        formData: { '_token': $('input[name="_token"]').val() },
+        onSelect: function (files) {
+            if (!$("input[name=massive]:checked").val()) {
+                alert($("input[name=massive]:checked").val());
+                uploadObj.cancelAll();
+                uploadObj.reset();
+            } else {
+                uploadObj.startUpload();
+            }
+        },
+        onSuccess: function (files, data, xhr, pd) {
+            //console.log(data);
+            /* Retorno do PHP */
+            uploadObj.reset();
+            let title;
+            if (data[0].status === 'success') {
+                title = 'Bom trabalho!';
+                $('#monthlyPayment').modal('hide');
+            } else {
+                title = 'Atenção!';
+            }
+            swal({
+                title: title,
+                text: data[0].msg,
+                type: data[0].status,
+                confirmButtonClass: 'btn btn-success',
+            });
+        },
+        autoSubmit: false,
+        multiple: false,
+        dragDrop: true,
+        showDelete: false,
+        showCancel: false,
+        maxFileCount: 1,
+        acceptFiles: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        showFileCounter: false,
+        uploadStr: 'Clique ou arraste o arquivo aqui',
+        dragDropStr: 'Clique ou arraste o arquivo aqui',
+        extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
+        maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
+    });
+
+
     /**
      * Install Payment
      */
-    $("#btnAddInstallmentPayment").on('click', ()=>{
+    $("#btnAddInstallmentPayment").on('click', () => {
         const id = new Array();
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
         });
 
-        if(id.length > 0){
+        if (id.length > 0) {
             swal({
                 title: "Confirma?",
                 text: "Após a confirmação a parcela será quitada.",
@@ -115,20 +169,20 @@ $(document).ready(function(){
                 cancelButtonClass: 'btn btn-danger mr-3',
                 buttonsStyling: false,
                 showCancelButton: true,
-                cancelButtonText:"Cancelar",
+                cancelButtonText: "Cancelar",
                 confirmButtonText: "Quite-a!",
                 closeOnConfirm: false
-            }).then(function(result) {
+            }).then(function (result) {
                 $.ajax({
-                    method:"POST",
-                    url:"/convenats/portion",
+                    method: "POST",
+                    url: "/convenats/portion",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data:{ id:id },
-                    success: function(response){
+                    data: { id: id },
+                    success: function (response) {
 
-                        if (response.status === 'success'){
+                        if (response.status === 'success') {
                             //remove current line
                             $("#tableCovenants tbody tr").remove();
 
@@ -136,10 +190,10 @@ $(document).ready(function(){
                                 '<td colspan="6">' +
                                 '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
                                 '<tbody>' +
-                                '<tr>'+
-                                '<td colspan="3" style="text-align: center">'+
-                                '<b class="btn-link">Não existem dados referentes!</b>'+
-                                '</td>'+
+                                '<tr>' +
+                                '<td colspan="3" style="text-align: center">' +
+                                '<b class="btn-link">Não existem dados referentes!</b>' +
+                                '</td>' +
                                 '</tr>' +
                                 '</tbody>' +
                                 '</table>' +
@@ -153,11 +207,11 @@ $(document).ready(function(){
                     }
                 });
             });
-        }else{
+        } else {
             swal({
                 title: "Atenção !",
                 text: "Selecione apenas 1 registro por vez",
-                type:"info",
+                type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
         }
@@ -168,25 +222,25 @@ $(document).ready(function(){
     /**
      * Renegation
      */
-    $('#btnAddRenegotiation').on('click', () =>{
+    $('#btnAddRenegotiation').on('click', () => {
 
         const id = new Array();
         let lanc_id = 0;
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
             lanc_id = $(this).parent().parent().attr('data-lanc-id');
 
         });
 
-        if(id.length > 0 && id.length < 2){
+        if (id.length > 0 && id.length < 2) {
 
             $.ajax({
-                method:'GET',
-                url: '/convenants/renegotiation/'+id[0]+'/'+lanc_id,
+                method: 'GET',
+                url: '/convenants/renegotiation/' + id[0] + '/' + lanc_id,
                 success: response => {
 
-                    if(response.status === 'success'){
+                    if (response.status === 'success') {
                         //Remove all covenants rows
                         $("#tableCovenants tbody tr").remove();
 
@@ -194,10 +248,10 @@ $(document).ready(function(){
                             '<td colspan="6">' +
                             '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
                             '<tbody>' +
-                            '<tr>'+
-                            '<td colspan="3" style="text-align: center">'+
-                            '<b class="btn-link">Não existem dados referentes!</b>'+
-                            '</td>'+
+                            '<tr>' +
+                            '<td colspan="3" style="text-align: center">' +
+                            '<b class="btn-link">Não existem dados referentes!</b>' +
+                            '</td>' +
                             '</tr>' +
                             '</tbody>' +
                             '</table>' +
@@ -214,11 +268,11 @@ $(document).ready(function(){
                     }
                 }
             });
-        }else{
+        } else {
             swal({
                 title: "Atenção !",
                 text: "Selecione apenas 1 registro por vez",
-                type:"info",
+                type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
         }
@@ -229,10 +283,10 @@ $(document).ready(function(){
      * Load Table Convenants without data
      */
     let tr = '<tr class="table-warning">' +
-                '<td colspan="6" class="text-center">' +
-                        '<strong>Selecione o campo!</strong>' +
-                '</td>' +
-            '</tr>';
+        '<td colspan="6" class="text-center">' +
+        '<strong>Selecione o campo!</strong>' +
+        '</td>' +
+        '</tr>';
 
     $("#tableCovenants tbody").append(tr);
 
@@ -242,7 +296,7 @@ $(document).ready(function(){
     $("#loader1").hide();
     $("#loader2").hide();
 
-    $('#number').on('click', ()=>{
+    $('#number').on('click', () => {
         $("#portion").prop('disabled', false);
         $("#duedate").prop('disabled', true);
         $("#total").prop('disabled', true);
@@ -256,12 +310,12 @@ $(document).ready(function(){
 
     $("#formConvenants").validate({
         rules: {
-            associate:"required",
-            convenants:"required",
-            number:{
+            associate: "required",
+            convenants: "required",
+            number: {
                 required: true,
             },
-            portion:"required",
+            portion: "required",
             total: {
                 required: true,
             },
@@ -278,19 +332,19 @@ $(document).ready(function(){
         },
         errorElement: "span",
         highlight: function () {
-            $( "#formConvenants" ).addClass( "was-validated" );
+            $("#formConvenants").addClass("was-validated");
         },
         unhighlight: function () {
-            $( "#formConvenants" ).addClass( "was-validated" );
+            $("#formConvenants").addClass("was-validated");
         },
         submitHandler: function () {
 
             $.ajax({
                 method: "POST",
                 url: "/convenants/store",
-                data:$("#formConvenants").serialize(),
+                data: $("#formConvenants").serialize(),
                 success: (response) => {
-                    if(response.status === 'success'){
+                    if (response.status === 'success') {
 
                         $('#convenantModalCreate').modal('hide');
 
@@ -308,14 +362,14 @@ $(document).ready(function(){
         }
     });
 
-    $("#portion").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#portion").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false });
 
-    $("#portion").blur(function(){
+    $("#portion").blur(function () {
 
         $("#loader1").fadeIn();
         $("#loader2").fadeIn();
 
-        setTimeout(()=>{
+        setTimeout(() => {
 
             $("#loader1").fadeOut();
             $("#loader2").fadeOut();
@@ -337,40 +391,40 @@ $(document).ready(function(){
         var dataFormatada;
         var i;
 
-        if(valorFormatado > 0 && $("#number").val() > 0){
+        if (valorFormatado > 0 && $("#number").val() > 0) {
             // valorTotalParcelas = ($(this).val() * $("#parcela").val());
             valorTotalParcelas = (valorFormatado * $("#number").val());
             $("#duedate").val('...');
             $("#total").val('...');
 
-        }else{
+        } else {
             $("#duedate").hide();
             $("#total").hide();
             return;
         }
 
-        for(i = 0  ; i < $("#number").val() ; i ++){
-            if(mes == 12){
+        for (i = 0; i < $("#number").val(); i++) {
+            if (mes == 12) {
                 mes = 1;
                 ano = ano + 1;
 
-            }else{
+            } else {
                 mes = mes + 1;
             }
         }
 
-        if(mes < 10){
-            dataFormatada =  '10/0' + mes + '/' + ano;
-        }else if(mes > 12){
-            dataFormatada =  '10/' + mes - 12 + '/' + ano;
-        }else{
-            dataFormatada =  '10/' + mes + '/' + ano;
+        if (mes < 10) {
+            dataFormatada = '10/0' + mes + '/' + ano;
+        } else if (mes > 12) {
+            dataFormatada = '10/' + mes - 12 + '/' + ano;
+        } else {
+            dataFormatada = '10/' + mes + '/' + ano;
         }
 
-        setTimeout(function(){
+        setTimeout(function () {
             $("#duedate").val(dataFormatada);
             $("#total").val(parseFloat(valorTotalParcelas).toFixed(2).replace('.', ','));
-        },2000);
+        }, 2000);
     });
 
     //creat chart on the form
@@ -408,15 +462,15 @@ $(document).ready(function(){
     donut.render();
 
     //Second upload
-    var secondUpload = new FileUploadWithPreview('mySecondImage');
+    //var secondUpload = new FileUploadWithPreview('mySecondImage');
 
-    $("select.basic").on('change', event=>{
+    $("select.basic").on('change', event => {
 
         $.ajax({
             method: "POST",
-            url:'/convenants/list',
-            data:$('#convenantsForm').serialize(),
-            success:response =>{
+            url: '/convenants/list',
+            data: $('#convenantsForm').serialize(),
+            success: response => {
                 $.blockUI({
                     message: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader spin"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>',
                     fadeIn: 800,
@@ -439,120 +493,125 @@ $(document).ready(function(){
 
                 $("#tableCovenants tbody tr").remove();
 
-                if(response == ""){
+                if (response == "") {
                     let tr2 = '<tr>' +
-                            '<td colspan="6">' +
-                                '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
-                                    '<tbody>' +
-                                        '<tr>'+
-                                            '<td colspan="3" style="text-align: center">'+
-                                                '<b class="btn-link">Não existem dados referentes!</b>'+
-                                            '</td>'+
-                                        '</tr>' +
-                                   '</tbody>' +
-                                '</table>' +
-                            '</td></tr>';
+                        '<td colspan="6">' +
+                        '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
+                        '<tbody>' +
+                        '<tr>' +
+                        '<td colspan="3" style="text-align: center">' +
+                        '<b class="btn-link">Não existem dados referentes!</b>' +
+                        '</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>' +
+                        '</td></tr>';
 
-                    setTimeout(function(){
-                       return $("#tableCovenants tbody").append(tr2);
+                    setTimeout(function () {
+                        return $("#tableCovenants tbody").append(tr2);
                     }, 2000);
                 }
 
-                response.forEach(function(item){
+                response.forEach(function (item) {
 
                     //convert string to array separated to "-" and reverse vector position
-                    let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',','/');
+                    let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',', '/');
 
                     //Total variable convert to money format
-                    let total = item.lanc_valortotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                    let total = item.lanc_valortotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 
                     tr += '<tr>' +
-                            '<td colspan="6">' +
-                                '<a href="#tableTest-'+item.id+'" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
-                                    '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
-                                        '<tbody>' +
-                                            '<tr>'+
-                                                '<td class="text-primary">'+item.assoc_nome +'</td>'+
-                                                '<td >'+item.assoc_cpf +'</td>'+
-                                                '<td width="25%"><b class="shadow-none badge outline-badge-primary">'+item.con_nome +'</b></td>'+
-                                                '<td width="20%">'+dateFormated+'</td>'+
-                                                '<td width="10%">'+item.lanc_numerodeparcela+'</td>'+
-                                                '<td width="10%">'+total+'</td>'+
-                                            '</tr>'+
-                                        '</tbody>'+
-                                    '</table>\n' +
-                                '</a>' +
-                                '<ul class="submenu list-unstyled collapse" id="tableTest-'+item.id+'" data-parent="#tableCovenants" style="">\n' +
-                                    '<li class="active">\n' +
-                                        '<div class=card">'+
-                                            '<div class="card-body">' +
-                                                '<h6>Condições de Pagamento</h6>'+
-                                                    '<table class="table table-bordered table-hover table-striped mb-4">'+
-                                                    '<thead>'+
-                                                    '<tr>'+
+                        '<td colspan="6">' +
+                        '<a href="#tableTest-' + item.id + '" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
+                        '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
+                        '<tbody>' +
+                        '<tr>' +
+                        '<td class="text-primary">' + item.assoc_nome + '</td>' +
+                        '<td >' + item.assoc_cpf + '</td>' +
+                        '<td width="25%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>' +
+                        '<td width="20%">' + dateFormated + '</td>' +
+                        '<td width="10%">' + item.lanc_numerodeparcela + '</td>' +
+                        '<td width="10%">' + total + '</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>\n' +
+                        '</a>' +
+                        '<ul class="submenu list-unstyled collapse" id="tableTest-' + item.id + '" data-parent="#tableCovenants" style="">\n' +
+                        '<li class="active">\n' +
+                        '<div class=card">' +
+                        '<div class="card-body">' +
+                        '<h6>Condições de Pagamento</h6>' +
+                        '<table class="table table-bordered table-hover table-striped mb-4">' +
+                        '<thead>' +
+                        '<tr>' +
 
-                                                    '<th><span class="badge badge-primary">Referência</span></th>'+
-                                                    '<th><span class="badge badge-primary">Competência</span></th>'+
-                                                    '<th><span class="badge badge-primary">Parcela</span></th>'+
-                                                    '<th><span class="badge badge-primary">Valor</span></th>'+
-                                                    '<th><span class="badge badge-primary">Status</span></th>'+
-                                                    '<th><input id="portionSel" value="1" type="checkbox"></th>'+
-                                                    '</tr>'+
-                                                    '</thead>'+
-                                                    '<tbody>';
-                                                        //create portion convenants from associate
-                                                        item.portion.forEach(function(value){
+                        '<th><span class="badge badge-primary">Referência</span></th>' +
+                        '<th><span class="badge badge-primary">Competência</span></th>' +
+                        '<th><span class="badge badge-primary">Parcela</span></th>' +
+                        '<th><span class="badge badge-primary">Valor</span></th>' +
+                        '<th><span class="badge badge-primary">Status</span></th>' +
+                        '<th><input id="portionSel" value="1" type="checkbox"></th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
+                    //create portion convenants from associate
+                    item.portion.forEach(function (value) {
 
-                                                            var portionPrice = value.par_valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                                                            var dynamicClass = "";
+                        var portionPrice = value.par_valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+                        var dynamicClass = "";
 
-                                                            switch (value.par_status){
-                                                                case 'Pendente':
-                                                                    dynamicClass = "warning";
-                                                                    break;
+                        switch (value.par_status) {
+                            case 'Pendente':
+                                dynamicClass = "warning";
+                                break;
 
-                                                                case 'Pago':
-                                                                    dynamicClass = "success";
-                                                                    break;
+                            case 'Pago':
+                                dynamicClass = "success";
+                                break;
 
-                                                                case 'Vencido':
-                                                                    dynamicClass = "danger";
-                                                                    break;
+                            case 'Vencido':
+                                dynamicClass = "danger";
+                                break;
 
-                                                                case 'Transferido':
-                                                                    dynamicClass = "info";
-                                                                    break;
-                                                            }
+                            case 'Transferido':
+                                dynamicClass = "info";
+                                break;
+                        }
 
-                                                            tr+= '<tr class="table-'+ dynamicClass +'" data-lanc-id="'+item.lanc_codigoid+'">' +
-                                                                '<td>'+item.con_referencia+'</td>' +
-                                                                '<td>'+value.com_nome+'</td>' +
-                                                                '<td>'+value.par_numero+'</td>' +
-                                                                '<td>'+portionPrice+'</td>' +
-                                                                '<td><b class="badge badge-'+ dynamicClass +'">'+ value.par_status +'</b></td>' +
-                                                                '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'+value.par_codigoid+'"/></td>' +
-                                                                '</tr>';
-                                                        });
+                        tr += '<tr class="table-' + dynamicClass + '" data-lanc-id="' + item.lanc_codigoid + '">' +
+                            '<td>' + item.con_referencia + '</td>' +
+                            '<td>' + value.com_nome + '</td>' +
+                            '<td>' + value.par_numero + '</td>' +
+                            '<td>' + portionPrice + '</td>' +
+                            '<td><b class="badge badge-' + dynamicClass + '">' + value.par_status + '</b></td>' +
+                            '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="' + value.par_codigoid + '"/></td>' +
+                            '</tr>';
+                    });
 
 
 
-                                            tr +=  '</tbody>'+
-                                                '</table>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</li>\n' +
+                    tr += '</tbody>' +
+                        '</table>' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>\n' +
 
-                                '</ul>' +
-                            '</td>' +
+                        '</ul>' +
+                        '</td>' +
                         '</tr>';
 
 
                 });
-                setTimeout(function(){
+                setTimeout(function () {
                     $('#tableCovenants tbody').append(tr);
                 }, 2000);
             }
         });
 
     });
+
+
+
+
+
 });

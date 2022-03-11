@@ -2424,3 +2424,69 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   color: #FF2222 !important;
   font-weight: bold;
 }
+
+.or-hr {
+  width: 100%;
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.or-hr span {
+  border-top: solid 1px #ccc;
+  width: 100%;
+}
+.or-hr span:last-child {
+  margin: 10px 0px 0px 10px;
+}
+.or-hr span:first-child {
+  margin: 10px 10px 0px 0px;
+}
+
+.drag-and-drop-div {
+  width: 100%;
+  display: block;
+  height: 100px;
+  border: dashed 2px #CCC;
+}
+.drag-and-drop-div span {
+  display: block;
+  width: 100%;
+  margin-top: 40px;
+  text-align: center;
+  color: #CCC;
+  font-weight: 500;
+}
+
+.input-file-drag {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.input-file-drag input[type="file"] {
+  display: none;
+}
+
+.input-file-drag input[type="text"]  {
+  line-height: 30px;
+  height: 30px;
+  border: 1px solid #A7A7A7;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 15px;
+  vertical-align: middle;
+  width: 300px;
+  cursor: move;
+}
+
+.input-file-drag button {
+  border: none;
+  box-sizing: border-box;
+  padding: 2px 10px;
+  background-color: #4493c7;
+  color: #FFF;
+  height: 32px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+

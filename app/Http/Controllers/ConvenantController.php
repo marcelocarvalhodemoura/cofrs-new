@@ -359,65 +359,85 @@ class ConvenantController extends Controller
 
     }
 
+    public static function verifyFile($request){
+        $responseData = "";
+
+        if($request->hasFile('file')){
+            // se enviou o arquivo
+            if($request->file->isValid()){
+                //se o arquivo é válido
+                if($request->file->extension() != 'xlsx'){
+                    //extensão inválida
+                    $responseData = [
+                        'status' => 'warning',
+                        'msg' => 'Envie um arquivo .xlsx ',
+                    ];    
+                    }
+            } else {
+                $responseData = [
+                    'status' => 'warning',
+                    'msg' => 'Arquivo inválido!',
+                ];    
+            }
+        } else {
+            $responseData = [
+                'status' => 'warning',
+                'msg' => 'Envie um arquivo!',
+            ];
+        }
+
+        return $responseData;
+    }
+
     /**
      * File Process
      * @param Request $request
      * @return JsonResponse
      */
     public function storeMonthlyPayment(Request $request)
-    {
+    {  
+        $verify = $this->verifyFile($request);
 
-        if($request->massive === "convenio"){
+        if($verify == ""){
+            die('ok');
+            if($request->massive == "convenio"){
 
-            $process = self::convenantsProcessed($request->file);
+                $process = self::convenantsProcessed($request->file);
 
-            if($process == 'success'){
-                $responseData = [
-                    'status' => 'success',
-                    'msg' => 'Arquivo de Convênios processado com sucesso!',
-                ];
+                if($process == 'success'){
+                    $responseData = [
+                        'status' => 'success',
+                        'msg' => 'Arquivo de Convênios processado com sucesso!',
+                    ];
 
-                return response()->json([$responseData], 200);
-            }else{
-                $responseData = [
-                    'status' => 'warning',
-                    'msg' => 'Arquivo Inválido!',
-                ];
+                    return response()->json([$responseData], 200);
+                } else {
+                    $responseData = [
+                        'status' => 'warning',
+                        'msg' => 'Arquivo Inválido!',
+                    ];
 
-                return response()->json([$responseData], 200);
-            }
+                    return response()->json([$responseData], 200);
+                }
 
-        }else if($request->massive === "associado"){
+            } else if($request->massive == "associado"){
 
-            $process = self::associateProcessed($request->file);
+                $process = self::associateProcessed($request->file);
 
-            if($process == true){
-                $responseData = [
-                    'status' => 'success',
-                    'msg' => 'Arquivo de Convênios processado com sucesso!',
-                ];
+                if($process == true){
+                    $responseData = [
+                        'status' => 'success',
+                        'msg' => 'Arquivo de Convênios processado com sucesso!',
+                    ];
 
-                return response()->json([$responseData], 200);
-            }else{
-                $responseData = [
-                    'status' => 'warning',
-                    'msg' => 'Arquivo Inválido!',
-                ];
-
-                return response()->json([$responseData], 200);
-            }
-
-        }else{
-
-            $responseData = [
-                'status' => 'warning',
-                'msg' => 'Informe o tipo e envie arquivo válido!',
-            ];
-
-            return response()->json([$responseData], 200);
+                    return response()->json([$responseData], 200);
+                }
+            } 
+        }else {
+            $responseData = $verify;
         }
 
-
+        return response()->json([$responseData], 200);
     }
 
 
