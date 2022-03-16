@@ -73,7 +73,7 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled " id="covenants-kit" data-parent="#accordionExample">
-                    <li class="active">
+                    <li class="">
                         <a href="/covenants">Conveniados</a>
                     </li>
                     <li class="">
