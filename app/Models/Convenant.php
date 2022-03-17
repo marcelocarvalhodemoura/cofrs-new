@@ -14,7 +14,7 @@ class Convenant extends Model
     protected $fillable = [
         'id',
         'lanc_valortotal',
-        'lanc_numeroparcela',
+        'lanc_numerodeparcela',
         'lanc_datavencimento',
         'lanc_valorparcela',
         'con_codigoid',

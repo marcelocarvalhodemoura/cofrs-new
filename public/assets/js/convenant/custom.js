@@ -104,51 +104,6 @@ $(document).ready(function () {
     });
 
 
-    var uploadObj = $("#fileuploader").uploadFile({
-        url: '/convenants/monthly/add',
-        fileName: "file",
-        formData: { '_token': $('input[name="_token"]').val() },
-        onSelect: function (files) {
-            if (!$("input[name=massive]:checked").val()) {
-                alert($("input[name=massive]:checked").val());
-                uploadObj.cancelAll();
-                uploadObj.reset();
-            } else {
-                uploadObj.startUpload();
-            }
-        },
-        onSuccess: function (files, data, xhr, pd) {
-            //console.log(data);
-            /* Retorno do PHP */
-            uploadObj.reset();
-            let title;
-            if (data[0].status === 'success') {
-                title = 'Bom trabalho!';
-                $('#monthlyPayment').modal('hide');
-            } else {
-                title = 'Atenção!';
-            }
-            swal({
-                title: title,
-                text: data[0].msg,
-                type: data[0].status,
-                confirmButtonClass: 'btn btn-success',
-            });
-        },
-        autoSubmit: false,
-        multiple: false,
-        dragDrop: true,
-        showDelete: false,
-        showCancel: false,
-        maxFileCount: 1,
-        acceptFiles: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        showFileCounter: false,
-        uploadStr: 'Clique ou arraste o arquivo aqui',
-        dragDropStr: 'Clique ou arraste o arquivo aqui',
-        extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
-        maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
-    });
-
 
     /**
      * Install Payment
@@ -615,3 +570,51 @@ $(document).ready(function () {
 
 
 });
+
+function loadUpload() {
+    var uploadObj = $("#fileuploader").uploadFile({
+        url: '/convenants/monthly/add',
+        fileName: "file",
+        formData: { '_token': $('input[name="_token"]').val(), 'massive': $("input[name=massive]:checked").val() },
+        autoSubmit: true,
+        /*
+        onSelect: function (files) {
+            if (!$("input[name=massive]:checked").val()) {
+                alert($("input[name=massive]:checked").val());
+                uploadObj.cancelAll();
+                uploadObj.reset();
+            } else {
+                uploadObj.startUpload();
+            }
+        },
+        */
+        onSuccess: function (files, data, xhr, pd) {
+            //console.log(data);
+            /* Retorno do PHP */
+            uploadObj.reset();
+            if (data[0].status === 'success') {
+                $('#monthlyPayment').modal('hide');
+                $('#retorno').html('');
+                swal({
+                    title: 'Bom trabalho!',
+                    text: data[0].msg,
+                    type: data[0].status,
+                    confirmButtonClass: 'btn btn-success',
+                });
+            } else {
+                $('#retorno').html(data[0].msg);
+            }
+        },
+        multiple: false,
+        dragDrop: true,
+        showDelete: false,
+        showCancel: false,
+        maxFileCount: 1,
+        acceptFiles: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        showFileCounter: false,
+        uploadStr: 'Clique ou arraste o arquivo aqui',
+        dragDropStr: 'Clique ou arraste o arquivo aqui',
+        extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
+        maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
+    });
+}

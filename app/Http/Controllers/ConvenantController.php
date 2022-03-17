@@ -22,6 +22,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use DateTime;
+use DateInterval;
 
 /**
  *
@@ -287,7 +289,76 @@ class ConvenantController extends Controller
     {
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        $retorno = "";
+        // fase de validação
+        foreach ($sheetData as $line => $content){
+            $erro = "";
+            if($content['A'] == "" &&
+                $content['B'] == "" &&
+                $content['C'] == "" &&
+                $content['D'] == "" &&
+                $content['E'] == "" &&
+                $content['F'] == "" &&
+                $content['G'] == "" ){
+                    continue;
+                }
+            if($content['A'] !== 'ID'){
+                $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
+                if(!isset($dataAssociado[0]['assoc_nome'])){
+                    $erro .= "- Associado não localizado;<br />";
+                } elseif($dataAssociado[0]['assoc_contrato'] != ""){
+                    $erro .= "- Associado já possui um contrato;<br />";
+                }
 
+                $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
+                if(!isset($dataConvenio[0]['con_nome'])){
+                    $erro .= "- Convênio inválido;<br />";
+                }
+
+                if(!is_int($content['D']) || !$content['D'] > 0){
+                    $erro .= "- Número de parcelas é inválido;<br />";
+                }
+
+                if(!is_numeric($content['E']) || !$content['E'] > 0){
+                    $erro .= "- Valor da parcela inválido;<br />";
+                }
+
+                $dt = explode('/',strval($content['F']));
+                if(!is_array($dt)){
+                    $erro .= $dt."- Data de início inválida;<br />";
+                } else {
+                    if(strlen($dt[0]) < 2){
+                        $dt[0] = '0'.$dt[0];
+                    }
+                    if(strlen($dt[1]) < 2){
+                        $dt[1] = '0'.$dt[1];
+                    }
+                    $data = $dt[1].'/'.$dt[0]. '/'. $dt[2];
+                    $d = DateTime::createFromFormat('d/m/Y', $data);
+                    if(!$d || $d->format('d/m/Y') != $data){
+                        $erro .= $data."- Data de início inválida;<br />";
+                    }
+                }
+
+                if($content['G'] == ""){
+                    $erro .= "- Contrato inválido;<br />";
+                }
+
+                
+
+                //se teve algum erro, registra para o retorno
+                if($erro != ""){
+                    $retorno .= "<strong>Linha ".$line.":</strong><br />".$erro;
+                }
+            }
+        }
+        
+        if($retorno != ""){
+            return $retorno;
+            die;
+        }
+
+        // fase de armazenamento
         foreach ($sheetData as $content){
             if($content['A'] !== 'ID'){
 
@@ -297,43 +368,47 @@ class ConvenantController extends Controller
                     $valorTotal = intval($content['E']) * intval($content['D']);
 
                     $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
-//                    $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', 'Teste')->get();
 
-                    $dataExplodida = explode('/', $content['F']);
-
-                    $dataExplodida[1] = intval($dataExplodida[1]) + intval($content['D']);
-
-                    if($dataExplodida[1] > 12){
-                        $dataExplodida[1] = $dataExplodida[1] - intval($content['D']);
+                    $dt = explode('/',strval($content['F']));
+                    if(strlen($dt[0]) < 2){
+                        $dt[0] = '0'.$dt[0];
                     }
+                    if(strlen($dt[1]) < 2){
+                        $dt[1] = '0'.$dt[1];
+                    }
+                    $data = $dt[1].'/'.$dt[0]. '/'. $dt[2];
+
+
+                    $dv = DateTime::createFromFormat('d/m/Y', $data);
+                    $interval = new DateInterval('P'.intval($content['D']).'M');
+                    $dv->add($interval);
 
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
                         'lanc_numerodeparcela' => intval($content['D']),
-                        'lanc_datavencimento' => $dataExplodida[2].'-'.$dataExplodida[1].'-'.$dataExplodida[0],
+                        'lanc_datavencimento' => $dv->format('Y-m-d'),
                         'con_codigoid' => $dataConvenio[0]['id'],
                         'assoc_codigoid' => $dataAssociado[0]['id'],
-                        'est_codigoid' => 2
+                        'est_codigoid' => 2,
                     ]);
 
 
 
                     if($lancamento){
-
+                        //cria um intervalo de 1 mês
+                        $d = DateTime::createFromFormat('d/m/Y', $data);
+                        $interval = new DateInterval('P1M');
                         for ($i = 0; $i < intval($content['D']); $i++){
-                            $mes = $dataExplodida[1] + $i;
+                            //adiciona o intervalo a cara repetição
+                            $d->add($interval);
 
-                            if($mes < 10){
-                                $mes = '0'.$mes;
-                            }
-
-                            $dataCompetencia = Competence::where('com_nome', '=', $mes.'/'.$dataExplodida[2])->get();
+                            $dataCompetencia = Competence::where('com_nome', '=', $d->format('m/Y'))->get();
 
                             $parcelamento = Portion::create([
                                 'par_numero' => $i,
                                 'par_valor' => intval($content['E']),
                                 'lanc_codigoid' => $lancamento->id,
-                                'par_vencimentoparcela' => $dataExplodida[2].'-'.$mes.'-'.$dataExplodida[0],
+                                'par_vencimentoparcela' => $d->format('Y-m-d'),
                                 'par_observacao' => 'Processado através da planilha',
                                 'par_status' => 'Pendente',
                                 'com_codigoid' => $dataCompetencia[0]['id'],
@@ -354,7 +429,7 @@ class ConvenantController extends Controller
 
             return 'success';
         }else{
-            return false;
+            return 'Erro na leitura do arquivo';
         }
 
     }
@@ -362,22 +437,16 @@ class ConvenantController extends Controller
     public static function verifyFile($request){
         $responseData = "";
 
+        //dd($request->file('file'));
+
         if($request->hasFile('file')){
             // se enviou o arquivo
-            if($request->file->isValid()){
-                //se o arquivo é válido
-                if($request->file->extension() != 'xlsx'){
-                    //extensão inválida
-                    $responseData = [
-                        'status' => 'warning',
-                        'msg' => 'Envie um arquivo .xlsx ',
-                    ];    
-                    }
-            } else {
+            if($request->file('file')->getMimeType() != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                //extensão inválida
                 $responseData = [
                     'status' => 'warning',
-                    'msg' => 'Arquivo inválido!',
-                ];    
+                    'msg' => 'Envie um arquivo .xlsx ',
+                ]; 
             }
         } else {
             $responseData = [
@@ -399,7 +468,6 @@ class ConvenantController extends Controller
         $verify = $this->verifyFile($request);
 
         if($verify == ""){
-            die('ok');
             if($request->massive == "convenio"){
 
                 $process = self::convenantsProcessed($request->file);
@@ -414,7 +482,7 @@ class ConvenantController extends Controller
                 } else {
                     $responseData = [
                         'status' => 'warning',
-                        'msg' => 'Arquivo Inválido!',
+                        'msg' => $process,
                     ];
 
                     return response()->json([$responseData], 200);
@@ -435,9 +503,8 @@ class ConvenantController extends Controller
             } 
         }else {
             $responseData = $verify;
+            return response()->json([$responseData], 200);
         }
-
-        return response()->json([$responseData], 200);
     }
 
 

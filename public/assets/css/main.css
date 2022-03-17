@@ -354,6 +354,13 @@ span.red {
   border-radius: 1.875rem !important;
 }
 
+.ajax-file-upload {
+  background-color: transparent !important;
+  color: #888ea8 !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
 select.form-control.form-custom {
   display: inline-block;
   width: 100%;
