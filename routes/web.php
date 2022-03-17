@@ -45,7 +45,7 @@ Route::get('', function () {
 
 Route::post('/auth', [UserController::class, 'authentication']);
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
 

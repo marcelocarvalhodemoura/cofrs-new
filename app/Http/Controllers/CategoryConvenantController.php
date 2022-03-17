@@ -23,6 +23,9 @@ class CategoryConvenantController extends Controller
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
+        if(!in_array(Session::get('typeId'),[1,2,3])){
+            return redirect()->route('dashboard');
+        }
 
         if($request->ajax()){
             try {

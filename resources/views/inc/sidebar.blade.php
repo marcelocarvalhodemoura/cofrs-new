@@ -29,6 +29,7 @@
 
                 </a>
             </li>
+            @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2]))
             <li class="menu ">
                 <a href="/users" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -41,6 +42,7 @@
 
                 </a>
             </li>
+            @endif
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">SERVICOS</div>--}}
             {{-- </li>--}}
@@ -76,14 +78,17 @@
                     <li class="">
                         <a href="/covenants">Conveniados</a>
                     </li>
+                    @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
                     <li class="">
                         <a href="/covenants-type">Tipos de Convênio</a>
                     </li>
                     <li class="">
                         <a href="/categories-convenants">Categorias de Convênio</a>
                     </li>
+                    @endif
                 </ul>
             </li>
+            @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">FINANCEIRO</div>--}}
             {{-- </li>--}}
@@ -118,6 +123,7 @@
                 </ul>
 
             </li>
+
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">RELATORIOS</div>--}}
             {{-- </li>--}}
@@ -133,6 +139,7 @@
                     </div>
                 </a>
             </li>
+            @endif
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">SUPORTE</div>--}}
             {{-- </li>--}}

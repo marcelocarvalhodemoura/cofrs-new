@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use \Yajra\DataTables\DataTables;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Auth;
-
+use App\Helpers;
 
 class UserController extends Controller
 {
@@ -21,7 +21,12 @@ class UserController extends Controller
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
+        if(!in_array(Session::get('typeId'),[1,2])){
+            return redirect()->route('dashboard');
+        }
 
+        //permissions('fff');
+        
         //load all UserTypes
         $userType = UserType::all();
 
@@ -96,6 +101,7 @@ class UserController extends Controller
             'user' => $userModel[0]->usr_usuario,
             'name' => $userModel[0]->usr_nome,
             'type' => $userModel[0]->tipusr_nome,
+            'typeId' => $userModel[0]->tipusr_codigoid,
         ]);
 
 

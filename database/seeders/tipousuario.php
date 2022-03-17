@@ -9,9 +9,9 @@ class tipousuario extends Seeder
 {
     static $dados = [
         [1, 'DEV'],
-        [2, 'ADM'],
-        [5, 'Auxiliar Financeiro'],
-        [6, 'Auxiliar ADM'],
+        [2, 'Administrador'],
+        [3, 'Auxiliar Financeiro'],
+        [4, 'Operador'],
     ];
     /**
      * Run the database seeds.

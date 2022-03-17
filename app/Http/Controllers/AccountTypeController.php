@@ -22,6 +22,9 @@ class AccountTypeController extends Controller
     if (!Session::has('user')) {
       return redirect()->route('login');
     }
+    if(!in_array(Session::get('typeId'),[1,2,3,4])){
+      return redirect()->route('dashboard');
+    }
 
     if ($request->ajax()) {
 
