@@ -881,10 +881,6 @@ code {
   color: #fafafa;
   transition: 500ms;
 }
-#sidebar * {
-  overflow: hidden;
-  white-space: nowrap;
-}
 
 .sidebar-wrapper .profile-info {
   position: relative;
@@ -902,19 +898,13 @@ code {
 }
 .sidebar-wrapper .profile-info .user-info {
   text-align: center;
-  padding: 50px 0 0 0;
-  height: 105px;
+  margin-top: 10px;
 }
 .sidebar-wrapper .profile-info .user-info img {
-  position: absolute;
-  top: 34px;
   border-radius: 50%;
   border: 6px solid rgba(235, 237, 242, 0.6117647059);
   border: 6px solid rgba(68, 94, 222, 0.24);
-  left: 0;
-  right: 0;
-  height: 90px;
-  width: 90px;
+  width: 30%;
   margin-right: auto;
   margin-left: auto;
 }
@@ -973,7 +963,7 @@ code {
 
 #sidebar ul.menu-categories {
   position: relative;
-  padding: 20px 0 20px 0;
+  padding: 0px 0 20px 0;
   margin: auto;
   width: 100%;
   overflow: auto;

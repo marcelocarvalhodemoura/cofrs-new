@@ -5,14 +5,13 @@
 
     <nav id="sidebar">
         <div class="profile-info">
-            <figure class="user-cover-image"></figure>
+            <!--<figure class="user-cover-image"></figure>-->
             <div class="user-info">
-                <img src="{{ asset('assets/images/user.png') }}" alt="avatar" style="height:52%">
-                <h6 class="" style="margin-top: 5px;">{{ \Illuminate\Support\Facades\Session::get('name') }}</h6>
+                <img src="{{ asset('assets/images/user.png') }}" alt="avatar">
+                <h6 class="">{{ \Illuminate\Support\Facades\Session::get('name') }}</h6>
                 <p class="">{{ \Illuminate\Support\Facades\Session::get('type') }}</p>
             </div>
         </div>
-        <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">ACESSO SISTEMA</div>--}}
