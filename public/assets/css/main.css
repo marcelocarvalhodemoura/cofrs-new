@@ -2497,3 +2497,6 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   vertical-align: middle;
 }
 
+.table-hover:not(.table-dark) tbody tr:hover {
+  transform: translateY(-1px);
+}
