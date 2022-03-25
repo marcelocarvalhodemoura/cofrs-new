@@ -1,4 +1,5 @@
 $('.form-content').fadeIn('slow');
+$('#username').focus();
 
 var togglePassword = document.getElementById("toggle-password");
 
