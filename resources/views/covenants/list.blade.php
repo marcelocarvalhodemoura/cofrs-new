@@ -47,7 +47,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label>Competência</label>
                                     <select class="form-control  basic" id="selCompetition">
                                         <option value="">Selecione</option>
@@ -75,6 +75,12 @@
                                         <option value="Transferido">Transferido</option>
                                         <option value="Vencido">Vencido</option>
                                     </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="w-100">Ok</label>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="filtroConvenant()">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    </button>
                                 </div>
                             </div>
                             <div class="row">
