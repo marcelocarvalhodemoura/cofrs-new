@@ -29,6 +29,7 @@ class MigracaoController extends Controller{
 
   public function index(){
     DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+    ini_set('max_execution_time', '-1');
 
 
     //agente
@@ -158,19 +159,15 @@ class MigracaoController extends Controller{
     echo 'Tabela competencia migrada </br />';
 
     //lancamento
-    /*
-    O que é a coluna est_codigoid? Ela correponde ao lanc_contrato do banco antigo?
-
     DB::statement('truncate table lancamento');
-    $sql = "INSERT INTO lancamento (id, lanc_valortotal, lanc_numerodeparcela, lanc_datavencimento, con_codigoid, assoc_codigoid, est_codigoid) values ";
+    $sql = "INSERT INTO lancamento (id, lanc_valortotal, lanc_numerodeparcela, lanc_datavencimento, con_codigoid, assoc_codigoid) values ";
     $dados = $this->origem->query("SELECT * FROM lancamento");
     foreach($dados as $v){
-      $sql .= " (".$v['lanc_codigoid'].", '".$v['lanc_valortotal']."', '".$v['lanc_numerodeparcela']."', '".$v['lanc_datavencimento']."', '".$v['con_codigoid']."', '".$v['assoc_codigoid']."', '".$v['lanc_contrato']."'),";
+      $sql .= " (".$v['lanc_codigoid'].", '".$v['lanc_valortotal']."', '".$v['lanc_numerodeparcela']."', '".$v['lanc_datavencimento']."', '".$v['con_codigoid']."', '".$v['assoc_codigoid']."'),";
     }
     //, '".$v['lanc_valorparcela']."'
     DB::statement(substr($sql,0,-1));
     echo 'Tabela lancamento migrada </br />';
-    */
 
     //parcelamento
     DB::statement('truncate table parcelamento');

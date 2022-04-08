@@ -389,7 +389,7 @@ class ConvenantController extends Controller
                         'lanc_datavencimento' => $dv->format('Y-m-d'),
                         'con_codigoid' => $dataConvenio[0]['id'],
                         'assoc_codigoid' => $dataAssociado[0]['id'],
-                        'est_codigoid' => 2,
+                        //'est_codigoid' => 2,
                     ]);
 
 
@@ -601,7 +601,7 @@ class ConvenantController extends Controller
             $convenantModel->con_codigoid = $request->convenants;
             $convenantModel->lanc_datavencimento = date('Y-m-d', strtotime($request->duedate));;
             $convenantModel->assoc_codigoid = $request->associate;
-            $convenantModel->est_codigoid = 2;
+            //$convenantModel->est_codigoid = 2;
 
             $convenantModel->save();
             $lasInsertIdConvenat = Convenant::latest('id')->first();

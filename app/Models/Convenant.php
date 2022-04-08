@@ -20,6 +20,6 @@ class Convenant extends Model
         'con_codigoid',
         'assoc_codigoid',
         'lanc_contrato',
-        'est_codigoid',
+        //'est_codigoid',
     ];
 }
