@@ -344,7 +344,7 @@ class ConvenantController extends Controller
                     $erro .= "- Contrato inválido;<br />";
                 }
 
-                
+
 
                 //se teve algum erro, registra para o retorno
                 if($erro != ""){
@@ -352,7 +352,7 @@ class ConvenantController extends Controller
                 }
             }
         }
-        
+
         if($retorno != ""){
             return $retorno;
             die;
@@ -446,7 +446,7 @@ class ConvenantController extends Controller
                 $responseData = [
                     'status' => 'warning',
                     'msg' => 'Envie um arquivo .xlsx ',
-                ]; 
+                ];
             }
         } else {
             $responseData = [
@@ -464,7 +464,7 @@ class ConvenantController extends Controller
      * @return JsonResponse
      */
     public function storeMonthlyPayment(Request $request)
-    {  
+    {
         $verify = $this->verifyFile($request);
 
         if($verify == ""){
@@ -500,7 +500,7 @@ class ConvenantController extends Controller
 
                     return response()->json([$responseData], 200);
                 }
-            } 
+            }
         }else {
             $responseData = $verify;
             return response()->json([$responseData], 200);
@@ -659,4 +659,24 @@ class ConvenantController extends Controller
         }
 
     }
+
+    public function remove(Request $request): JsonResponse
+    {
+
+
+        foreach($request->id as $id){
+            try {
+                $portion = Portion::find($id);
+
+                $portion->par_status === 'Pago' ? response()->json(['status'=>'error', 'msg'=> 'Não é possível excluir um lançamento pago']) : $portion->delete();
+
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
+        }
+
+        return response()->json(['status'=>'success', 'msg'=> 'Parcela removida com sucesso']);
+
+    }
+
 }
