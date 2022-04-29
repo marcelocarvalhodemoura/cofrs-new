@@ -29,6 +29,8 @@ class Portion extends Migration
                 $table->boolean('par_habilitasn');
                 $table->softDeletes();
                 $table->timestamps();
+                $table->index('par_habilitasn');
+                $table->index('par_status');
             });
             //gambiarra porque o laravel cria como double
             DB::statement('ALTER TABLE parcelamento CHANGE par_valor par_valor FLOAT');

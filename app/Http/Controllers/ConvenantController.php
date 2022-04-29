@@ -15,6 +15,7 @@ use App\Models\Classification;
 use App\Models\TypeCategoryConvenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use SimpleXLSX;
 use function PHPUnit\Framework\isEmpty;
@@ -742,12 +743,18 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
                         $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
 
-                        $linha[$numeroLinha]['validacao'] = $this->validaArquivoBaixa($linha[$numeroLinha]);
+                        $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
+
+                        foreach($arr_rtn as $k => $v){
+                            $linha[$numeroLinha][$k] = $v;
+                        }
                     }
 
                     if($request->typeArchive == 'tesouro') {
                     }
 
+
+                    
                     $numeroLinha++;
                 }
             
@@ -764,21 +771,23 @@ print_r($linha);
 
     /**
      * @param Array $linha
-     * @return string
+     * @return Array $arr_rtn
      */
     public function validaArquivoBaixa($linha){
+        ini_set('max_execution_time', '-1');
+        $arr_rtn = [];
         // verifica o convênio
         if($linha['convenio'] == 'ipe'){
             // verifica se este contrato existe na competencia selecionada
-            $parcelamento = Portion::select('id')
-            ->join('competencia','competencia.com_codigoid','=','parcelamento.com_codigoid')
-            ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.lanc_codigoid')
-            ->leftJoin('convenio','convenio.con_codigoid','=','lancamento.con_codigoid')
-            ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.assoc_codigoid')
-            ->leftJoin('classificacao','classificacao.cla_codigoid','=','associado.cla_codigoid')
-            ->where('associado.cla_codigoid','=',15)
-            ->where('associado.assoc_ativosn','=',1)
-            ->where('parcelamento.par_habilitasn','=',1)
+            $parcelamento = Portion::select('parcelamento.id')
+            ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+            ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+            ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+            ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+            ->leftJoin('classificacao','classificacao.id','=','associado.id')
+            ->where('associado.cla_codigoid','=','15')
+            ->where('associado.assoc_ativosn','=','1')
+            ->where('parcelamento.par_habilitasn','=','1')
             ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
             ->where('parcelamento.par_status','=','Pendente');
 
@@ -789,7 +798,11 @@ print_r($linha);
                 $parcelamento->where('lancamento.lanc_contrato','=', $linha['contrato']);
             };
 
+            //dd($parcelamento->toSql(),$parcelamento->getBindings());
+
+
             $quantidade = $parcelamento->count();
+            $arr_rtn['parcelas_encontradas'] = $quantidade;
 
             if($quantidade == 0){
 
@@ -801,7 +814,7 @@ print_r($linha);
                         ]);
                 }
 
-                return 'Pago';
+                $arr_rtn['msg'] = 'Pago';
             } else {
                 if (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido" && 
                         $linha['valorRejeitado'] == $linha['valorPagar'] || 
@@ -816,11 +829,11 @@ print_r($linha);
                             ]);
                     }
 
-                    return 'Rejeitado';
+                    $arr_rtn['msg'] = 'Rejeitado';
                 }
             }
         }
-
+        return $arr_rtn;
     }
 
 }

@@ -54,6 +54,8 @@ class Associate extends Migration
             $table->string('assoc_identificacao');
             $table->softDeletes();
             $table->timestamps();
+            $table->index('cla_codigoid');
+            $table->index('assoc_ativosn');
         });
 
     }
