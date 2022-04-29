@@ -659,11 +659,18 @@ function loadUpload() {
     });
 }
 
+function freeCompetence(){
+    $('#selCompetitionDropBill').prop('disabled', false).focus();
+}
 function loadUploadDropBill() {
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',
         fileName: "file",
-        formData: { '_token': $('input[name="_token"]').val(), 'selCompetitionDropBill': $('#selCompetitionDropBill').val() },
+        formData: { 
+                '_token': $('input[name="_token"]').val(), 
+                'typeArchive': $('input[name="typeArchive"]').val(), 
+                'selCompetitionDropBill': $('#selCompetitionDropBill').val() 
+            },
         autoSubmit: true,
         onSuccess: function (files, data, xhr, pd) {
             //console.log(data);
