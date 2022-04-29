@@ -110,6 +110,7 @@ Route::get('/convenants/renegotiation/{id}/{id2}', [ConvenantController::class, 
 Route::post('/convenants/remove', [ConvenantController::class, 'remove']);
 Route::get('/convenants/monthly', [ConvenantController::class, 'getMonthlyPayment']);
 Route::post('/convenants/monthly/add', [ConvenantController::class, 'storeMonthlyPayment']);
+Route::post('/convenants/dropBill', [ConvenantController::class, 'dropBill']);
 
 /**
  * Category Convenants

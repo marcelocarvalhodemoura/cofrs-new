@@ -658,3 +658,40 @@ function loadUpload() {
         maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
     });
 }
+
+function loadUploadDropBill() {
+    var uploadObj = $("#fileuploaderDropBill").uploadFile({
+        url: '/convenants/dropBill',
+        fileName: "file",
+        formData: { '_token': $('input[name="_token"]').val(), 'selCompetitionDropBill': $('#selCompetitionDropBill').val() },
+        autoSubmit: true,
+        onSuccess: function (files, data, xhr, pd) {
+            //console.log(data);
+            /* Retorno do PHP */
+            uploadObj.reset();
+            if (data[0].status === 'success') {
+                $('#convenantModalUploadFiles').modal('hide');
+                $('#retornoDropBill').html('');
+                swal({
+                    title: 'Bom trabalho!',
+                    text: data[0].msg,
+                    type: data[0].status,
+                    confirmButtonClass: 'btn btn-success',
+                });
+            } else {
+                $('#retornoDropBill').html(data[0].msg);
+            }
+        },
+        multiple: false,
+        dragDrop: true,
+        showDelete: false,
+        showCancel: false,
+        maxFileCount: 1,
+        acceptFiles: "text/plain",
+        showFileCounter: false,
+        uploadStr: 'Clique ou arraste o arquivo aqui',
+        dragDropStr: 'Clique ou arraste o arquivo aqui',
+        extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
+        maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
+    });
+}

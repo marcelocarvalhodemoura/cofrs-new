@@ -41,8 +41,10 @@ class ConvenantController extends Controller
         }
 
         $associateList = Associate::orderBy('assoc_nome','asc')->get();
-        $competitionList = Competence::all();
+        $competitionList = Competence::orderBy('com_datainicio','desc')->get();
         $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
+
+        $currentCompetence = date('m/Y');
 
 
         $data = [
@@ -51,6 +53,7 @@ class ConvenantController extends Controller
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
             'alt_menu' => 0,
+            'currentCompetence' => $currentCompetence,
         ];
 
         $lists = [
@@ -677,6 +680,43 @@ class ConvenantController extends Controller
 
         return response()->json(['status'=>'success', 'msg'=> 'Parcela removida com sucesso']);
 
+    }
+
+    public function dropBill(Request $request){
+        $responseData = "";
+
+        if($request->hasFile('file')){
+            // se enviou o arquivo
+            if($request->file('file')->getMimeType() != 'text/plain'){
+                //extensão inválida
+                $responseData = [
+                    'status' => 'warning',
+                    'msg' => 'Envie um arquivo .txt ',
+                ];
+            }
+        } else {
+            $responseData = [
+                'status' => 'warning',
+                'msg' => 'Envie um arquivo!',
+            ];
+        }
+
+        if($responseData == ""){
+            $arquivo = fopen($request->file('file'), "r");
+
+            if($arquivo) {
+                $numeroLinha = 0;
+                $competenciaFormatada = $_POST['selCompetitionDropBill'];
+                $competenciaExplodida = explode("/", $competenciaFormatada);
+                
+
+            }else {
+                return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
+            }
+
+        }else{
+            return response()->json([$responseData], 200);
+        }
     }
 
 }
