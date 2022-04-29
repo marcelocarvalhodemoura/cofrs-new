@@ -23,6 +23,7 @@ class Convenant extends Migration
             $table->integer('con_codigoid');
             $table->integer('assoc_codigoid');
             //$table->integer('est_codigoid', false, false);
+            $table->string('lanc_contrato', 255);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -41,6 +42,6 @@ class Convenant extends Migration
         /**
          * Drop Lancamento Table
          */
-        Schema::drop('lancamento');
+        Schema::dropIfExists('lancamento');
     }
 }
