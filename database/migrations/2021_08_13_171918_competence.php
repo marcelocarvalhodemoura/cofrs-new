@@ -22,6 +22,7 @@ class Competence extends Migration
                 $table->date('com_datafinal');
                 $table->string('com_nome', 45);
                 $table->timestamps();
+                $table->index('com_nome');
             });
 
     }

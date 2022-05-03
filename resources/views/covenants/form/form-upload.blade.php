@@ -1,22 +1,32 @@
-<form class="text-left">
+<form class="text-left" id="">
+@csrf
     <div class="form-row">
-        <div class="col-md-12">
-            <div class="custom-file-container" data-upload-id="mySecondImage">
-                <label class="left">Upload de leitura de arquivo <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
-                <label class="custom-file-container__custom-file" >
-
-                        <input type="file" name="file" id="file" class="custom-file-container__custom-file__custom-file-input">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-                        <span class="custom-file-container__custom-file__custom-file-control"></span>
-
-                </label>
-                <div class="custom-file-container__image-preview"></div>
+        <div class="col-md-12 mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="typeArchive" id="typeArchive1" value="ipe" onclick="freeCompetence()" />
+                <label class="form-check-label" for="massive1">IPE</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="typeArchive" id="typeArchive2" value="tesouro" onclick="freeCompetence()" />
+                <label class="form-check-label" for="massive2">Tesouro</label>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>Limpar</button>
-        <button class="btn btn-primary" id="btnSave" type="submit">Salvar</button>
+        <div class="col-md-12 mb-3">
+            <label>Competência</label>
+            <select class="form-control" id="selCompetitionDropBill" onchange="loadUploadDropBill()" disabled>
+                <option value="" selected disabled>Selecione</option>
+                @foreach( $competitionList as $com )
+                    <option value="{{ $com->com_nome }}" <?php if($com->com_nome == $currentCompetence) echo 'selected'; ?> >{{ $com->com_nome }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-12 mb-3">
+            <div id="fileuploaderDropBill"></div>
+            <div id="retornoDropBill"></div>
+        </div>
     </div>
 </form>
+<script>
+</script>
+
 

@@ -17,6 +17,7 @@ use App\Models\TypeCategoryConvenant;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use SimpleXLSX;
 use function PHPUnit\Framework\isEmpty;
@@ -43,8 +44,10 @@ class ConvenantController extends Controller
 
 
         $associateList = Associate::orderBy('assoc_nome','asc')->get();
-        $competitionList = Competence::all();
+        $competitionList = Competence::orderBy('com_datainicio','desc')->get();
         $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
+
+        $currentCompetence = date('m/Y');
 
 
         $data = [
@@ -53,6 +56,7 @@ class ConvenantController extends Controller
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
             'alt_menu' => 0,
+            'currentCompetence' => $currentCompetence,
         ];
 
         $lists = [
@@ -846,6 +850,159 @@ class ConvenantController extends Controller
 
         return response()->json(['status'=>'success', 'msg'=> 'Parcela removida com sucesso']);
 
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dropBill(Request $request){
+        $responseData = "";
+
+        if($request->hasFile('file')){
+            // se enviou o arquivo
+            if($request->file('file')->getMimeType() != 'text/plain'){
+                //extensão inválida
+                $responseData = [
+                    'status' => 'warning',
+                    'msg' => 'Envie um arquivo .txt ',
+                ];
+            }
+        } else {
+            $responseData = [
+                'status' => 'warning',
+                'msg' => 'Envie um arquivo!',
+            ];
+        }
+
+        if($responseData == ""){
+            $ponteiro = fopen($request->file('file'), "r");
+
+            if($ponteiro) {
+                $numeroLinha = 0;
+                $competenciaFormatada = $request->selCompetitionDropBill;
+                $competenciaExplodida = explode("/", $competenciaFormatada);
+                $linha = [];
+
+                //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
+                while (!feof($ponteiro)) {
+                    $ln = fgets($ponteiro, 4096);
+                    $linha[$numeroLinha]['convenio'] = $request->typeArchive;
+                    $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
+                    $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
+
+                    if($request->typeArchive == 'ipe') {
+
+                        $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 8);
+                        $linha[$numeroLinha]['referencia'] = substr($ln, 8, 2);
+                        $linha[$numeroLinha]['pensionista'] = substr($ln, 10, 2);
+                        $linha[$numeroLinha]['rubrica'] = substr($ln, 12, 3);
+                        $linha[$numeroLinha]['especie'] = substr($ln, 15, 20);
+                        $linha[$numeroLinha]['dataTermino'] = substr($ln, 35, 6);
+                        $linha[$numeroLinha]['valorPagar'] = substr($ln, 41, 9);
+                        $linha[$numeroLinha]['valorDescontatoEmFolha'] = substr($ln, 50, 9);
+                        $linha[$numeroLinha]['valorRejeitado'] = substr($ln, 59, 9);
+                        $linha[$numeroLinha]['situacao'] = substr($ln, 68, 30);
+                        $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 24);
+                        $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
+                        $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
+                        $linha[$numeroLinha]['contrato'] = substr($ln, 134, 40);
+                        $linha[$numeroLinha]['contatoFormatado'] = substr($ln, 134, 15);//parte do contrato
+                        $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
+                        $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
+                        $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
+
+                        $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
+
+                        foreach($arr_rtn as $k => $v){
+                            $linha[$numeroLinha][$k] = $v;
+                        }
+                    }
+
+                    if($request->typeArchive == 'tesouro') {
+                    }
+
+
+                    
+                    $numeroLinha++;
+                }
+            
+print_r($linha);
+
+            }else {
+                return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
+            }
+
+        }else{
+            return response()->json([$responseData], 200);
+        }
+    }
+
+    /**
+     * @param Array $linha
+     * @return Array $arr_rtn
+     */
+    public function validaArquivoBaixa($linha){
+        ini_set('max_execution_time', '-1');
+        $arr_rtn = [];
+        // verifica o convênio
+        if($linha['convenio'] == 'ipe'){
+            // verifica se este contrato existe na competencia selecionada
+            $parcelamento = Portion::select('parcelamento.id')
+            ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+            ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+            ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+            ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+            ->leftJoin('classificacao','classificacao.id','=','associado.id')
+            ->where('associado.cla_codigoid','=','15')
+            ->where('associado.assoc_ativosn','=','1')
+            ->where('parcelamento.par_habilitasn','=','1')
+            ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
+            ->where('parcelamento.par_status','=','Pendente');
+
+            if($linha['contatoFormatado'] == "CTR_IPERGS_MENS"){
+                $parcelamento->where('associado.assoc_contrato','=', $linha['contrato'])
+                            ->where('convenio.con_referencia','=',"MENSALIDADE");
+            }else{
+                $parcelamento->where('lancamento.lanc_contrato','=', $linha['contrato']);
+            };
+
+            //dd($parcelamento->toSql(),$parcelamento->getBindings());
+
+
+            $quantidade = $parcelamento->count();
+            $arr_rtn['parcelas_encontradas'] = $quantidade;
+
+            if($quantidade == 0){
+
+                $parcelas = $parcelamento->get();
+                foreach ($parcelas as $parc){
+                    Portion::where('id', $parc->id)
+                        ->update([
+                            'par_status' => 'Pago'
+                        ]);
+                }
+
+                $arr_rtn['msg'] = 'Pago';
+            } else {
+                if (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido" && 
+                        $linha['valorRejeitado'] == $linha['valorPagar'] || 
+                        trim($linha['motivoRejeicaoEsquerda']) == "Obito" && 
+                        $linha['valorRejeitado'] == $linha['valorPagar']) {
+
+                    $parcelas = $parcelamento->get();
+                    foreach ($parcelas as $parc){
+                        Portion::where('id', $parc->id)
+                            ->update([
+                                'par_status' => 'Vencido'
+                            ]);
+                    }
+
+                    $arr_rtn['msg'] = 'Rejeitado';
+                }
+            }
+        }
+        return $arr_rtn;
     }
 
 }

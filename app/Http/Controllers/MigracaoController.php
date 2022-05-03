@@ -164,10 +164,10 @@ class MigracaoController extends Controller{
 
     //lancamento
     DB::statement('truncate table lancamento');
-    $sql = "INSERT INTO lancamento (id, lanc_valortotal, lanc_numerodeparcela, lanc_datavencimento, con_codigoid, assoc_codigoid) values ";
+    $sql = "INSERT INTO lancamento (id, lanc_valortotal, lanc_numerodeparcela, lanc_datavencimento, con_codigoid, assoc_codigoid, lanc_contrato) values ";
     $dados = $this->origem->query("SELECT * FROM lancamento");
     foreach($dados as $v){
-      $sql .= " (".$v['lanc_codigoid'].", '".$v['lanc_valortotal']."', '".$v['lanc_numerodeparcela']."', '".$v['lanc_datavencimento']."', '".$v['con_codigoid']."', '".$v['assoc_codigoid']."'),";
+      $sql .= " (".$v['lanc_codigoid'].", '".$v['lanc_valortotal']."', '".$v['lanc_numerodeparcela']."', '".$v['lanc_datavencimento']."', '".$v['con_codigoid']."', '".$v['assoc_codigoid']."', '".$v['lanc_contrato']."'),";
     }
     //, '".$v['lanc_valorparcela']."'
     DB::statement(substr($sql,0,-1));
