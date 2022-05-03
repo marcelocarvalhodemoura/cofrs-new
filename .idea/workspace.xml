@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/arquivo.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/covenants/modal/download-file.view.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MigracaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MigracaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/filesystems.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/filesystems.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/covenants/modal/delete.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/modal/delete.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/form/form-download.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/form/form-download.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -311,7 +314,9 @@
       <workItem from="1643983252355" duration="2099000" />
       <workItem from="1645796039829" duration="6798000" />
       <workItem from="1649637661881" duration="246000" />
-      <workItem from="1650130937117" duration="5233000" />
+      <workItem from="1650130937117" duration="5687000" />
+      <workItem from="1650282226961" duration="34000" />
+      <workItem from="1651239371935" duration="41401000" />
     </task>
     <servers />
   </component>
