@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\Agreement;
 use App\Models\Associate;
 
@@ -13,6 +13,8 @@ use App\Models\Typeassociate;
 use App\Models\Classification;
 
 use App\Models\TypeCategoryConvenant;
+
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +22,8 @@ use Mockery\Exception;
 use SimpleXLSX;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
+use File;
+
 use DateTime;
 use DateInterval;
 
@@ -40,6 +41,7 @@ class ConvenantController extends Controller
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
+
 
         $associateList = Associate::orderBy('assoc_nome','asc')->get();
         $competitionList = Competence::orderBy('com_datainicio','desc')->get();
@@ -65,6 +67,172 @@ class ConvenantController extends Controller
 
         return view('covenants.list', $lists)->with($data);
     }
+
+    public function createFile(Request $request)
+    {
+        Storage::disk('local')->delete('example.txt');
+
+        if($request->company[0] === "Ipe"){
+
+            //Build Title File
+            $titleFile = str_pad('H000000000000000CCDRPP677', 39, " ", STR_PAD_RIGHT);
+            $complementTitle = str_pad($request->monthCompetence, 67,"0", STR_PAD_RIGHT );
+            //Header file
+            $contentFile = $titleFile . $request->yearCompetence . $complementTitle . "\r\n";
+
+            //Verify how reference checked
+            foreach($request->convenants as  $typeConvenant) {
+                // Validate Diversos reference
+                if($typeConvenant === "DIVERSOS"){
+                    // Return Sql Diversos
+                    $convenantDiversoAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'DIVERSOS');
+
+                    //List Diversos
+                    foreach ($convenantDiversoAgroup as $convenantDiverso){
+
+                        $contract = str_pad($convenantDiverso->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $reference = str_pad($convenantDiverso->con_referencia, 20, " ", STR_PAD_RIGHT);
+
+                        //Format money to 2 decimal
+                        $diversosTotal = number_format($convenantDiverso->valor_total_diversos, 2, '.', '');
+                        $diversosTotal = explode('.', $diversosTotal);
+
+                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+
+//                        $bigestDate = explode("-", $convenantDiverso->datamaior);
+
+                        $contentFile .= "D".trim($convenantDiverso->assoc_matricula).$reference.$contract.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
+
+
+                    }
+                }
+
+                // Validate Monthly Payment
+                if($typeConvenant === "MENSALIDADE"){
+                    //Return Sql Monthly Payment
+                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE');
+                    //List Monthly Payment
+                    foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
+
+                        $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
+                        //Format money to 2 decimal
+                        $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
+                        $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
+
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+
+                        $contentFile .= "D".trim($convenantMonthlyPayment->assoc_matricula).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+
+                    }//end to Foreach Monthly Payment
+                }
+
+                if($typeConvenant === 'EMPRESTIMO'){
+                    $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO');
+                    //List Monthly Payment
+                    foreach($loanConvenant as $loan){
+
+                        $contractMonthPay = str_pad($loan->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT);
+                        //Format money to 2 decimal
+                        $monthlyPaymentTotal = number_format($convenantMonthlyPayment->valor_total_emprestimo, 2, '.', '');
+                        $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
+
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+
+                        $contentFile .= "D".trim($loan->assoc_matricula).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+
+                    }//end to Foreach Monthly Payment
+                }
+
+
+            }
+
+        } else {
+            echo "tesouro";
+        }
+
+        Storage::disk('local')->put('example.txt', $contentFile);
+
+
+        return Storage::disk('local')->get('example.txt');
+
+    }
+
+    private function typeReferenceAgrouped($competenceName, $reference)
+    {
+
+        switch ($reference){
+            case 'MENSALIDADE':
+//                dd($reference);
+                $referenceSql = Portion::select('*')
+                    ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                    ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+                    ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+                    ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                    ->where('com_nome', '=', $competenceName)
+                    ->where('con_referencia', '=', $reference)
+                    ->orderBy('assoc_matricula')
+                    ->get();
+                break;
+
+            case 'DIVERSOS':
+//                dd($reference);
+                $referenceSql =Portion::select('*')
+                    ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+                    ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                    ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                    ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+                    ->where('cla_codigoid', '=', 15)
+                    ->where('com_nome', '=', $competenceName)
+                    ->where('con_referencia', '=', $reference)
+                    ->selectRaw('SUM(par_valor) as valor_total_diversos')
+                    ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
+                    ->groupBy('assoc_matricula')
+                    ->get();
+                break;
+            case 'EMPRESTIMO':
+                $referenceSql =Portion::select('*')
+                    ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+                    ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                    ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                    ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+                    ->where('cla_codigoid', '=', 15)
+                    ->where('com_nome', '=', $competenceName)
+                    ->where('con_referencia', '=', $reference)
+                    ->selectRaw('SUM(par_valor) as valor_total_emprestimo')
+                    ->groupBy('assoc_matricula')
+                    ->get();
+                break;
+        }
+//        if($reference === 'MENSALIDADE'){
+//            return Portion::select('*')
+//                ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+//                ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+//                ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+//                ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+//                ->where('com_nome', '=', $competenceName)
+//                ->where('con_referencia', '=', $reference)
+//                ->orderBy('assoc_matricula')
+//                ->get();
+//
+//        }
+
+//        return Portion::select('*')
+//            ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+//            ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+//            ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+//            ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+//            ->where('cla_codigoid', '=', 15)
+//            ->where('com_nome', '=', $competenceName)
+//            ->where('con_referencia', '=', $reference)
+//            ->selectRaw('SUM(par_valor) as valor_total_diversos')
+//            ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
+//            ->groupBy('assoc_matricula')
+//            ->get();
+        return $referenceSql;
+    }
+
 
     public function uploadFile(Request $request)
     {
@@ -163,11 +331,9 @@ class ConvenantController extends Controller
      */
     protected function verifyCompetent($compentence)
     {
-        $competenceList = Competence::where(['com_nome'=>$compentence])->get();
+        $competenceList = Competence::where('com_nome','=', $compentence)->get();
 
         if(isEmpty($competenceList)){
-
-            $competenceModel = new Competence();
 
             $newData = explode('/', $compentence);
 
@@ -180,13 +346,16 @@ class ConvenantController extends Controller
             }
 
             try {
-                $competenceModel->com_nome = $compentence;
-                $competenceModel->com_datainicio = $beginYear.'-'. $beginMouth .'-11';
-                $competenceModel->com_datafinal = $newData[1].'-'.$newData[0].'-10';
-                $competenceModel->save();
 
-                return Competence::where(['com_nome'=>$compentence])->get();
-            }catch (Exception $exception){
+                Competence::firstOrCreate([
+                    'com_nome' => $compentence,
+                    'com_datainicio' => $beginYear.'-'. $beginMouth .'-11',
+                    'com_datafinal' => $newData[1].'-'.$newData[0].'-10',
+                ]);
+
+
+                return Competence::where('com_nome','=', $compentence)->get();
+            }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
 

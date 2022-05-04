@@ -26,7 +26,7 @@ class UserController extends Controller
         }
 
         //permissions('fff');
-        
+
         //load all UserTypes
         $userType = UserType::all();
 

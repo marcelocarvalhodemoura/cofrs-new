@@ -16,18 +16,22 @@ class MigracaoController extends Controller{
 
   private $origem;
 
+
+
   public function __construct(){
     \Config::set("database.connections.cofrs_old", [
       "driver" => "mysql",
-      "host" => "localhost",
-      "database" => "cofrs_old",
-      "username" => "root",
-      "password" => ""
+      "host" => "187.45.196.168",
+      "database" => "cofrs_velho",
+      "username" => "cofrs_velho",
+      "password" => "e2q2d5n6@"
   ]);
     $this->origem = DB::connection('cofrs_old')->getPdo();
   }
 
   public function index(){
+
+    ini_set('memory_limit', "2048M");
     DB::statement('SET FOREIGN_KEY_CHECKS = 0');
     ini_set('max_execution_time', '-1');
 
@@ -106,7 +110,7 @@ class MigracaoController extends Controller{
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela convenio migrada </br />';
-    
+
     //estatus NÃO POSSUI DADOS NA ORIGEM
     //exercicio NÃO POSSUI DADOS NA ORIGEM
     //saldo NÃO POSSUI DADOS NA ORIGEM

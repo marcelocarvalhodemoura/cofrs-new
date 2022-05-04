@@ -103,6 +103,39 @@ $(document).ready(function () {
         });
     });
 
+    /**
+     * Generation
+     */
+    $("#btnCreateFile").on('click', (event)=>{
+       event.preventDefault();
+
+       $.ajax({
+           method:'POST',
+           url: '/convenants/file/create',
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data: $('#formDowloadFile').serialize(),
+           success: file => {
+               var a = document.createElement('a'), blob, url;
+               if (typeof a.download === 'undefined') {
+                   alert('download não suportado pelo navegador');
+               } else {
+                   // criar "arquivo", conteúdo como array e tipo como objeto
+                   blob = new Blob([file], {type: 'text/plain'});
+                   // criar URL para arquivo criado
+                   url = URL.createObjectURL(blob);
+                   a.href = url;
+                   // atribuir nome de download do arquivo
+                   a.download = 'arGeradoTeste.txt';
+                   // fazer download
+                   a.click();
+                   // revogar URL criada
+                   URL.revokeObjectURL(url);
+               }
+           }
+       })
+    });
 
 
     /**
@@ -421,17 +454,17 @@ $(document).ready(function () {
 
 }); //ready
 
+//Remove Portion
     $("#btnRemove").click(()=> {
         const id = new Array();
         let lanc_id = 0;
+
         $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
             //get value in the input
             id.push($(this).val());
             lanc_id = $(this).parent().parent();
 
         });
-
-        console.log(id);
 
         if (id.length === 0) {
             return swal({
