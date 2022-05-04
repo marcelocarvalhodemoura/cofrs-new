@@ -90,7 +90,7 @@ class ConvenantController extends Controller
                     //List Diversos
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
 
-                        $contract = str_pad($convenantDiverso->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $contract = str_pad($convenantDiverso->lanc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($convenantDiverso->con_referencia, 20, " ", STR_PAD_RIGHT);
 
                         //Format money to 2 decimal
@@ -114,7 +114,7 @@ class ConvenantController extends Controller
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
 
-                        $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
@@ -132,7 +132,7 @@ class ConvenantController extends Controller
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
 
-                        $contractMonthPay = str_pad($loan->assoc_matricula, 40, " ", STR_PAD_RIGHT);
+                        $contractMonthPay = str_pad($loan->lanc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($convenantMonthlyPayment->valor_total_emprestimo, 2, '.', '');
@@ -205,31 +205,7 @@ class ConvenantController extends Controller
                     ->get();
                 break;
         }
-//        if($reference === 'MENSALIDADE'){
-//            return Portion::select('*')
-//                ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
-//                ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
-//                ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
-//                ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
-//                ->where('com_nome', '=', $competenceName)
-//                ->where('con_referencia', '=', $reference)
-//                ->orderBy('assoc_matricula')
-//                ->get();
-//
-//        }
 
-//        return Portion::select('*')
-//            ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
-//            ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
-//            ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
-//            ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
-//            ->where('cla_codigoid', '=', 15)
-//            ->where('com_nome', '=', $competenceName)
-//            ->where('con_referencia', '=', $reference)
-//            ->selectRaw('SUM(par_valor) as valor_total_diversos')
-//            ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
-//            ->groupBy('assoc_matricula')
-//            ->get();
         return $referenceSql;
     }
 
@@ -931,16 +907,16 @@ class ConvenantController extends Controller
                     if($linha[$numeroLinha]['msg']){
                         $responseMSG .= 'Linha '.$numeroLinha.': '.$linha[$numeroLinha]['msg'].'<br />';
                     }
-                    
+
                     $numeroLinha++;
                 }
-            
+
                 //print_r($linha);
 
-                // arquivo de diferenças 
+                // arquivo de diferenças
                 if($request->typeArchive == 'ipe') {
                     $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
-                    
+
                     $diferencas = Portion::select('assoc_matricula', 'assoc_contrato', 'lanc_contrato', 'con_referencia', 'par_valor', DB::raw('SUM( par_valor ) AS somatorioparcelas'))
                                 ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
                                 ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
@@ -972,7 +948,7 @@ class ConvenantController extends Controller
 
                 } else if($request->typeArchive == 'tesouro') {
                     $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS - TESOURO \n";
-                    
+
                     $diferencas = Portion::select('id','par_status','assoc_matricula','convenio.con_referencia','assoc_nome')
                                 ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
                                 ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
@@ -994,13 +970,13 @@ class ConvenantController extends Controller
                                 ->update([
                                     'par_status' => 'Vencido'
                                 ]);
-                        }  
+                        }
 
                         $conteudoArquivoDif .= $d->assoc_matricula." ".$d->con_referencia." ".$d->assoc_nome." ".$d->assoc_nome."\n";
                     }
 
                     $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
-                } // fim arquivo de diferenças 
+                } // fim arquivo de diferenças
 
                 // grava o arquivo de diferenças
                 Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
@@ -1089,7 +1065,7 @@ class ConvenantController extends Controller
                         ]);
                 }
             } else {
-                $arr_rtn['msg'] = 'Nenhuma parcela encontrada'; 
+                $arr_rtn['msg'] = 'Nenhuma parcela encontrada';
             }
 
         } // fim arquivo ipe
@@ -1128,14 +1104,14 @@ class ConvenantController extends Controller
                             ]);
                     }
                 } else {
-                    $arr_rtn['msg'] = 'Nenhuma parcela encontrada'; 
+                    $arr_rtn['msg'] = 'Nenhuma parcela encontrada';
                 }
 
             } else {
                 $arr_rtn['msg'] = $linha['mensagemMelhorada'];
             }
 
-            
+
         } // fim arquivo tesouro
 
 
