@@ -656,6 +656,7 @@ function loadUpload() {
         dragDropStr: 'Clique ou arraste o arquivo aqui',
         extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
         maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
+        cancelStr: 'Cancelar',
     });
 }
 
@@ -681,7 +682,7 @@ function loadUploadDropBill() {
                 $('#retornoDropBill').html('');
                 swal({
                     title: 'Bom trabalho!',
-                    text: data[0].msg,
+                    html: data[0].msg,
                     type: data[0].status,
                     confirmButtonClass: 'btn btn-success',
                 });
@@ -700,5 +701,6 @@ function loadUploadDropBill() {
         dragDropStr: 'Clique ou arraste o arquivo aqui',
         extErrorStr: 'Não é permitido esse tipo de arquivo. As extensões permitidas são: ',
         maxFileCountErrorStr: 'Somente um arquivo pode ser enviado de cada vez.',
+        cancelStr: 'Cancelar',
     });
 }

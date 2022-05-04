@@ -689,6 +689,7 @@ class ConvenantController extends Controller
      */
     public function dropBill(Request $request){
         $responseData = "";
+        $tempoInicial = time();
 
         if($request->hasFile('file')){
             // se enviou o arquivo
@@ -714,6 +715,7 @@ class ConvenantController extends Controller
                 $competenciaFormatada = $request->selCompetitionDropBill;
                 $competenciaExplodida = explode("/", $competenciaFormatada);
                 $linha = [];
+                $responseMSG = '';
 
                 //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
                 while (!feof($ponteiro)) {
@@ -723,7 +725,6 @@ class ConvenantController extends Controller
                     $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
 
                     if($request->typeArchive == 'ipe') {
-
                         $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 8);
                         $linha[$numeroLinha]['referencia'] = substr($ln, 8, 2);
                         $linha[$numeroLinha]['pensionista'] = substr($ln, 10, 2);
@@ -742,23 +743,111 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
                         $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
                         $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
-
-                        $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
-
-                        foreach($arr_rtn as $k => $v){
-                            $linha[$numeroLinha][$k] = $v;
-                        }
+                    } else if($request->typeArchive == 'tesouro') {
+                        $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 1);
+                        $linha[$numeroLinha]['matricula'] = substr($ln, 0, 12);
+                        $linha[$numeroLinha]['valordesconto'] = substr($ln, 49, 10);
+                        $linha[$numeroLinha]['referencia'] = substr($ln, 15, 12);
+                        $linha[$numeroLinha]['mensagem'] = substr($ln, 68, 54);
+                        $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
                     }
 
-                    if($request->typeArchive == 'tesouro') {
+                    //verifica os dados do arquivo
+                    $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
+
+                    foreach($arr_rtn as $k => $v){
+                        $linha[$numeroLinha][$k] = $v;
                     }
 
-
+                    if($linha[$numeroLinha]['msg']){
+                        $responseMSG .= 'Linha '.$numeroLinha.': '.$linha[$numeroLinha]['msg'].'<br />';
+                    }
                     
                     $numeroLinha++;
                 }
             
-print_r($linha);
+                //print_r($linha);
+
+                // arquivo de diferenças 
+                if($request->typeArchive == 'ipe') {
+                    $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
+                    
+                    $diferencas = Portion::select('assoc_matricula', 'assoc_contrato', 'lanc_contrato', 'con_referencia', 'par_valor', DB::raw('SUM( par_valor ) AS somatorioparcelas'))
+                                ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                                ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                                ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+                                ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                                ->leftJoin('classificacao','classificacao.id','=','associado.id')
+                                ->where('associado.cla_codigoid','=','15')
+                                ->where('associado.assoc_ativosn','=','1')
+                                ->where('parcelamento.par_habilitasn','=','1')
+                                ->where('competencia.com_nome','=', $competenciaFormatada)
+                                ->whereIn('convenio.con_referencia',["DIVERSOS","MENSALIDADE","EMPRESTIMO"])
+                                ->where('parcelamento.par_status','=',"Vencido")
+                                ->groupBy(DB::raw('IF(convenio.con_referencia IN ("DIVERSOS","EMPRESTIMO"), lanc_contrato, parcelamento.id)'))
+                                ->orderBy('assoc_matricula','asc')
+                                ->get()
+                                ;
+                    //dd($diferencas->toSql(),$diferencas->getBindings());
+                    foreach ($diferencas as $d){
+                        if($d->con_referencia == 'DIVERSOS'){
+                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
+                        }elseif($d->con_referencia == 'MENSALIDADE'){
+                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->assoc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->par_valor,2,'','')."\n";
+                        }elseif($d->con_referencia == 'EMPRESTIMO'){
+                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
+                        }
+                    }
+
+                    $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
+
+                } else if($request->typeArchive == 'tesouro') {
+                    $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS - TESOURO \n";
+                    
+                    $diferencas = Portion::select('id','par_status','assoc_matricula','convenio.con_referencia','assoc_nome')
+                                ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                                ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                                ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+                                ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                                ->leftJoin('classificacao','classificacao.id','=','associado.id')
+                                ->where('parcelamento.par_habilitasn','=','1')
+                                ->where('associado.cla_codigoid','=','18')
+                                ->where('competencia.com_nome','=', $competenciaFormatada)
+                                ->whereIn('parcelamento.par_status',["Vencido","Pendente"])
+                                ->orderBy('associado.assoc_nome','asc')
+                                ->get()
+                                ;
+
+                    //dd($diferencas->toSql(),$diferencas->getBindings());
+                    foreach ($diferencas as $d){
+                        if($d->par_status == 'Pendente'){
+                            Portion::where('id', $parc->id)
+                                ->update([
+                                    'par_status' => 'Vencido'
+                                ]);
+                        }  
+
+                        $conteudoArquivoDif .= $d->assoc_matricula." ".$d->con_referencia." ".$d->assoc_nome." ".$d->assoc_nome."\n";
+                    }
+
+                    $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
+                } // fim arquivo de diferenças 
+
+                // grava o arquivo de diferenças
+                Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
+
+                //$arq = asset('storage/'.$nomeArquivo);
+
+                $tempo = gmdate("H:i:s", (time() - $tempoInicial));
+
+                $responseMSG .= '<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a><br /><small>Processado em '.$tempo.'</small>';
+
+                $responseData = [
+                    'status' => 'success',
+                    'msg' => $responseMSG,
+                ];
+
+                return response()->json([$responseData], 200);
 
             }else {
                 return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
@@ -775,64 +864,112 @@ print_r($linha);
      */
     public function validaArquivoBaixa($linha){
         ini_set('max_execution_time', '-1');
-        $arr_rtn = [];
+        $arr_rtn = [
+            'msg' => '',
+            'parcelas_encontradas' => 0,
+        ];
         // verifica o convênio
         if($linha['convenio'] == 'ipe'){
             // verifica se este contrato existe na competencia selecionada
             $parcelamento = Portion::select('parcelamento.id')
-            ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
-            ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
-            ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
-            ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
-            ->leftJoin('classificacao','classificacao.id','=','associado.id')
-            ->where('associado.cla_codigoid','=','15')
-            ->where('associado.assoc_ativosn','=','1')
-            ->where('parcelamento.par_habilitasn','=','1')
-            ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
-            ->where('parcelamento.par_status','=','Pendente');
+                            ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                            ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                            ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id');
+            //->leftJoin('classificacao','classificacao.id','=','associado.id')
 
             if($linha['contatoFormatado'] == "CTR_IPERGS_MENS"){
-                $parcelamento->where('associado.assoc_contrato','=', $linha['contrato'])
+                $parcelamento->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                            ->where('associado.assoc_contrato','=', $linha['contrato'])
                             ->where('convenio.con_referencia','=',"MENSALIDADE");
             }else{
                 $parcelamento->where('lancamento.lanc_contrato','=', $linha['contrato']);
             };
 
+            $parcelamento->where('associado.cla_codigoid','=','15')
+                        ->where('associado.assoc_ativosn','=','1')
+                        ->where('parcelamento.par_habilitasn','=','1')
+                        ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
+                        ->where('parcelamento.par_status','=','Pendente');
+
             //dd($parcelamento->toSql(),$parcelamento->getBindings());
 
+            // valida o
+            if($linha['valorRejeitado'] == $linha['valorPagar']) {
+                $arr_rtn['msg'] = 'Valor pago não confere';
+                $par_status = 'Pendente';
+            } elseif (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido"){
+                $arr_rtn['msg'] = 'Valor insuficiente';
+                $par_status = 'Vencido';
+            } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Obito"){
+                $arr_rtn['msg'] = 'Óbito';
+                $par_status = 'Vencido';
+            } else {
+                $arr_rtn['msg'] = '';
+                $par_status = 'Pago';
+            }
 
             $quantidade = $parcelamento->count();
             $arr_rtn['parcelas_encontradas'] = $quantidade;
 
             if($quantidade == 0){
-
                 $parcelas = $parcelamento->get();
                 foreach ($parcelas as $parc){
                     Portion::where('id', $parc->id)
                         ->update([
-                            'par_status' => 'Pago'
+                            'par_status' => $par_status
                         ]);
                 }
-
-                $arr_rtn['msg'] = 'Pago';
             } else {
-                if (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido" && 
-                        $linha['valorRejeitado'] == $linha['valorPagar'] || 
-                        trim($linha['motivoRejeicaoEsquerda']) == "Obito" && 
-                        $linha['valorRejeitado'] == $linha['valorPagar']) {
+                $arr_rtn['msg'] = 'Nenhuma parcela encontrada'; 
+            }
 
+        } // fim arquivo ipe
+        if($linha['convenio'] == 'tesouro'){
+            if($linha['mensagemMelhorada'] == ""){
+                $parcelamento = Portion::select('parcelamento.id')
+                                ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                                ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                                ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+                                ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                                ->where('parcelamento.par_habilitasn','=','1')
+                                ->where('associado.assoc_matricula','=', $linha['matricula'])
+                                ->where('associado.assoc_ativosn','=','1')
+                                ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
+                                ->where('parcelamento.par_status','=','Pendente')
+                                ->where('convenio.con_referencia','=',$linha['referencia']);
+
+                if($linha['referencia'] == "SEG MARITIMA") {
+                    $parcelamento->where('associado.cla_codigoid','=','44');
+                } else if($linha['referencia'] == "MENSALIDADE ") {
+                    $parcelamento->where('associado.cla_codigoid','=','42');
+                }
+
+                $quantidade = $parcelamento->count();
+                $arr_rtn['parcelas_encontradas'] = $quantidade;
+
+                $par_status = 'Pago';
+                $arr_rtn['msg'] = '';
+
+                if($quantidade == 0){
                     $parcelas = $parcelamento->get();
                     foreach ($parcelas as $parc){
                         Portion::where('id', $parc->id)
                             ->update([
-                                'par_status' => 'Vencido'
+                                'par_status' => $par_status
                             ]);
                     }
-
-                    $arr_rtn['msg'] = 'Rejeitado';
+                } else {
+                    $arr_rtn['msg'] = 'Nenhuma parcela encontrada'; 
                 }
+
+            } else {
+                $arr_rtn['msg'] = $linha['mensagemMelhorada'];
             }
-        }
+
+            
+        } // fim arquivo tesouro
+
+
         return $arr_rtn;
     }
 
