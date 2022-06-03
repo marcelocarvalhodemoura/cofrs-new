@@ -284,20 +284,18 @@ class ConvenantController extends Controller
      * @return \Illuminate\Http\JsonResponse|void
      */
     public function changePayment(Request $request){
-        $arrayId = $request->id;
 
-        foreach ($arrayId as $id){
+        foreach ($request->id as $id){
             try{
 
-                $affected = self::changeStatusPortion($id, 'Pago');
+                self::changeStatusPortion($id, 'Pago');
 
-                if($affected > 0){
-                    return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
-                }
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
         }
+
+        return response()->json(['status'=>'success', 'msg'=> 'Parcela Quitada com sucesso!']);
 
     }
 
