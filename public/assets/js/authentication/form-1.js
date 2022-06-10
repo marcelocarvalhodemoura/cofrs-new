@@ -31,7 +31,14 @@ $('#formAuth').on('submit', event => {
 
         $('#formAuth').prepend(msg);
       } else {
-        window.location.href = '/dashboard';
+        console.log(response.typeId);
+        /*
+        */
+        if(response.typeId == 4){//se for operador
+          window.location.href = '/associates';
+        } else {
+          window.location.href = '/dashboard';
+        }
       }
 
     }

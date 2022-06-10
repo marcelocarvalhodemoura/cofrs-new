@@ -13,6 +13,7 @@
             </div>
         </div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
+            @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">ACESSO SISTEMA</div>--}}
             {{-- </li>--}}
@@ -28,6 +29,7 @@
 
                 </a>
             </li>
+            @endif
             @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2]))
             <li class="menu ">
                 <a href="/users" aria-expanded="false" class="dropdown-toggle">

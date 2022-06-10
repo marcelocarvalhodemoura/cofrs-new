@@ -107,7 +107,8 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'msg' => ''
+            'msg' => '',
+            'typeId' => $userModel[0]->tipusr_codigoid,
         ]);
     }
 
