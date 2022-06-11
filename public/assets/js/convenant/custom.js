@@ -21,6 +21,8 @@ $(document).ready(function () {
         $("#convenantInstallmentPayment").modal('show');
     });
 
+    hideModels();
+
     $('#btnAddMonthlyPayment').on('click', (event) => {
         event.preventDefault();
         $("#monthlyPayment").modal('show');
@@ -695,7 +697,19 @@ function loadUpload() {
 
 function freeCompetence(){
     $('#selCompetitionDropBill').prop('disabled', false).focus();
+
+    hideModels();
+    if($("input[name=typeArchive]:checked").val() == "ipe"){
+        $("#model_ipe").show();
+    }
+    if($("input[name=typeArchive]:checked").val() == "tesouro"){
+        $("#model_tesouro").show();
+    }
 }
+function hideModels(){
+    $(".models").hide();
+}
+
 function loadUploadDropBill() {
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',

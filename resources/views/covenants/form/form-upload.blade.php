@@ -12,6 +12,10 @@
             </div>
         </div>
         <div class="col-md-12 mb-3">
+            <a id="model_ipe" href="modelo_ipe.txt" target="_blank" class="btn btn-outline-info btn-sm mb-2 models">Arquivo modelo IPE</a>
+            <a id="model_tesouro" href="modelo_tesouro.txt" target="_blank" class="btn btn-outline-info btn-sm mb-2 models">Arquivo modelo Tesouro</a>
+        </div>
+        <div class="col-md-12 mb-3">
             <label>Competência</label>
             <select class="form-control" id="selCompetitionDropBill" onchange="loadUploadDropBill()" disabled>
                 <option value="" selected disabled>Selecione</option>
