@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cofrs-new.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cofrs-new.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/usuario.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/usuario.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/convenant/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/form/form.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,7 +328,13 @@
       <workItem from="1651239371935" duration="42901000" />
       <workItem from="1651670404392" duration="3720000" />
       <workItem from="1653862558699" duration="2774000" />
-      <workItem from="1654275344838" duration="1146000" />
+      <workItem from="1654275344838" duration="1877000" />
+      <workItem from="1654515517891" duration="692000" />
+      <workItem from="1654554821789" duration="2049000" />
+      <workItem from="1655155459691" duration="226000" />
+      <workItem from="1655497904391" duration="13177000" />
+      <workItem from="1655724608678" duration="617000" />
+      <workItem from="1655898397704" duration="1828000" />
     </task>
     <servers />
   </component>

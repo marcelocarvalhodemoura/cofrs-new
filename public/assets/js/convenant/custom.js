@@ -282,16 +282,16 @@ $(document).ready(function () {
 
     $("#portion").prop('disabled', true);
     $("#total").prop('disabled', true);
-    $("#duedate").prop('disabled', true);
+    $("#firstPortion").prop('disabled', true);
     $("#loader1").hide();
     $("#loader2").hide();
 
     $('#number').on('click', () => {
         $("#portion").prop('disabled', false);
-        $("#duedate").prop('disabled', true);
+        $("#firstPortion").prop('disabled', true);
         $("#total").prop('disabled', true);
 
-        $("#duedate").val('');
+        $("#firstPortion").val('');
         $("#total").val('');
 
     });
@@ -309,7 +309,7 @@ $(document).ready(function () {
             total: {
                 required: true,
             },
-            duedate: "required",
+            firstPortion: "required",
 
         },
         messages: {
@@ -318,7 +318,7 @@ $(document).ready(function () {
             number: "Número é um campo obrigatório",
             portion: "Número da parcela é um campo obrigatório",
             total: "Valor Total é campos obrigatório",
-            duedate: "Vencimento final um campo obrigatório"
+            firstPortion: "Parcela inicial é um campo obrigatório"
         },
         errorElement: "span",
         highlight: function () {
@@ -357,62 +357,42 @@ $(document).ready(function () {
     $("#portion").blur(function () {
 
         $("#loader1").fadeIn();
-        $("#loader2").fadeIn();
 
         setTimeout(() => {
 
             $("#loader1").fadeOut();
-            $("#loader2").fadeOut();
 
-            $("#duedate").prop('disabled', false);
+            $("#firstPortion").prop('disabled', false);
             $("#total").prop('disabled', false);
 
-            $("#duedate").fadeIn();
+            $("#firstPortion").fadeIn();
             $("#total").fadeIn();
         }, 2000);
 
 
-        var valorTotal;
+        // var valorTotal;
         var data = new Date();
-        var dia = data.getDate();
+        // var dia = data.getDate();
         var valorFormatado = $(this).val().replace(',', '.');
-        var mes = data.getMonth() + 1;
-        var ano = data.getFullYear();
-        var dataFormatada;
-        var i;
+        // var mes = data.getMonth() + 1;
+        // var ano = data.getFullYear();
+        // var dataFormatada;
+        // var i;
 
         if (valorFormatado > 0 && $("#number").val() > 0) {
             // valorTotalParcelas = ($(this).val() * $("#parcela").val());
             valorTotalParcelas = (valorFormatado * $("#number").val());
-            $("#duedate").val('...');
+
             $("#total").val('...');
 
         } else {
-            $("#duedate").hide();
+
             $("#total").hide();
             return;
         }
 
-        for (i = 0; i < $("#number").val(); i++) {
-            if (mes == 12) {
-                mes = 1;
-                ano = ano + 1;
-
-            } else {
-                mes = mes + 1;
-            }
-        }
-
-        if (mes < 10) {
-            dataFormatada = '10/0' + mes + '/' + ano;
-        } else if (mes > 12) {
-            dataFormatada = '10/' + mes - 12 + '/' + ano;
-        } else {
-            dataFormatada = '10/' + mes + '/' + ano;
-        }
-
         setTimeout(function () {
-            $("#duedate").val(dataFormatada);
+
             $("#total").val(parseFloat(valorTotalParcelas).toFixed(2).replace('.', ','));
         }, 2000);
     });
@@ -714,10 +694,10 @@ function loadUploadDropBill() {
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',
         fileName: "file",
-        formData: { 
-                '_token': $('input[name="_token"]').val(), 
-                'typeArchive': $('input[name="typeArchive"]').val(), 
-                'selCompetitionDropBill': $('#selCompetitionDropBill').val() 
+        formData: {
+                '_token': $('input[name="_token"]').val(),
+                'typeArchive': $('input[name="typeArchive"]').val(),
+                'selCompetitionDropBill': $('#selCompetitionDropBill').val()
             },
         autoSubmit: true,
         onSuccess: function (files, data, xhr, pd) {

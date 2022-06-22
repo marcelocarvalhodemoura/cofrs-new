@@ -741,66 +741,72 @@ class ConvenantController extends Controller
     {
         $convenantModel = new Convenant();
 
+//        dd(12%12);
+
         try {
+
+            // convert date
+            $dateConvert = str_replace("/", "-", $request->firstPortion);
+            $dateConvert =  date('Y-m-d', strtotime($dateConvert));
+
+
+            $currentMonth = explode("-", $dateConvert);
+
+            $monthUpdated = intval($currentMonth[1]) + $request->number;
+            $yearUpdated  = intval($currentMonth[0]);
+
+            if ($monthUpdated > 12) {
+                $yearUpdated++;
+                $monthUpdated = $monthUpdated - 12;
+            }
+
             //create Convenants
             $convenantModel->lanc_valortotal = str_replace(',','.', $request->total);
             $convenantModel->lanc_numerodeparcela = $request->number;
             $convenantModel->con_codigoid = $request->convenants;
-            $convenantModel->lanc_datavencimento = date('Y-m-d', strtotime($request->duedate));;
+            $convenantModel->lanc_datavencimento = $yearUpdated.'-'.$monthUpdated.'-10';
             $convenantModel->assoc_codigoid = $request->associate;
-            //$convenantModel->est_codigoid = 2;
 
             $convenantModel->save();
+
+            //get last insert id to Convenios table
             $lasInsertIdConvenat = Convenant::latest('id')->first();
 
-            try {
+            //create portion
+            for ($i = 1; $request->number >= $i; $i++) {
 
-                $currentMonth = explode("-", date('Y-m-d'));
-
-                $monthUpdated = intval($currentMonth[1]);
-                $yearUpdated  = intval($currentMonth[0]);
-
-                //create portion
-                for ($i = 1; $request->number >= $i; $i++) {
-
-                    $monthUpdated++;
-
-                    if ($monthUpdated > 12) {
-                        $monthUpdated = 01;
-                        $yearUpdated++;
+                    if($currentMonth[1] > 12) {
+                        $currentMonth[0]++;
+                        $currentMonth[1] = $currentMonth[1] - 12;
                     }
 
-                    if ($monthUpdated < 10) {
-                        $monthUpdated = "0".$monthUpdated;
+                    if($currentMonth[1] < 10){
+                        $currentMonth[1] = str_pad($currentMonth[1],2, 0, STR_PAD_LEFT);
                     }
 
-                    $competenceID = Competence::where('com_nome', '=', $monthUpdated.'/'.$yearUpdated)->get();
+                    //get competencia redister id
+                    $competenceID = Competence::where('com_nome', '=', $currentMonth[1].'/'.$currentMonth[0])->first();
 
-                    if((int)$competenceID[0]['id'] > 0 ){
+
+                    if($competenceID !== null) {
                         $portionModel = new Portion();
 
                         $portionModel->par_numero = $i;
                         $portionModel->par_valor = str_replace(',','.',$request->portion);
-                        $portionModel->lanc_codigoid = $lasInsertIdConvenat['id'];
-                        $portionModel->par_vencimentoparcela = $yearUpdated.'-'.$monthUpdated.'-10';
+                        $portionModel->lanc_codigoid = $lasInsertIdConvenat->id;
+                        $portionModel->par_vencimentoparcela = $currentMonth[0].'-'.$currentMonth[1].'-10';
                         $portionModel->par_observacao = '';
                         $portionModel->par_status = 'Pendente';
-                        $portionModel->com_codigoid = $competenceID[0]['id'];
+                        $portionModel->com_codigoid = $competenceID->id;
                         $portionModel->par_equivalente = $i;
                         $portionModel->par_habilitasn = 0;
-
                         $portionModel->save();
-
-
                     }
 
+                $currentMonth[1]++;
 
-                }
-                return response()->json(['status'=>'success', 'msg'=> 'Formulário salvo com sucesso']);
-            }catch (Exception $e){
-                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
-
+            return response()->json(['status'=>'success', 'msg'=> 'Formulário salvo com sucesso']);
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
