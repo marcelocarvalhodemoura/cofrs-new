@@ -97,11 +97,11 @@ class ConvenantController extends Controller
                         $diversosTotal = number_format($convenantDiverso->valor_total_diversos, 2, '.', '');
                         $diversosTotal = explode('.', $diversosTotal);
 
-                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
 //                        $bigestDate = explode("-", $convenantDiverso->datamaior);
 
-                        $contentFile .= "D".trim($convenantDiverso->assoc_matricula).$reference.$contract.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
+                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_matricula, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
 
 
                     }
@@ -120,27 +120,29 @@ class ConvenantController extends Controller
                         $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".trim($convenantMonthlyPayment->assoc_matricula).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_matricula, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'0000000000'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
 
                 if($typeConvenant === 'EMPRESTIMO'){
                     $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO');
+
+
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
 
                         $contractMonthPay = str_pad($loan->lanc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
-                        $monthlyPaymentTotal = number_format($convenantMonthlyPayment->valor_total_emprestimo, 2, '.', '');
+                        $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 23 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".trim($loan->assoc_matricula).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_matricula, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
@@ -154,7 +156,6 @@ class ConvenantController extends Controller
 
         Storage::disk('local')->put('example.txt', $contentFile);
 
-
         return Storage::disk('local')->get('example.txt');
 
     }
@@ -164,7 +165,6 @@ class ConvenantController extends Controller
 
         switch ($reference){
             case 'MENSALIDADE':
-//                dd($reference);
                 $referenceSql = Portion::select('*')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
@@ -172,12 +172,13 @@ class ConvenantController extends Controller
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
-                    ->orderBy('assoc_matricula')
+                    ->where('cla_codigoid', '=', 15)
+                    ->whereIn('ag_codigoid', [3,7])
+                    ->orderBy('assoc_matricula', 'asc')
                     ->get();
                 break;
 
             case 'DIVERSOS':
-//                dd($reference);
                 $referenceSql =Portion::select('*')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
@@ -189,6 +190,7 @@ class ConvenantController extends Controller
                     ->selectRaw('SUM(par_valor) as valor_total_diversos')
                     ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
                     ->groupBy('assoc_matricula')
+                    ->orderBy('assoc_matricula', 'asc')
                     ->get();
                 break;
             case 'EMPRESTIMO':
@@ -740,8 +742,6 @@ class ConvenantController extends Controller
     public function store(Request $request)
     {
         $convenantModel = new Convenant();
-
-//        dd(12%12);
 
         try {
 

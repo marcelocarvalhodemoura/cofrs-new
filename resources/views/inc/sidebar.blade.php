@@ -129,7 +129,7 @@
             {{-- <div class="heading">RELATORIOS</div>--}}
             {{-- </li>--}}
             <li class="menu ">
-                <a href="/report" aria-expanded="false" class="dropdown-toggle">
+                <a href="#report" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer">
                             <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -138,7 +138,26 @@
                         </svg>
                         <span>Relatórios</span>
                     </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
                 </a>
+                <ul class="collapse submenu list-unstyled " id="report" data-parent="#accordionExample">
+                    <li class="">
+                        <a href="/Cashflow">Associado</a>
+                    </li>
+                    <li class="">
+                        <a href="/BankAccount">Conveniados</a>
+                    </li>
+                    <li class="">
+                        <a href="/AccountType">Convênios</a>
+                    </li>
+                    <li class="">
+                        <a href="/banks">Financeiro</a>
+                    </li>
+                </ul>
             </li>
             @endif
             {{-- <li class="menu menu-heading">--}}
