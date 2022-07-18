@@ -146,16 +146,16 @@
                 </a>
                 <ul class="collapse submenu list-unstyled " id="report" data-parent="#accordionExample">
                     <li class="">
-                        <a href="/Cashflow">Associado</a>
+                        <a href="/report/associate">Associado</a>
                     </li>
                     <li class="">
-                        <a href="/BankAccount">Conveniados</a>
+                        <a href="/report/covenant">Conveniados</a>
                     </li>
                     <li class="">
-                        <a href="/AccountType">Convênios</a>
+                        <a href="/report/agreement">Convênios</a>
                     </li>
                     <li class="">
-                        <a href="/banks">Financeiro</a>
+                        <a href="/report/cashflow">Financeiro</a>
                     </li>
                 </ul>
             </li>

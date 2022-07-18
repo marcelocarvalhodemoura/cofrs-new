@@ -33,6 +33,8 @@
  {{-- Elements Loader  --}}
  <link href="{{asset('plugins/loaders/custom-loader.css')}}" rel="stylesheet" type="text/css" />
  <link href="{{asset('plugins/jquery-upload-file/uploadfile.css')}}" rel="stylesheet" type="text/css" />
+ <link href="{{asset('plugins/flatpickr/flatpickr.css')}}" rel="stylesheet" type="text/css">
+ <link href="{{asset('plugins/flatpickr/custom-flatpickr.css')}}" rel="stylesheet" type="text/css">
 
  <style>
    div#load_screen .loader {

@@ -15,6 +15,7 @@ use App\Http\Controllers\BanksController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\MigracaoController;
 use Illuminate\Support\Facades\Session;
 
@@ -150,4 +151,13 @@ Route::get('/Cashflow', [CashflowController::class, 'index']);
 Route::post('/Cashflow/store', [CashflowController::class, 'store']);
 Route::get('/Cashflow/load/{id}', [CashflowController::class, 'getItem']);
 
+
+Route::get('/report/associate', [ReportsController::class, 'associate']);
+Route::get('/report/agreement', [ReportsController::class, 'agreement']);
+Route::get('/report/covenant', [ReportsController::class, 'covenant']);
+Route::get('/report/cashflow', [ReportsController::class, 'cashflow']);
+Route::post('/aReport', [ReportsController::class, 'aReport']);
+
+
 Route::get('/migracao', [MigracaoController::class, 'index']);
+
