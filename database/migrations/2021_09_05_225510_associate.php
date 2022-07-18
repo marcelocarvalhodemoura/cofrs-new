@@ -49,6 +49,7 @@ class Associate extends Migration
             $table->date('assoc_dataativacao');
             $table->date('assoc_datadesligamento');
             $table->string('assoc_contrato')->nullable();
+            $table->string('assoc_contrato_terceiros')->nullable();
             $table->integer('ag_codigoid');
             $table->boolean('assoc_removesn');
             $table->string('assoc_identificacao');

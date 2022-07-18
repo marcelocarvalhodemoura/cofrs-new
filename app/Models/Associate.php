@@ -46,6 +46,7 @@ class Associate extends Model
         'assoc_dataativacao',
         'assoc_datadesligamento',
         'assoc_contrato',
+        'assoc_contrato_terceiros',
         'ag_codigoid',
         'assoc_removesn',
         'assoc_identificacao',
