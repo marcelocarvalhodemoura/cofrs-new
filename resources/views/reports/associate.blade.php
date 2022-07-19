@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="col-md-12">
-                            <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4"">
+                            <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                                 <thead>
                                     <tr>
                                         <th>Convênio</th>
@@ -46,7 +46,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    <tr>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                        <td>ffff</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -35,6 +35,7 @@
  <link href="{{asset('plugins/jquery-upload-file/uploadfile.css')}}" rel="stylesheet" type="text/css" />
  <link href="{{asset('plugins/flatpickr/flatpickr.css')}}" rel="stylesheet" type="text/css">
  <link href="{{asset('plugins/flatpickr/custom-flatpickr.css')}}" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" type="text/css" href="{{asset('plugins/table/datatable/custom_dt_html5.css')}}">
 
  <style>
    div#load_screen .loader {

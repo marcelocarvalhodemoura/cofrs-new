@@ -29,6 +29,12 @@
 <script src="{{asset('plugins/file-upload/file-upload-with-preview.min.js')}}"></script>
 <script src="{{asset('plugins/flatpickr/flatpickr.js')}}"></script>
 
+<script src="{{asset('plugins/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('plugins/table/datatable/button-ext/jszip.min.js')}}"></script>
+<script src="{{asset('plugins/table/datatable/button-ext/buttons.html5.min.js')}}"></script>
+<script src="{{asset('plugins/table/datatable/button-ext/buttons.print.min.js')}}"></script>
+<script src="{{asset('plugins/pdfmake/build/pdfmake.js')}}"></script>
+<script src="{{asset('plugins/pdfmake/build/vfs_fonts.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 
