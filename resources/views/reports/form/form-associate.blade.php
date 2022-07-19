@@ -1,6 +1,14 @@
 <form class="needs-validation text-left" novalidate action="javascript:void(0);" id="reportFilter">
   @csrf
   <div class="form-row">
+      <div class="col-md-3 mb-4">
+          <label for="cpf">CPF <b class="error">*</b></label>
+          <input type="text" class="form-control cpf" id="cpf" name="cpf" placeholder="CPF" required>
+      </div>
+      <div class="col-md-3 mb-4">
+          <label for="periodo">Período <b class="error">*</b></label>
+          <input type="text" class="form-control flatpickr flatpickr-input" id="periodo" name="periodo" placeholder="Selecione o período" required>
+      </div>
       <div class="col-md-6 mb-3">
           <label for="convenio">Convênio</label>
           <select class="custom-select" id="convenio" name="convenio">
@@ -9,14 +17,6 @@
                   <option value="{{ $item->id }}">{{ $item->con_nome }}</option>
               @endforeach
           </select>
-      </div>
-      <div class="col-md-3 mb-4">
-          <label for="cpf">CPF <b class="error">*</b></label>
-          <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required>
-      </div>
-      <div class="col-md-3 mb-4">
-          <label for="periodo">Período <b class="error">*</b></label>
-          <input type="text" class="form-control flatpickr flatpickr-input" id="periodo" name="periodo" placeholder="Selecione o período" required>
       </div>
     </div>
     <div class="form-row">

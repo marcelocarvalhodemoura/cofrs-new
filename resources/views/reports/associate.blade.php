@@ -16,58 +16,70 @@
     </div>
 
     <div class="row layout-top-spacing">
-
         <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
             <div class="widget-content-area br-4">
                 <div class="widget-one">
-
                     <h5>Relatório de Associados</h5>
-
                     <p class="">Página do Sistema Cofrs destinada a emissão do relatório de associados.<br />Selecione os filtro e pressione buscar para pré-visualizar o relatório.</p>
                     <br />
                     <div class="row">
                         <div class="col-md-12 text-right">
                             @include('reports.form.form-associate')
                         </div>
-
-                        <div class="col-md-12">
-                            <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
-                                <thead>
-                                    <tr>
-                                        <th>Convênio</th>
-                                        <th>Classificação</th>
-                                        <th>Vencimento</th>
-                                        <th>Parcela</th>
-                                        <th>Equivalência</th>
-                                        <th>Quantidade</th>
-                                        <th>Contrato</th>
-                                        <th>Valor</th>
-                                        <th>Status de pagamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                        <td>ffff</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
+
+<div class="modal fade bd-example-modal-xl" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Resultado da busca</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
+                    <thead>
+                        <tr>
+                            <th>Convênio</th>
+                            <th>Classificação</th>
+                            <th>Vencimento</th>
+                            <th>Parcela</th>
+                            <th>Equivalência</th>
+                            <th>Quantidade</th>
+                            <th>Contrato</th>
+                            <th>Valor</th>
+                            <th>Status de pagamento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                            <td>ffff</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
 
 @push('scripts')
