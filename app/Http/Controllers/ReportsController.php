@@ -71,7 +71,8 @@ class ReportsController extends Controller
   }
 
   public function covenant(Request $request) {
-
+    // dd($request->all());
+    
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
     $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
@@ -104,7 +105,7 @@ class ReportsController extends Controller
   }
 
   public function aReport(Request $request) {
-    //dd($_POST);
+    dd($request->all());
 
     $pp = explode(' a ',$request->post('periodo'));
     $inicio = implode('-',array_reverse(explode('/',$pp[0])));

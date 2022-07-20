@@ -24,7 +24,7 @@
                     <br />
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            @include('reports.form.form-associate')
+                            @include('reports.form.form-covenants')
                         </div>
                     </div>
                 </div>
@@ -75,5 +75,5 @@
 @endsection
 
 @push('scripts')
-    {{-- <script src=" {{ URL::asset('/assets/js/reports/custom.js') }}"></script> --}}
+    <script src=" {{ URL::asset('/assets/js/reports/custom.js') }}"></script>
 @endpush
