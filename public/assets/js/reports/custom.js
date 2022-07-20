@@ -222,7 +222,9 @@ function montaTabela(dataSet,typeReport){
         pageSize: 'A4',
         customize: function(doc){
           header: 'simple text',
-          footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+          footer: function(currentPage, pageCount) { 
+            return currentPage.toString() + ' of ' + pageCount; 
+          }
         }
       }
     ],
