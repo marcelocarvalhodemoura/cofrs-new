@@ -115,8 +115,6 @@ class ReportsController extends Controller
 
     switch($request->post('typeReport')){
       case "associate":
-        /*
-        */
         $cab1 = \DB::table('associado')->select('assoc_nome','assoc_matricula')->where("assoc_cpf", "=", $request->post('cpf'))->first();
 
         $retorno['cabecalho'] = "Associado: ".$cab1->assoc_nome."<br/>
