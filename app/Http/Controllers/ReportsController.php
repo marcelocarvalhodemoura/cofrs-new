@@ -16,6 +16,16 @@ use App\Models\Classification;
 
 class ReportsController extends Controller
 {
+
+    public function __construct()
+    {
+      if (!Session::has('user')) {
+        return redirect()->route('login');
+      }
+      if(!in_array(Session::get('typeId'),[1,2,3])){
+        return redirect()->route('dashboard');
+      }
+    }
     /**
      * Class ReportsController
      * @param Request $request
@@ -61,15 +71,25 @@ class ReportsController extends Controller
   }
 
   public function covenant(Request $request) {
-    if (!Session::has('user')) {
-        return redirect()->route('login');
-    }
-    if(!in_array(Session::get('typeId'),[1,2,3])){
-      return redirect()->route('dashboard');
-    }
-
+    // dd($request->all());
     
+    $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
+    $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
+    $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
+    
+    $data = [
+      'category_name' => 'reports',
+      'page_name' => 'reports',
+      'has_scrollspy' => 0,
+      'scrollspy_offset' => '',
+      'alt_menu' => 0,
+      'agreementList' => $agreementList,
+      'classificationList' => $classificationList,
+      'referenceList' => $referenceList,
+    ];
 
+    return view('reports.covenants')->with($data);
+    
   }
 
   public function cashflow(Request $request) {
@@ -85,7 +105,7 @@ class ReportsController extends Controller
   }
 
   public function aReport(Request $request) {
-    //dd($_POST);
+    dd($request->all());
 
     $pp = explode(' a ',$request->post('periodo'));
     $inicio = implode('-',array_reverse(explode('/',$pp[0])));
