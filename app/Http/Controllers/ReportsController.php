@@ -17,29 +17,21 @@ use App\Models\Classification;
 class ReportsController extends Controller
 {
 
-    public function __construct()
-    {
-      if (!Session::has('user')) {
-        return redirect()->route('login');
-      }
-      if(!in_array(Session::get('typeId'),[1,2,3])){
-        return redirect()->route('dashboard');
-      }
-    }
-    /**
-     * Class ReportsController
-     * @param Request $request
-     * @package App\Http\Controllers
-     */
-
-  public function associate(Request $request) {
+  public function __construct() {
     if (!Session::has('user')) {
-        return redirect()->route('login');
+      return redirect()->route('login');
     }
     if(!in_array(Session::get('typeId'),[1,2,3])){
       return redirect()->route('dashboard');
     }
+  }
+  /**
+   * Class ReportsController
+   * @param Request $request
+   * @package App\Http\Controllers
+   */
 
+  public function associate(Request $request) {
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
     $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
@@ -59,15 +51,20 @@ class ReportsController extends Controller
   }
 
   public function agreement(Request $request) {
-    if (!Session::has('user')) {
-        return redirect()->route('login');
-    }
-    if(!in_array(Session::get('typeId'),[1,2,3])){
-      return redirect()->route('dashboard');
-    }
+    $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
 
-    
+    $data = [
+      'category_name' => 'reports',
+      'page_name' => 'reports',
+      'has_scrollspy' => 0,
+      'scrollspy_offset' => '',
+      'alt_menu' => 0,
+      'agreementList' => $agreementList,
+      'classificationList' => $classificationList,
+      'referenceList' => $referenceList,
+    ];
 
+    return view('reports.agreement')->with($data);
   }
 
   public function covenant(Request $request) {
@@ -93,15 +90,6 @@ class ReportsController extends Controller
   }
 
   public function cashflow(Request $request) {
-    if (!Session::has('user')) {
-        return redirect()->route('login');
-    }
-    if(!in_array(Session::get('typeId'),[1,2,3])){
-      return redirect()->route('dashboard');
-    }
-
-    
-
   }
 
   public function aReport(Request $request) {
@@ -183,6 +171,12 @@ class ReportsController extends Controller
       case "agreement":
         break;
       case "covenant":
+        $cab1 = \DB::table('convenio')->select('con_nome')->where("id", "=", $request->post('convenio'))->first();
+
+        $retorno['cabecalho'] = "Convênio: ".$cab1->con_nome."<br/>
+          Período: ".$request->post('periodo');
+
+        
         break;
       case "cashflow":
         break;
