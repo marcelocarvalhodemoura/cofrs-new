@@ -46,12 +46,12 @@ $(document).ready(function () {
             "Dezembro",
           ],
         },
-        rangeSeparator: " até "
+        rangeSeparator: " a "
       },
       onChange: function (selectedDates, dateStr, instance) { 
         setTimeout(() => {
           $("#periodo").val(this.formatDate(selectedDates[0], "d/m/Y") + ' a ' + this.formatDate(selectedDates[1], "d/m/Y"));
-        },1000);
+        },100);
       }, 
   });
 
@@ -216,7 +216,13 @@ function montaTabela(dataSet,typeReport){
     buttons: [
       { extend: 'csv', className: 'btn btn-sm' },
       { extend: 'excel', className: 'btn btn-sm' },
-      { extend: 'pdf', className: 'btn btn-sm' }
+      { extend: 'pdfHtml5', 
+        className: 'btn btn-sm',
+        orientation: 'landscape',
+        pageSize: 'A4',
+        header: 'simple text',
+        footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+      }
     ],
   });
 }

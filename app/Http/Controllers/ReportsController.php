@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Depent;
 use App\Models\Installment;
 use Illuminate\Http\Request;
-use App\Models\Associate;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use \Yajra\DataTables\DataTables;
 
+use App\Models\Associate;
 use App\Models\Agreement;
 use App\Models\Classification;
 
@@ -114,6 +114,15 @@ class ReportsController extends Controller
 
     switch($request->post('typeReport')){
       case "associate":
+        /*
+        */
+        $cab1 = \DB::table('associado')->select('assoc_nome','assoc_matricula')->where("assoc_cpf", "=", $request->post('cpf'))->first();
+
+        $retorno['cabecalho'] = "Associado: ".$cab1->assoc_nome."<br/>
+          CPF: ".$request->post('cpf')."<br />
+          Matrícula: ".$cab1->assoc_matricula."<br />
+          Período: ".$request->post('periodo');
+
         $sqlBusca = "SELECT
                 cv.con_nome,
                 cl.cla_nome,
