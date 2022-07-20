@@ -105,7 +105,6 @@ class ReportsController extends Controller
   }
 
   public function aReport(Request $request) {
-    dd($request->all());
 
     $pp = explode(' a ',$request->post('periodo'));
     $inicio = implode('-',array_reverse(explode('/',$pp[0])));

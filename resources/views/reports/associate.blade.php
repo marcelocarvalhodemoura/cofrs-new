@@ -46,6 +46,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <h4 class="h5"></h4>
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
