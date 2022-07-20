@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConvenantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -337,7 +335,9 @@
       <workItem from="1655898397704" duration="2451000" />
       <workItem from="1655941091889" duration="2907000" />
       <workItem from="1656364196621" duration="1426000" />
-      <workItem from="1656700648973" duration="986000" />
+      <workItem from="1656700648973" duration="2637000" />
+      <workItem from="1656941023366" duration="232000" />
+      <workItem from="1657287518437" duration="648000" />
     </task>
     <servers />
   </component>
