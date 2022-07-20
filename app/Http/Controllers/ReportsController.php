@@ -96,14 +96,12 @@ class ReportsController extends Controller
     switch($request->post('typeReport')){
       case "associate":
         $sqlBusca = "SELECT
-                a.assoc_nome,
-                a.assoc_matricula,
                 cv.con_nome,
                 cl.cla_nome,
                 p.par_vencimentoparcela,
-                l.lanc_numerodeparcela,
+                p.par_numero,
                 p.par_equivalente,
-              
+                l.lanc_numerodeparcela,              
                 l.lanc_contrato,
                 p.par_valor,
                 p.par_status
@@ -140,15 +138,15 @@ class ReportsController extends Controller
         if($busca){
           foreach($busca as $b){
             $retorno['tabela'][] = array(
-              'Convênio' => $b->con_nome,
-              'Classificação' => $b->cla_nome,
-              'Vencimento' => $b->par_vencimentoparcela,
-              'Parcela' => $b->lanc_numerodeparcela,
-              'Equivalência' => $b->par_equivalente,
-              'Quantidade' => '',
-              'Contrato' => $b->lanc_contrato,
-              'Valor' => $b->par_valor,
-              'Status de pagamento' => $b->par_status,
+              'convenio' => $b->con_nome,
+              'classificacao' => $b->cla_nome,
+              'vencimento' => $b->par_vencimentoparcela,
+              'parcela' => $b->par_numero,
+              'equivalencia' => $b->par_equivalente,
+              'quantidade' => $b->lanc_numerodeparcela,
+              'contrato' => $b->lanc_contrato,
+              'valor' => number_format($b->par_valor,2),
+              'status' => $b->par_status,
             );
           }
         } else {
