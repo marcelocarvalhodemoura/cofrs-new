@@ -62,15 +62,15 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
-                            <td>ffff</td>
+                            <td>Convênio</td>
+                            <td>Classificação</td>
+                            <td>Vencimento</td>
+                            <td>Parcela</td>
+                            <td>Equivalência</td>
+                            <td>Quantidade</td>
+                            <td>Contrato</td>
+                            <td>Valor</td>
+                            <td>Status de pagamento</td>
                         </tr>
                     </tbody>
                 </table>
