@@ -40,7 +40,9 @@
       </div>
     </div>
     <div class="form-row">
-        <input type="hidden" name="typeReport" id="typeReport" value="associate" />
-        <button class="btn btn-primary mb-2" type="button" onClick="buscar()">Buscar</button>
+        <div class="col-md-12 mb-3 text-right">
+            <input type="hidden" name="typeReport" id="typeReport" value="associate" />
+            <button class="btn btn-primary mb-2" type="button" onClick="buscar()">Buscar</button>
+        </div>
     </div>
 </form>
