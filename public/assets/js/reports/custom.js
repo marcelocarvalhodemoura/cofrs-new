@@ -220,8 +220,10 @@ function montaTabela(dataSet,typeReport){
         className: 'btn btn-sm',
         orientation: 'landscape',
         pageSize: 'A4',
-        header: 'simple text',
-        footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+        customize: function(doc){
+          header: 'simple text',
+          footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+        }
       }
     ],
   });
