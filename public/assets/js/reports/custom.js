@@ -168,13 +168,12 @@ function buscar(){
 }
 
 function montaTabela(dataSet,typeReport){
-
+  console.log(dataSet,typeReport);
   if ($.fn.DataTable.isDataTable("#reporttable")) {
     $('#reporttable').DataTable().clear().destroy();
   }
 
   if(typeReport == 'associate'){
-    console.log(dataSet);
     var tr2;
     $("#reporttable tbody tr").remove();
 
@@ -201,6 +200,28 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'covenant'){
+    var tr2;
+    $("#reporttable tbody tr").remove();
+
+    dataSet.map((value,index) => {
+      //console.log(value.classificacao);
+      let vencimento = new Date(value.vencimento);
+
+      tr2 = `<tr>
+              <td>${value.nome}</td>
+              <td>${value.cpf}</td>
+              <td>${value.convenio}</td>
+              <td>${value.matricula}</td>
+              <td align="center" data-order="${value.vencimento}">${vencimento.toLocaleDateString("pt-BR")}</td>
+              <td align="center">${value.parcela}</td>
+              <td align="center">${value.equivalencia}</td>
+              <td align="center">${value.quantidade}</td>
+              <td>${value.contrato}</td>
+              <td align="right">${value.valor}</td>
+              <td align="center">${value.status}</td>
+            </tr>`;
+      $("#reporttable tbody").append(tr2);
+    });
   }
 
   if(typeReport == 'cashflow'){
@@ -219,13 +240,7 @@ function montaTabela(dataSet,typeReport){
       { extend: 'pdfHtml5', 
         className: 'btn btn-sm',
         orientation: 'landscape',
-        pageSize: 'A4',
-        customize: function(doc){
-          header: 'simple text',
-          footer: function(currentPage, pageCount) { 
-            return currentPage.toString() + ' of ' + pageCount; 
-          }
-        }
+        pageSize: 'A4'
       }
     ],
   });

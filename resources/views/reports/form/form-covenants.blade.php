@@ -2,8 +2,8 @@
     @csrf
     <div class="form-row">
         <div class="col-md-3 mb-4">
-            <label for="cpf">CPF <b class="error">*</b></label>
-            <input type="text" class="form-control cpf" id="cpf" name="cpf" placeholder="CPF" required>
+            <label for="cpf">CPF</label>
+            <input type="text" class="form-control cpf" id="cpf" name="cpf" placeholder="CPF" >
         </div>
         <div class="col-md-3 mb-4">
             <label for="periodo">Período <b class="error">*</b></label>
@@ -49,8 +49,10 @@
         </div>
       </div>
       <div class="form-row">
-          <input type="hidden" name="typeReport" id="typeReport" value="covenant" />
-          <button class="btn btn-primary mb-2" type="button" onClick="buscar()">Buscar</button>
+        <div class="col-md-12 mb-3 text-right">
+            <input type="hidden" name="typeReport" id="typeReport" value="covenant" />
+            <button class="btn btn-primary mb-2" type="button" onClick="buscar()">Buscar</button>
+        </div>
       </div>
   </form>
   

@@ -100,12 +100,11 @@ class ReportsController extends Controller
       return redirect()->route('dashboard');
     }
 
-    
-
   }
 
+
+
   public function aReport(Request $request) {
-    dd($request->all());
 
     $pp = explode(' a ',$request->post('periodo'));
     $inicio = implode('-',array_reverse(explode('/',$pp[0])));
@@ -186,6 +185,71 @@ class ReportsController extends Controller
       case "agreement":
         break;
       case "covenant":
+        
+        $retorno['cabecalho'] = "Status de Pagamento";
+        
+        $sqlBusca = "SELECT
+          a.assoc_nome,
+          a.assoc_cpf,
+          cv.con_nome,
+          a.assoc_matricula,
+          p.par_vencimentoparcela,
+          p.par_numero,
+          p.par_equivalente,
+          l.lanc_numerodeparcela,              
+          l.lanc_contrato,
+          p.par_valor,
+          p.par_status
+        FROM
+          associado a,
+          lancamento l,
+          convenio cv,
+          classificacao cl,
+          parcelamento p
+        WHERE
+          a.id = l.assoc_codigoid
+          AND p.par_vencimentoparcela >= '".$inicio."'
+          AND p.par_vencimentoparcela <= '".$fim."'
+          AND l.con_codigoid = cv.id
+          AND a.cla_codigoid = cl.id
+          AND l.id = p.lanc_codigoid";
+
+        if($request->post('convenio') != ''){
+          $sqlBusca .= "AND cv.id = ".$request->post('convenio');
+        }
+
+        if($request->post('classificacao') != ''){
+          $sqlBusca .= "AND cl.id = ".$request->post('classificacao');
+        }
+
+        if($request->post('referencia') != ''){
+          $sqlBusca .= "AND cv.con_referencia = ".$request->post('convenio');
+        }
+
+        if($request->post('status') != ''){
+          $sqlBusca .= "AND p.par_status = ".$request->post('status');
+        }
+
+        $busca = \DB::select($sqlBusca);
+        if($busca){
+          foreach($busca as $b){
+          $retorno['tabela'][] = array(
+            'nome' => $b->assoc_nome,
+            'cpf' => $b->assoc_cpf,
+            'convenio' => $b->con_nome,
+            'matricula' => $b->assoc_matricula,
+            'vencimento' => $b->par_vencimentoparcela,
+            'parcela' => $b->par_numero,
+            'equivalencia' => $b->par_equivalente,
+            'quantidade' => $b->lanc_numerodeparcela,
+            'contrato' => $b->lanc_contrato,
+            'valor' => number_format($b->par_valor,2),
+            'status' => $b->par_status,
+          );
+        }
+      } else {
+        $retorno['erro'] = "Não existem resultados para esta busca";
+      }
         break;
       case "cashflow":
         break;
