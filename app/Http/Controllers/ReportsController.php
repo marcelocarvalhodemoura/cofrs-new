@@ -60,8 +60,6 @@ class ReportsController extends Controller
       'scrollspy_offset' => '',
       'alt_menu' => 0,
       'agreementList' => $agreementList,
-      'classificationList' => $classificationList,
-      'referenceList' => $referenceList,
     ];
 
     return view('reports.agreement')->with($data);
