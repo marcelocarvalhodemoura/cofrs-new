@@ -206,7 +206,7 @@ function montaTabela(dataSet,typeReport){
     $("#reporttable tbody tr").remove();
 
     dataSet.map((value,index) => {
-      //console.log(value.classificacao);
+      
       let vencimento = new Date(value.vencimento);
 
       tr2 = `<tr>

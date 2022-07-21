@@ -11,7 +11,6 @@ use App\Models\Associate;
 use App\Models\Agreement;
 use App\Models\Classification;
 
-
 class ReportsController extends Controller
 {
 
@@ -94,8 +93,6 @@ class ReportsController extends Controller
     }
 
   }
-
-
 
   public function aReport(Request $request) {
 
@@ -204,19 +201,19 @@ class ReportsController extends Controller
           AND l.id = p.lanc_codigoid";
 
         if($request->post('convenio') != ''){
-          $sqlBusca .= "AND cv.id = ".$request->post('convenio');
+          $sqlBusca .= " AND cv.id = ".$request->post('convenio');
         }
 
         if($request->post('classificacao') != ''){
-          $sqlBusca .= "AND cl.id = ".$request->post('classificacao');
+          $sqlBusca .= " AND cl.id = ".$request->post('classificacao');
         }
 
         if($request->post('referencia') != ''){
-          $sqlBusca .= "AND cv.con_referencia = ".$request->post('convenio');
+          $sqlBusca .= " AND cv.con_referencia = ".$request->post('convenio');
         }
 
         if($request->post('status') != ''){
-          $sqlBusca .= "AND p.par_status = ".$request->post('status');
+          $sqlBusca .= " AND p.par_status = ".$request->post('status');
         }
 
         $busca = \DB::select($sqlBusca);
@@ -247,8 +244,5 @@ class ReportsController extends Controller
 
     return json_encode($retorno);
   }
-
-
-
 
 }
