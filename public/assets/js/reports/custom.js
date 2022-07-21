@@ -55,7 +55,7 @@ $(document).ready(function () {
       }, 
   });
 
-
+  $('#cpf').inputmask("999.999.999-99");
 
   $.extend($.fn.dataTable.defaults, {
     "lengthMenu": [[10, 50, 100, 500, -1], [10, 50, 100, 500, "All"]],
@@ -158,6 +158,7 @@ function buscar(){
             });
           } else {
             montaTabela(response.tabela, $("#typeReport").val());
+            $("#reportModal h4").html(response.cabecalho);
             $("#reportModal").modal('show');
           }
       }
@@ -172,13 +173,14 @@ function montaTabela(dataSet,typeReport){
   if ($.fn.DataTable.isDataTable("#reporttable")) {
     $('#reporttable').DataTable().clear().destroy();
   }
+  $("#reporttable tbody tr").remove();
+  var tr2;
 
   if(typeReport == 'associate'){
     var tr2;
     $("#reporttable tbody tr").remove();
 
     dataSet.map((value,index) => {
-      //console.log(value.classificacao);
       let vencimento = new Date(value.vencimento);
 
       tr2 = `<tr>
@@ -227,6 +229,8 @@ function montaTabela(dataSet,typeReport){
   if(typeReport == 'cashflow'){
   }
 
+  console.log($("#reportModal .modal-body h4").text());
+
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +
     "<'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
@@ -240,7 +244,44 @@ function montaTabela(dataSet,typeReport){
       { extend: 'pdfHtml5', 
         className: 'btn btn-sm',
         orientation: 'landscape',
-        pageSize: 'A4'
+        pageSize: 'A4',
+        messageTop: function() {
+          return $("#reportModal .modal-body h4").text();
+        },
+        customize: function(doc){
+          doc.content.splice(0,1);
+          doc.pageMargins = [20,50,0,40];
+          var now = new Date();
+					var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
+          doc['header'] = (function(){
+            return {
+              columns: [
+                {
+                  alignment: 'left',
+                  fontSize: 18,
+                  margin: [20,20,0,0],
+                  text: 'Sistema COFRS'
+                }
+              ]
+            }
+          });
+          doc['footer'] = function(page, pages) { 
+            return {
+              columns: [
+                {
+                  alignment: 'left',
+                  text: ['Criado em: ', { text: jsDate.toString() }],
+                  margin: [20,0,0,20],
+                },
+                {
+                  alignment: 'right',
+                  text: ['Página ', { text: page.toString() },	'/',	{ text: pages.toString() }],
+                  margin: [0,0,40,20],
+                }
+              ],
+            } 
+          }
+        }
       }
     ],
   });

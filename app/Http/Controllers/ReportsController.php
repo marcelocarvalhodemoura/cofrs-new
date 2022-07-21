@@ -6,8 +6,6 @@ use App\Models\Depent;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Mockery\Exception;
-use \Yajra\DataTables\DataTables;
 
 use App\Models\Associate;
 use App\Models\Agreement;
@@ -17,29 +15,21 @@ use App\Models\Classification;
 class ReportsController extends Controller
 {
 
-    public function __construct()
-    {
-      if (!Session::has('user')) {
-        return redirect()->route('login');
-      }
-      if(!in_array(Session::get('typeId'),[1,2,3])){
-        return redirect()->route('dashboard');
-      }
-    }
-    /**
-     * Class ReportsController
-     * @param Request $request
-     * @package App\Http\Controllers
-     */
-
-  public function associate(Request $request) {
+  public function __construct() {
     if (!Session::has('user')) {
-        return redirect()->route('login');
+      return redirect()->route('login');
     }
     if(!in_array(Session::get('typeId'),[1,2,3])){
       return redirect()->route('dashboard');
     }
+  }
+  /**
+   * Class ReportsController
+   * @param Request $request
+   * @package App\Http\Controllers
+   */
 
+  public function associate(Request $request) {
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
     $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
@@ -59,20 +49,22 @@ class ReportsController extends Controller
   }
 
   public function agreement(Request $request) {
-    if (!Session::has('user')) {
-        return redirect()->route('login');
-    }
-    if(!in_array(Session::get('typeId'),[1,2,3])){
-      return redirect()->route('dashboard');
-    }
+    $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
 
-    
+    $data = [
+      'category_name' => 'reports',
+      'page_name' => 'reports',
+      'has_scrollspy' => 0,
+      'scrollspy_offset' => '',
+      'alt_menu' => 0,
+      'agreementList' => $agreementList,
+    ];
 
+    return view('reports.agreement')->with($data);
   }
 
   public function covenant(Request $request) {
-    // dd($request->all());
-    
+   
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
     $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
@@ -93,6 +85,7 @@ class ReportsController extends Controller
   }
 
   public function cashflow(Request $request) {
+
     if (!Session::has('user')) {
         return redirect()->route('login');
     }
@@ -114,8 +107,6 @@ class ReportsController extends Controller
 
     switch($request->post('typeReport')){
       case "associate":
-        /*
-        */
         $cab1 = \DB::table('associado')->select('assoc_nome','assoc_matricula')->where("assoc_cpf", "=", $request->post('cpf'))->first();
 
         $retorno['cabecalho'] = "Associado: ".$cab1->assoc_nome."<br/>
@@ -160,9 +151,8 @@ class ReportsController extends Controller
           $sqlBusca .= "AND cv.con_referencia = ".$request->post('convenio');
         }
 
-        //echo $sqlBusca;
         $busca = \DB::select($sqlBusca);
-        //dd($busca);
+       
         if($busca){
           foreach($busca as $b){
             $retorno['tabela'][] = array(
@@ -185,7 +175,6 @@ class ReportsController extends Controller
       case "agreement":
         break;
       case "covenant":
-        
         $retorno['cabecalho'] = "Status de Pagamento";
         
         $sqlBusca = "SELECT
@@ -250,7 +239,8 @@ class ReportsController extends Controller
       } else {
         $retorno['erro'] = "Não existem resultados para esta busca";
       }
-        break;
+
+      break;
       case "cashflow":
         break;
     }

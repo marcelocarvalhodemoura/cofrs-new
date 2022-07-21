@@ -9,7 +9,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                     <li class="breadcrumb-item active"><a href="">Relatórios</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="">Associados</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="">Convênios</a></li>
                 </ol>
             </nav>
         </div>
@@ -19,12 +19,12 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
             <div class="widget-content-area br-4">
                 <div class="widget-one">
-                    <h5>Relatório de Associados</h5>
-                    <p class="">Página do Sistema Cofrs destinada a emissão do relatório de associados.<br />Selecione os filtro e pressione buscar para pré-visualizar o relatório.</p>
+                    <h5>Relatório de Convênios</h5>
+                    <p class="">Página do Sistema Cofrs destinada a emissão do relatório de convênios.<br />Selecione os filtros e pressione buscar para pré-visualizar o relatório.</p>
                     <br />
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            @include('reports.form.form-associate')
+                            @include('reports.form.form-agreement')
                         </div>
                     </div>
                 </div>
@@ -50,29 +50,16 @@
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
-                            <th>Convênio</th>
-                            <th>Classificação</th>
-                            <th>Vencimento</th>
-                            <th>Parcela</th>
-                            <th>Equivalência</th>
-                            <th>Quantidade</th>
-                            <th>Contrato</th>
-                            <th>Valor</th>
-                            <th>Status de pagamento</th>
+                            <th>Referência</th>
+                            <th>% pró-labore</th>
+                            <th>Pagos</th>
+                            <th>Pendente</th>
+                            <th>Transferido</th>
+                            <th>Cancelado</th>
+                            <th>Atrasado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Convênio</td>
-                            <td>Classificação</td>
-                            <td>Vencimento</td>
-                            <td>Parcela</td>
-                            <td>Equivalência</td>
-                            <td>Quantidade</td>
-                            <td>Contrato</td>
-                            <td>Valor</td>
-                            <td>Status de pagamento</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
