@@ -169,7 +169,7 @@ function buscar(){
 }
 
 function montaTabela(dataSet,typeReport){
-  console.log(dataSet,typeReport);
+  // console.log(dataSet,typeReport);
   if ($.fn.DataTable.isDataTable("#reporttable")) {
     $('#reporttable').DataTable().clear().destroy();
   }
