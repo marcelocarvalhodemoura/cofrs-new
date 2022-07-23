@@ -169,7 +169,7 @@ function buscar(){
 }
 
 function montaTabela(dataSet,typeReport){
-
+  // console.log(dataSet,typeReport);
   if ($.fn.DataTable.isDataTable("#reporttable")) {
     $('#reporttable').DataTable().clear().destroy();
   }
@@ -177,6 +177,9 @@ function montaTabela(dataSet,typeReport){
   var tr2;
 
   if(typeReport == 'associate'){
+    var tr2;
+    $("#reporttable tbody tr").remove();
+
     dataSet.map((value,index) => {
       let vencimento = new Date(value.vencimento);
 
@@ -206,6 +209,25 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'covenant'){
+    dataSet.map((value,index) => {
+    
+    let vencimento = new Date(value.vencimento);
+
+    tr2 = `<tr>
+            <td>${value.nome}</td>
+            <td>${value.cpf}</td>
+            <td>${value.convenio}</td>
+            <td>${value.matricula}</td>
+            <td align="center" data-order="${value.vencimento}">${vencimento.toLocaleDateString("pt-BR")}</td>
+            <td align="center">${value.parcela}</td>
+            <td align="center">${value.equivalencia}</td>
+            <td align="center">${value.quantidade}</td>
+            <td>${value.contrato}</td>
+            <td align="right">${value.valor}</td>
+            <td align="center">${value.status}</td>
+          </tr>`;
+      $("#reporttable tbody").append(tr2);
+    });
   }
 
   if(typeReport == 'cashflow'){
