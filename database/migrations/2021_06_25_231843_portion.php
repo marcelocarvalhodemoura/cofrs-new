@@ -31,6 +31,8 @@ class Portion extends Migration
                 $table->timestamps();
                 $table->index('par_habilitasn');
                 $table->index('par_status');
+                $table->index('par_vencimentoparcela');
+                $table->index('lanc_codigoid');
             });
             //gambiarra porque o laravel cria como double
             DB::statement('ALTER TABLE parcelamento CHANGE par_valor par_valor FLOAT');

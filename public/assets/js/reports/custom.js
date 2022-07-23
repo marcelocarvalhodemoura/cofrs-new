@@ -196,6 +196,13 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'agreement'){
+    dataSet.map((value,index) => {
+      tr2 = `<tr>
+        <td>${value.st_pagamento}</td>
+        <td align="right">${value.valor}</td>
+      </tr>`;
+      $("#reporttable tbody").append(tr2);
+    });
   }
 
   if(typeReport == 'covenant'){

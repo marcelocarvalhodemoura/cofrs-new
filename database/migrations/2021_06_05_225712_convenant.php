@@ -26,6 +26,8 @@ class Convenant extends Migration
             $table->string('lanc_contrato', 255);
             $table->softDeletes();
             $table->timestamps();
+            $table->index('con_codigoid');
+
         });
         //gambiarra porque o laravel cria como double
         DB::statement('ALTER TABLE lancamento CHANGE lanc_valortotal lanc_valortotal FLOAT NOT NULL');

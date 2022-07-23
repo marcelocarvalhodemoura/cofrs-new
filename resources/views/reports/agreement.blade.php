@@ -50,13 +50,8 @@
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
-                            <th>Referência</th>
-                            <th>% pró-labore</th>
-                            <th>Pagos</th>
-                            <th>Pendente</th>
-                            <th>Transferido</th>
-                            <th>Cancelado</th>
-                            <th>Atrasado</th>
+                            <th>Status do pagamento</th>
+                            <th>R$</th>
                         </tr>
                     </thead>
                     <tbody>

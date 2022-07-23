@@ -167,14 +167,42 @@ class ReportsController extends Controller
 
         break;
       case "agreement":
-        break;
-      case "covenant":
-        $cab1 = \DB::table('convenio')->select('con_nome')->where("id", "=", $request->post('convenio'))->first();
+        $cab1 = \DB::table('convenio')->select('con_nome', 'con_referencia', 'con_prolabore')->where("id", "=", $request->post('convenio'))->first();
 
-        $retorno['cabecalho'] = "Convênio: ".$cab1->con_nome."<br/>
+        $retorno['cabecalho'] = "Convênio: ".$cab1->con_nome."<br />
+          Referência: ".$cab1->con_referencia."<br />
+          Pró-labore: ".$cab1->con_prolabore."%<br />
           Período: ".$request->post('periodo');
 
-        
+          $sqlBusca = "SELECT
+                        e.est_nome,
+                        (SELECT SUM(p.par_valor) FROM lancamento l, parcelamento p 
+                          WHERE l.con_codigoid = c.id AND l.id = p.lanc_codigoid 
+                            AND p.par_vencimentoparcela >= '".$inicio."'
+                            AND p.par_vencimentoparcela <= '".$fim."'
+                            AND p.par_status = e.est_nome ) AS valor
+                      FROM
+                        estatus e,
+                        convenio c
+                      WHERE
+                        c.id = ".$request->post('convenio');
+
+
+        //echo $sqlBusca;
+        $busca = \DB::select($sqlBusca);
+        //dd($busca);
+        if($busca){
+          foreach($busca as $b){
+            $retorno['tabela'][] = array(
+              'st_pagamento' => $b->est_nome,
+              'valor' => number_format($b->valor,2,',','.'),
+            );
+          }
+        } else {
+          $retorno['erro'] = "Não existem resultados para esta busca";
+        }
+        break;
+      case "covenant":
         break;
       case "cashflow":
         break;
