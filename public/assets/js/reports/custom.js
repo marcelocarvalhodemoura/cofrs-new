@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-  const fp = flatpickr("#periodo", {  
-      mode: "range", 
+  const fp = flatpickr("#periodo", {
+      mode: "range",
       locale: {
         weekdays: {
           shorthand: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
@@ -15,7 +15,7 @@ $(document).ready(function () {
             "Sábado",
           ],
         },
-      
+
         months: {
           shorthand: [
             "Jan",
@@ -48,11 +48,11 @@ $(document).ready(function () {
         },
         rangeSeparator: " a "
       },
-      onChange: function (selectedDates, dateStr, instance) { 
+      onChange: function (selectedDates, dateStr, instance) {
         setTimeout(() => {
           $("#periodo").val(this.formatDate(selectedDates[0], "d/m/Y") + ' a ' + this.formatDate(selectedDates[1], "d/m/Y"));
         },100);
-      }, 
+      },
   });
 
   $('#cpf').inputmask("999.999.999-99");
@@ -210,7 +210,7 @@ function montaTabela(dataSet,typeReport){
 
   if(typeReport == 'covenant'){
     dataSet.map((value,index) => {
-    
+
     let vencimento = new Date(value.vencimento);
 
     tr2 = `<tr>
@@ -219,9 +219,6 @@ function montaTabela(dataSet,typeReport){
             <td>${value.convenio}</td>
             <td>${value.matricula}</td>
             <td align="center" data-order="${value.vencimento}">${vencimento.toLocaleDateString("pt-BR")}</td>
-            <td align="center">${value.parcela}</td>
-            <td align="center">${value.equivalencia}</td>
-            <td align="center">${value.quantidade}</td>
             <td>${value.contrato}</td>
             <td align="right">${value.valor}</td>
             <td align="center">${value.status}</td>
@@ -245,7 +242,7 @@ function montaTabela(dataSet,typeReport){
     buttons: [
       { extend: 'csv', className: 'btn btn-sm' },
       { extend: 'excel', className: 'btn btn-sm' },
-      { extend: 'pdfHtml5', 
+      { extend: 'pdfHtml5',
         className: 'btn btn-sm',
         orientation: 'landscape',
         pageSize: 'A4',
@@ -269,7 +266,7 @@ function montaTabela(dataSet,typeReport){
               ]
             }
           });
-          doc['footer'] = function(page, pages) { 
+          doc['footer'] = function(page, pages) {
             return {
               columns: [
                 {
@@ -283,7 +280,7 @@ function montaTabela(dataSet,typeReport){
                   margin: [0,0,40,20],
                 }
               ],
-            } 
+            }
           }
         }
       }

@@ -54,16 +54,13 @@
                             <th>Convênio</th>
                             <th>Matricula</th>
                             <th>Vencimento</th>
-                            <th>Parcela</th>
-                            <th>Equivalência</th>
-                            <th>Quantidade</th>
                             <th>Contrato</th>
                             <th>Valor</th>
-                            <th>Status de pagamento</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>

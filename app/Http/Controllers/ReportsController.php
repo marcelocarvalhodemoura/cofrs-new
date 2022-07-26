@@ -63,11 +63,11 @@ class ReportsController extends Controller
   }
 
   public function covenant(Request $request) {
-   
+
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
     $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
-    
+
     $data = [
       'category_name' => 'reports',
       'page_name' => 'reports',
@@ -80,7 +80,7 @@ class ReportsController extends Controller
     ];
 
     return view('reports.covenants')->with($data);
-    
+
   }
 
   public function cashflow(Request $request) {
@@ -110,7 +110,7 @@ class ReportsController extends Controller
                 p.par_vencimentoparcela,
                 p.par_numero,
                 p.par_equivalente,
-                l.lanc_numerodeparcela,              
+                l.lanc_numerodeparcela,
                 l.lanc_contrato,
                 p.par_valor,
                 p.par_status
@@ -142,7 +142,7 @@ class ReportsController extends Controller
         }
 
         $busca = \DB::select($sqlBusca);
-       
+
         if($busca){
           foreach($busca as $b){
             $retorno['tabela'][] = array(
@@ -172,8 +172,8 @@ class ReportsController extends Controller
 
           $sqlBusca = "SELECT
                         e.est_nome,
-                        (SELECT SUM(p.par_valor) FROM lancamento l, parcelamento p 
-                          WHERE l.con_codigoid = c.id AND l.id = p.lanc_codigoid 
+                        (SELECT SUM(p.par_valor) FROM lancamento l, parcelamento p
+                          WHERE l.con_codigoid = c.id AND l.id = p.lanc_codigoid
                             AND p.par_vencimentoparcela >= '".$inicio."'
                             AND p.par_vencimentoparcela <= '".$fim."'
                             AND p.par_status = e.est_nome ) AS valor
@@ -200,7 +200,7 @@ class ReportsController extends Controller
         break;
       case "covenant":
         $retorno['cabecalho'] = "Status de Pagamento";
-        
+
         $sqlBusca = "SELECT
           a.assoc_nome,
           a.assoc_cpf,
@@ -209,7 +209,7 @@ class ReportsController extends Controller
           p.par_vencimentoparcela,
           p.par_numero,
           p.par_equivalente,
-          l.lanc_numerodeparcela,              
+          l.lanc_numerodeparcela,
           l.lanc_contrato,
           p.par_valor,
           p.par_status
@@ -252,9 +252,6 @@ class ReportsController extends Controller
             'convenio' => $b->con_nome,
             'matricula' => $b->assoc_matricula,
             'vencimento' => $b->par_vencimentoparcela,
-            'parcela' => $b->par_numero,
-            'equivalencia' => $b->par_equivalente,
-            'quantidade' => $b->lanc_numerodeparcela,
             'contrato' => $b->lanc_contrato,
             'valor' => number_format($b->par_valor,2),
             'status' => $b->par_status,
