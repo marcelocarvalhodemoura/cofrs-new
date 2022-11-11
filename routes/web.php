@@ -69,6 +69,12 @@ Route::post('/users/pass/{id}', [UserController::class, 'forgotPassword']);
 //Send data from the form
 Route::post('/users/store', [UserController::class, 'store']);
 
+//Update user information
+Route::post('/users/update/{id}', [UserController::class, 'update']);
+
+//Profile
+Route::get('/users/profile/{id}', [UserController::class, 'profile']);
+
 
 /**
  * Associates Routes

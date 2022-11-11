@@ -94,12 +94,12 @@
 
 @case('auth_boxed')
 {{-- Auth Lockscreen Boxed --}}
-<script src="{{asset('assets/js/authentication/form-1.js')}}"></script>
+<script src="{{asset('assets/js/authentication/form-1.js?v=1.2')}}"></script>
 @break
 
 @case('auth_default')
 {{-- Auth Lockscreen --}}
-<script src="{{asset('assets/js/authentication/form-1.js')}}"></script>
+<script src="{{asset('assets/js/authentication/form-1.js?v=1')}}"></script>
 @break
 
 @case('charts')

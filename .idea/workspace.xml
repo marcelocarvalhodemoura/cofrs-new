@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/js/reports/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/js/reports/custom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/reports/covenants.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/reports/covenants.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -341,7 +338,8 @@
       <workItem from="1656700648973" duration="2637000" />
       <workItem from="1656941023366" duration="232000" />
       <workItem from="1657287518437" duration="648000" />
-      <workItem from="1658868092047" duration="392000" />
+      <workItem from="1658868092047" duration="593000" />
+      <workItem from="1660307293337" duration="25000" />
     </task>
     <servers />
   </component>

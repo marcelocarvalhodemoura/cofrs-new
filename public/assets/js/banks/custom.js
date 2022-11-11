@@ -31,8 +31,9 @@ $(document).ready(function () {
     },
   });
 
+  $('.dataTables_filter input[type="search"]').css({'width':'450px','display':'inline-block'});
   /**
-   * Form add 
+   * Form add
    */
   $("#formItem").validate({
     rules: {
@@ -76,7 +77,7 @@ $(document).ready(function () {
   });
 
   /**
-   * Form edit 
+   * Form edit
    */
   $("#formItemEdit").validate({
     rules: {

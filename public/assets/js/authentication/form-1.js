@@ -21,8 +21,9 @@ $('#formAuth').on('submit', event => {
     url: "/auth",
     data: $("#formAuth").serialize(),
     success: response => {
-      console.log(response.status);
+
       if (response.status == 'error') {
+
         const msg = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><strong>Atenção!</strong> ' + response.msg +
           '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
           '<span aria-hidden="true">&times;</span>' +
@@ -30,6 +31,10 @@ $('#formAuth').on('submit', event => {
           '</div>';
 
         $('#formAuth').prepend(msg);
+        setTimeout(()=>{
+            $('.alert-warning').remove();
+        },1000);
+
       } else {
         console.log(response.typeId);
         /*

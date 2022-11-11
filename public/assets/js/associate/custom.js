@@ -48,6 +48,7 @@ $(document).ready(function() {
         },
     });
 
+    $('.dataTables_filter input[type="search"]').css({'width':'450px','display':'inline-block'});
     /**
      * Input Mask in Associate Form
      */

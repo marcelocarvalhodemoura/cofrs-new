@@ -25,8 +25,6 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         }
 
-        //permissions('fff');
-
         //load all UserTypes
         $userType = UserType::all();
 
@@ -60,6 +58,29 @@ class UserController extends Controller
         return view('user.list')->with($data);
     }
 
+    public function profile(Request $request)
+    {
+        if (!Session::has('user')) {
+            return redirect()->route('login');
+        }
+        if(!in_array(Session::get('typeId'),[1,2])){
+            return redirect()->route('dashboard');
+        }
+
+        $userModel = User::find($request->userId);
+
+        $data = [
+            'category_name' => 'users',
+            'page_name' => 'users',
+            'has_scrollspy' => 0,
+            'scrollspy_offset' => '',
+            'alt_menu' => 0,
+            'userType' => UserType::all()
+        ];
+
+        return view('user.profile')->with($data);
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -75,7 +96,7 @@ class UserController extends Controller
     public function authentication(Request $request)
     {
         // Load information by usernam from User table
-        $userModel = User::join('tipousuario', 'tipousuario.id', '=', 'usuario.tipusr_codigoid')
+        $userModel = User::select('*', 'usuario.id AS user_id')->join('tipousuario', 'tipousuario.id', '=', 'usuario.tipusr_codigoid')
             ->where('usr_usuario', '=', $request->username)
             ->get();
 
@@ -97,7 +118,7 @@ class UserController extends Controller
 
         //Create any sessions
         Session::put([
-            'id'  => $userModel[0]->id,
+            'id'  => $userModel[0]->user_id,
             'user' => $userModel[0]->usr_usuario,
             'name' => $userModel[0]->usr_nome,
             'type' => $userModel[0]->tipusr_nome,
@@ -119,21 +140,39 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $userModel = new User();
 
         try {
-            User::updateOrCreate(
-                ['id' => $request->post('userId')],
-                [
-                    'usr_nome'  =>  $request->post('name'),
-                    'usr_usuario' => $request->post('user'),
-                    'usr_email' => $request->post('email'),
-                    'usr_senha' => Hash::make($request->post('password1')),
-                    'tipusr_codigoid' => $request->post('usertype'),
-                    'usr_removesn' => 0
-                ]
-            );
+
+            $userModel->usr_nome = $request->post('name');
+            $userModel->usr_usuario = $request->post('user');
+            $userModel->usr_email = $request->post('email');
+            $userModel->usr_senha = Hash::make($request->post('password1'));
+            $userModel->tipusr_codigoid = $request->post('usertype');
+
+            $userModel->save();
 
             return response()->json(['status' => 'success', 'msg' => 'Usuário salvo com sucesso!']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function update(Request $request)
+    {
+
+        $userModel = User::find($request->userId);
+
+        try {
+
+            $userModel->usr_nome = $request->post('name');
+            $userModel->usr_usuario = $request->post('user');
+            $userModel->usr_email = $request->post('email');
+            $userModel->tipusr_codigoid = $request->post('usertype');
+            $userModel->save();
+
+            return response()->json(['status' => 'success', 'msg' => 'Usuário salvo com sucesso!']);
+
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }

@@ -35,7 +35,7 @@
             <label for="validationCustom05">Tipo <b class="error">*</b></label>
             <select class="custom-select" required="" id="usertype" name="usertype">
                 <option value="">-Selecione-</option>
-                @foreach ($userType as $item)
+                @foreach ($userType ?? '' as $item)
                     <option value="{{ $item->id }}">{{ $item->tipusr_nome }}</option>
                 @endforeach
             </select>

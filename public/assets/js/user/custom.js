@@ -34,7 +34,7 @@ $(document).ready(function () {
         },
     });
 
-
+    $('.dataTables_filter input[type="search"]').css({'width':'450px','display':'inline-block'});
     /**
      * Form add User
      */
@@ -134,7 +134,7 @@ $(document).ready(function () {
         submitHandler: function () {
             //send data
             $.ajax({
-                url: '/users/store',
+                url: '/users/update/'+$("#userId").val(),
                 method: 'POST',
                 data: $("#formUserEdit").serialize(),
                 success: function (data) {
