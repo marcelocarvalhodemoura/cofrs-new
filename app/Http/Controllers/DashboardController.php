@@ -17,6 +17,10 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
+        if(!in_array(Session::get('typeId'),[1,2])){
+            return redirect()->route('associates');
+        }
+
         $vigencia = date('m/Y');
 
         $resumo_operacoes = Cashflow::select('credito', DB::raw("SUM(valor) as valor"))

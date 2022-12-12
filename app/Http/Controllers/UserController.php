@@ -63,9 +63,7 @@ class UserController extends Controller
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
-        if(!in_array(Session::get('typeId'),[1,2])){
-            return redirect()->route('dashboard');
-        }
+
 
         $userModel = User::find($request->userId);
 

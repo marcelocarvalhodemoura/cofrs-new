@@ -79,7 +79,7 @@ Route::get('/users/profile/{id}', [UserController::class, 'profile']);
 /**
  * Associates Routes
  */
-Route::get('/associates', [AssociateController::class, 'index']);
+Route::get('/associates', [AssociateController::class, 'index'])->name('associates');
 Route::post('/associates/store', [AssociateController::class, 'store']);
 Route::post('/associates/delete/{id}', [AssociateController::class, 'delete']);
 Route::get('/associates/instalment/{id}', [AssociateController::class, 'associateConvenants']);
