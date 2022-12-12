@@ -1,4 +1,4 @@
-<button type="button" id="btnAddUploadFile" class="btn btn-primary bs-popover rounded mb-2 mr-2" data-placement="top"  data-container="body" data-trigger="hover" data-content="Envio de arquivo" data-target="#convenantModalUploadFiles">
+<button type="button" id="btnAddUploadFile" class="btn btn-primary bs-popover rounded mb-2 mr-2" data-placement="top"  data-container="body" data-trigger="hover" data-content="Importação de arquivo" data-target="#convenantModalUploadFiles">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud">
         <polyline points="16 16 12 12 8 16"></polyline>
         <line x1="12" y1="12" x2="12" y2="21"></line>
@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Envio do Arquivo</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Importação de Arquivo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
