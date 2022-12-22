@@ -15,21 +15,8 @@ $(document).ready(function () {
       { data: 'banco', name: 'banco' },
       { data: 'count', name: 'count' },
       { data: 'descricao', name: 'descricao' },
-      {
-        data: 'data_vencimento', name: 'data_vencimento', render: function (data) {
-          dt = new Date(data);
-          return dt.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-        }
-      },
-      {
-        data: 'credito', name: 'credito', render: function (data) {
-          if (data == 1) {
-            return 'Crédito';
-          } else {
-            return 'Débito';
-          }
-        }
-      },
+      {data: 'data_vencimento_formatada', name: 'data_vencimento_formatada'},
+      {data: 'operacao', name: 'operacao'},
       {
         data: 'valor', name: 'valor', className: "text-right", render(data) {
           return "R$ " + formataNumero(data);

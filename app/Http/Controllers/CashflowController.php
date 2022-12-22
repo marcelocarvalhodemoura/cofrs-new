@@ -47,6 +47,8 @@ class CashflowController extends Controller
       //load all contas
       $contasList = Cashflow::select(
         'movimentacao.*',
+        DB::raw('DATE_FORMAT(data_vencimento, "%d/%m/%Y") AS data_vencimento_formatada'),
+        DB::raw('(CASE WHEN (movimentacao.credito = 0) THEN "Débito" ELSE "Crédito" END) as operacao') ,
         DB::raw("CONCAT(c.agencia,'/',c.conta) as count"),
         DB::raw("CONCAT(b.febraban_code,' ',b.name_bank) as banco"),
         'e.est_nome',
@@ -57,8 +59,6 @@ class CashflowController extends Controller
         ->orderBy('movimentacao.data_vencimento', 'desc')
         ->orderBy('movimentacao.descricao', 'asc')
         ->get();
-
-      //dd($contasList);
 
       return DataTables::of($contasList)
         ->addIndexColumn()
