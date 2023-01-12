@@ -310,6 +310,9 @@ $(document).ready(function () {
                 required: true,
             },
             firstPortion: "required",
+            contract: {
+                required: true,
+            }
 
         },
         messages: {
@@ -318,7 +321,8 @@ $(document).ready(function () {
             number: "Número é um campo obrigatório",
             portion: "Número da parcela é um campo obrigatório",
             total: "Valor Total é campos obrigatório",
-            firstPortion: "Parcela inicial é um campo obrigatório"
+            firstPortion: "Parcela inicial é um campo obrigatório",
+            contract: "Contrato é um campo obrigatório"
         },
         errorElement: "span",
         highlight: function () {

@@ -173,13 +173,13 @@ class ConvenantController extends Controller
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
                     ->where('cla_codigoid', '=', 15)
-                    ->whereIn('ag_codigoid', [3,7])
+                    ->where('par_numero', '=', 1)
                     ->orderBy('assoc_matricula', 'asc')
                     ->get();
                 break;
 
             case 'DIVERSOS':
-                $referenceSql =Portion::select('*')
+                $referenceSql = Portion::select('*')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
@@ -194,7 +194,7 @@ class ConvenantController extends Controller
                     ->get();
                 break;
             case 'EMPRESTIMO':
-                $referenceSql =Portion::select('*')
+                $referenceSql = Portion::select('*')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
@@ -264,7 +264,8 @@ class ConvenantController extends Controller
      * @param string $status
      * @return mixed
      */
-    protected function changeStatusPortion($id, $status){
+    protected function changeStatusPortion($id, $status)
+    {
         try{
             // load portion
             $portion = Portion::where('id', $id)
@@ -285,7 +286,8 @@ class ConvenantController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function changePayment(Request $request){
+    public function changePayment(Request $request)
+    {
 
         foreach ($request->id as $id){
             try{
@@ -583,7 +585,8 @@ class ConvenantController extends Controller
 
     }
 
-    public static function verifyFile($request){
+    public static function verifyFile($request)
+    {
         $responseData = "";
 
         //dd($request->file('file'));
@@ -766,7 +769,7 @@ class ConvenantController extends Controller
             $convenantModel->con_codigoid = $request->convenants;
             $convenantModel->lanc_datavencimento = $yearUpdated.'-'.$monthUpdated.'-10';
             $convenantModel->assoc_codigoid = $request->associate;
-
+            $convenantModel->lanc_contrato = $request->contract;
             $convenantModel->save();
 
             //get last insert id to Convenios table

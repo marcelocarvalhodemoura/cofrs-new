@@ -22,7 +22,7 @@ class Convenant extends Migration
             $table->date('lanc_datavencimento');
             $table->integer('con_codigoid');
             $table->integer('assoc_codigoid');
-            //$table->integer('est_codigoid', false, false);
+            $table->integer('est_codigoid', false, false);
             $table->string('lanc_contrato', 255);
             $table->softDeletes();
             $table->timestamps();
