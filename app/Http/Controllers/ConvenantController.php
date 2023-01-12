@@ -824,7 +824,23 @@ class ConvenantController extends Controller
             try {
                 $portion = Portion::find($id);
 
-                $portion->par_status === 'Pago' ? response()->json(['status'=>'error', 'msg'=> 'Não é possível excluir um lançamento pago']) : $portion->delete();
+                $convenants = Portion::where('lanc_codigoid', '=', $portion->lanc_codigoid)->get();
+
+                if($portion->par_status === 'Pago') {
+                    response()->json(['status'=>'error', 'msg'=> 'Não é possível excluir um lançamento pago']);
+                } else {
+                    $portion->delete();
+
+                    $convenants = Portion::where('lanc_codigoid', '=', $portion->lanc_codigoid)->get();
+
+                    if(count($convenants) === 0){
+                        Convenant::find($portion->lanc_codigoid)->delete();
+                    }
+                }
+
+
+
+
 
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
