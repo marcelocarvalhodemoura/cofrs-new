@@ -363,6 +363,7 @@ class ConvenantController extends Controller
     {
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
         foreach ($sheetData as $content){
@@ -371,7 +372,10 @@ class ConvenantController extends Controller
 
                 $dataAssociate = Associate::where('assoc_cpf', $content['E'])->get();
 
-                if(empty(json_decode($dataAssociate)) === true){
+                // var_dump(json_decode($dataAssociate));
+                // die('associateProcessed');
+
+                if(empty(json_decode($dataAssociate)) !== true){
 
                     $tipoAssocModel = Typeassociate::select('*')
                         ->where('tipassoc_nome','=', $content['I'])
