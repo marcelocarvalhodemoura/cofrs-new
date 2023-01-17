@@ -561,7 +561,7 @@ class ConvenantController extends Controller
 
                             $parcelamento = Portion::create([
                                 'par_numero' => $i,
-                                'par_valor' => intval($content['E']),
+                                'par_valor' => floatval($content['E']),
                                 'lanc_codigoid' => $lancamento->id,
                                 'par_vencimentoparcela' => $d->format('Y-m-d'),
                                 'par_observacao' => 'Processado através da planilha',
