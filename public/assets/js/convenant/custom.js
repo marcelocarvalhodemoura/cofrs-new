@@ -273,7 +273,7 @@ $(document).ready(function () {
      * Load Table Convenants without data
      */
     let tr = '<tr class="table-warning">' +
-        '<td colspan="6" class="text-center">' +
+        '<td colspan="7" class="text-center">' +
         '<strong>Selecione o campo!</strong>' +
         '</td>' +
         '</tr>';
@@ -514,7 +514,7 @@ $(document).ready(function () {
 
                 if (response.length === 0) {
                     let tr2 = '<tr>' +
-                        '<td colspan="6">' +
+                        '<td colspan="7">' +
                         '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
                         '<tbody>' +
                         '<tr>' +
@@ -537,19 +537,26 @@ $(document).ready(function () {
 
                         //Total variable convert to money format
                         let total = item.lanc_valortotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-
+                        console.log(item.con_referencia);
                         tr += '<tr>' +
-                            '<td colspan="6">' +
+                            '<td colspan="7">' +
                             '<a href="#tableTest-' + item.lanc_codigoid + '" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
                             '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
                             '<tbody>' +
                             '<tr>' +
                             '<td class="text-primary">' + item.assoc_nome + '</td>' +
                             '<td >' + item.assoc_cpf + '</td>' +
-                            '<td width="25%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>' +
-                            '<td width="20%">' + dateFormated + '</td>' +
-                            '<td width="10%">' + item.lanc_numerodeparcela + '</td>' +
-                            '<td width="10%">' + total + '</td>' +
+                            '<td width="20%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>' +
+                            '<td width="10%">' + dateFormated + '</td>' +
+                            '<td width="10%" align="center">' + item.lanc_numerodeparcela + '</td>';
+                            if(item.con_referencia == 'MENSALIDADE'){
+                                console.log('é mensalidade');
+                                tr += '<td width="15%">' + item.assoc_contrato + '</td>';
+                            }else{
+                                console.log('não é ');
+                                tr += '<td width="15%">' + item.lanc_contrato + '</td>';
+                            }
+                            tr +='<td width="10%">' + total + '</td>' +
                             '</tr>' +
                             '</tbody>' +
                             '</table>\n' +

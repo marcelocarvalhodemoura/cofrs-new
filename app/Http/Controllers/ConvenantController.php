@@ -237,7 +237,19 @@ class ConvenantController extends Controller
 
             try {
                 //load Convenants from table lancamentos
-                $convenantList = Convenant::select('*', 'lancamento.id AS lanc_codigoid')
+                $convenantList = Convenant::select(
+                    'assoc_nome',
+                    'assoc_cpf',
+                    'con_nome',
+                    'con_referencia',
+                    'assoc_contrato',
+                    'lanc_contrato',
+                    'lanc_datavencimento',
+                    'lanc_numerodeparcela',
+                    'lanc_valortotal',
+                    'con_referencia',
+                    'lancamento.id AS lanc_codigoid'
+                    )
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
                     ->where($dynamicWhere)
@@ -245,7 +257,13 @@ class ConvenantController extends Controller
 
                 foreach ($convenantList as $index => $item) {
                     //load portion within lanc_codigoid iqual to id from lancamento
-                    $convenantList[$index]['portion'] = Portion::select('*', 'parcelamento.id AS par_codigoid')
+                    $convenantList[$index]['portion'] = Portion::select(
+                        'com_nome',
+                        'par_numero',
+                        'par_valor',
+                        'par_status',
+                        'parcelamento.id AS par_codigoid'
+                        )
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
                         ->get();
