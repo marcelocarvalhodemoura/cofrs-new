@@ -544,11 +544,9 @@ $(document).ready(function () {
                             '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
                             '<tbody>' +
                             '<tr>' +
-                            '<td class="text-primary">' + item.assoc_nome + '</td>' +
-                            '<td >' + item.assoc_cpf + '</td>' +
-                            '<td width="20%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>' +
-                            '<td width="10%">' + dateFormated + '</td>' +
-                            '<td width="10%" align="center">' + item.lanc_numerodeparcela + '</td>';
+                            '<td class="text-primary" width="20%">' + item.assoc_nome + '</td>' +
+                            '<td width="10%">' + item.assoc_cpf + '</td>' +
+                            '<td width="15%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>';
                             if(item.con_referencia == 'MENSALIDADE'){
                                 console.log('é mensalidade');
                                 tr += '<td width="15%">' + item.assoc_contrato + '</td>';
@@ -556,7 +554,9 @@ $(document).ready(function () {
                                 console.log('não é ');
                                 tr += '<td width="15%">' + item.lanc_contrato + '</td>';
                             }
-                            tr +='<td width="10%">' + total + '</td>' +
+                            tr +='<td width="10%">' + dateFormated + '</td>' +
+                            '<td width="10%" align="center">' + item.lanc_numerodeparcela + '</td>' +
+                            '<td width="10%">' + total + '</td>' +
                             '</tr>' +
                             '</tbody>' +
                             '</table>\n' +

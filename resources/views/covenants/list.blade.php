@@ -98,12 +98,12 @@
                             <div class="col-12">
                                 <table class="table table-hover" id="tableCovenants">
                                     <thead>
-                                        <th>Associado</th>
-                                        <th>CPF</th>
-                                        <th width="20%">Convênios</th>
+                                        <th width="20%">Associado</th>
+                                        <th width="10%">CPF</th>
+                                        <th width="15%">Convênios</th>
+                                        <th width="15%">Contrato</th>
                                         <th width="10%">Vencimento</th>
                                         <th width="10%">Parcelas</th>
-                                        <th width="15%">Contrato</th>
                                         <th width="10%">Total</th>
                                     </thead>
                                     <tbody>
@@ -122,7 +122,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ URL::asset('/assets/js/convenant/custom.js?v=www12312') }}"></script>
+    <script src="{{ URL::asset('/assets/js/convenant/custom.js?v=122ww') }}"></script>
     <script src="{{ URL::asset('/assets/js/jquery-maskmoney.js') }}"></script>
     <script src="{{ URL::asset('plugins/apex/apexcharts.min.js') }}"></script>
     <script src="{{ URL::asset('plugins/apex/custom-apexcharts.js') }}"></script>

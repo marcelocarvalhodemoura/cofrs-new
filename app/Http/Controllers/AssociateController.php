@@ -26,7 +26,7 @@ class AssociateController extends Controller
         if($request->ajax()){
 
             //load all associates
-            $associateList = Associate::select('*', 'associado.id AS assoc_codigoid')
+            $associateList = Associate::select('assoc_nome', 'assoc_cpf', 'assoc_matricula', 'assoc_fone', 'assoc_cidade', 'tipassoc_nome','associado.id AS assoc_codigoid')
                 ->join('tipoassociado', 'associado.tipassoc_codigoid', '=', 'tipoassociado.id')
                 ->get();
 
