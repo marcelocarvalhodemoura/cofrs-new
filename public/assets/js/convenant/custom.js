@@ -86,7 +86,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 let title;
                 if (response[0].status === 'success') {
                     title = 'Bom trabalho!';
@@ -531,13 +531,16 @@ $(document).ready(function () {
                         return $("#tableCovenants tbody").append(tr2);
                 } else {
                     response.forEach(function (item) {
+                        if(item.portion.length == 0){
+                            return;
+                        }
 
                         //convert string to array separated to "-" and reverse vector position
                         let dateFormated = item.lanc_datavencimento.split('-').reverse().toString().replaceAll(',', '/');
 
                         //Total variable convert to money format
                         let total = item.lanc_valortotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-                        console.log(item.con_referencia);
+                        //console.log(item.con_referencia);
                         tr += '<tr>' +
                             '<td colspan="7">' +
                             '<a href="#tableTest-' + item.lanc_codigoid + '" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
@@ -548,10 +551,10 @@ $(document).ready(function () {
                             '<td width="10%">' + item.assoc_cpf + '</td>' +
                             '<td width="15%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>';
                             if(item.con_referencia == 'MENSALIDADE'){
-                                console.log('é mensalidade');
+                                //console.log('é mensalidade');
                                 tr += '<td width="15%">' + item.assoc_contrato + '</td>';
                             }else{
-                                console.log('não é ');
+                                //console.log('não é ');
                                 tr += '<td width="15%">' + item.lanc_contrato + '</td>';
                             }
                             tr +='<td width="10%">' + dateFormated + '</td>' +
