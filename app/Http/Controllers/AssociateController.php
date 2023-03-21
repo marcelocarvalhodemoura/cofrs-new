@@ -98,7 +98,7 @@ class AssociateController extends Controller
 
         }catch (Exception $exception){
 
-            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            return response()->json(['status'=>'error', 'msg'=> $exception->getMessage()]);
 
         }
     }

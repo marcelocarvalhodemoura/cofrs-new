@@ -266,20 +266,9 @@ class ConvenantController extends Controller
                         )
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
+                        ->where('parcelamento.deleted_at','"0000-00-00 00:00:00"')
                         ->get();
                 }
-
-                foreach($convenantList as $k => $v){
-                    /*
-                    echo '<pre>';
-                    echo($k.' - '.$v['portion']);
-
-                    if($v['portion'] == '' || count($v['portion']) == 0){
-                        unset($convenantList[$k]);
-                    }
-                    */
-                }
-                //array_values($convenantList);
 
                 return response()->json($convenantList);
             }catch (Exception $e){
