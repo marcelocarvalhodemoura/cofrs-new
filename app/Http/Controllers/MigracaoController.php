@@ -184,14 +184,7 @@ class MigracaoController extends Controller{
     $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn, deleted_at) values ";
     $dados = $this->origem->query("SELECT * FROM parcelamento");
     foreach($dados as $v){
-      if($v['par_habilitasn'] == 0 || $v['par_habilitasn'] == 2){
-        $deleteat = date('Y-m-d H:i:s');
-        $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."', '".$deleteat."'),";
-      }else{
         $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."'),";
-      }
-
-
     }
     //, '".$v['lanc_valorparcela']."'
     DB::statement(substr($sql,0,-1));
