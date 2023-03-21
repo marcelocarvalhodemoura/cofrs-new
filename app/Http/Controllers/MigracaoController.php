@@ -16,8 +16,6 @@ class MigracaoController extends Controller{
 
   private $origem;
 
-
-
   public function __construct(){
     \Config::set("database.connections.cofrs_old", [
       "driver" => "mysql",
@@ -134,7 +132,7 @@ class MigracaoController extends Controller{
     //associado
     DB::statement('SET @@global.max_allowed_packet = 100000000');
     DB::statement('truncate table associado');
-    $sql = "INSERT INTO associado (id, assoc_nome, assoc_matricula, assoc_cpf, assoc_rg, assoc_datanascimento, assoc_sexo, assoc_profissao, created_at, assoc_fone, assoc_email, assoc_cep, assoc_endereco, assoc_complemento, assoc_bairro, assoc_uf, assoc_cidade, assoc_observacao, tipassoc_codigoid, cla_codigoid, assoc_banco, assoc_agencia, assoc_conta, assoc_tipoconta, assoc_estadocivil, assoc_fone2, assoc_ativosn, assoc_dataativacao, assoc_datadesligamento, assoc_contrato, ag_codigoid, assoc_identificacao, deleted_at) values "
+    $sql = "INSERT INTO associado (id, assoc_nome, assoc_matricula, assoc_cpf, assoc_rg, assoc_datanascimento, assoc_sexo, assoc_profissao, created_at, assoc_fone, assoc_email, assoc_cep, assoc_endereco, assoc_complemento, assoc_bairro, assoc_uf, assoc_cidade, assoc_observacao, tipassoc_codigoid, cla_codigoid, assoc_banco, assoc_agencia, assoc_conta, assoc_tipoconta, assoc_estadocivil, assoc_fone2, assoc_ativosn, assoc_dataativacao, assoc_datadesligamento, assoc_contrato, ag_codigoid, assoc_identificacao, deleted_at) values ";
     //assoc_removesn
     $dados = $this->origem->query("SELECT * FROM associado");
     foreach($dados as $v){
