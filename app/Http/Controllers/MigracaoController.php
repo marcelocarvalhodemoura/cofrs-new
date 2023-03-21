@@ -134,17 +134,12 @@ class MigracaoController extends Controller{
     //associado
     DB::statement('SET @@global.max_allowed_packet = 100000000');
     DB::statement('truncate table associado');
-    $sql = "INSERT INTO associado (id, assoc_nome, assoc_matricula, assoc_cpf, assoc_rg, assoc_datanascimento, assoc_sexo, assoc_profissao, created_at, assoc_fone, assoc_email, assoc_cep, assoc_endereco, assoc_complemento, assoc_bairro, assoc_uf, assoc_cidade, assoc_observacao, tipassoc_codigoid, cla_codigoid, assoc_banco, assoc_agencia, assoc_conta, assoc_tipoconta, assoc_estadocivil, assoc_fone2, assoc_ativosn, assoc_dataativacao, assoc_datadesligamento, assoc_contrato, ag_codigoid, assoc_identificacao, deleted_at) values ";
+    $sql = "INSERT INTO associado (id, assoc_nome, assoc_matricula, assoc_cpf, assoc_rg, assoc_datanascimento, assoc_sexo, assoc_profissao, created_at, assoc_fone, assoc_email, assoc_cep, assoc_endereco, assoc_complemento, assoc_bairro, assoc_uf, assoc_cidade, assoc_observacao, tipassoc_codigoid, cla_codigoid, assoc_banco, assoc_agencia, assoc_conta, assoc_tipoconta, assoc_estadocivil, assoc_fone2, assoc_ativosn, assoc_dataativacao, assoc_datadesligamento, assoc_contrato, ag_codigoid, assoc_identificacao) values ";
     //assoc_removesn
     $dados = $this->origem->query("SELECT * FROM associado");
     foreach($dados as $v){
-      if($v['assoc_ativosn'] == 1){
-        $deleteat = NULL;
-      } else {
-        $deleteat = date('Y-m-d H:i:s');
-      }
 
-      $sql .= " (".$v['assoc_codigoid'].", '".$v['assoc_nome']."', '".$v['assoc_matricula']."', '".$v['assoc_cpf']."', '".$v['assoc_rg']."', '".$v['assoc_datanascimento']."', '".$v['assoc_sexo']."', '".$v['assoc_profissao']."', '".$v['assoc_dataassociado']."', '".$v['assoc_fone']."', '".$v['assoc_email']."', '".$v['assoc_cep']."', '".$v['assoc_endereco']."', '".$v['assoc_complemento']."', '".$v['assoc_bairro']."', '".$v['assoc_uf']."', '".$v['assoc_cidade']."', '".$v['assoc_observacao']."', '".$v['tipassoc_codigoid']."', '".$v['cla_codigoid']."', '".$v['assoc_banco']."', '".$v['assoc_agencia']."', '".$v['assoc_conta']."', '".$v['assoc_tipoconta']."', '".$v['assoc_estadocivil']."', '".$v['assoc_fone2']."', '".$v['assoc_ativosn']."', '".$v['assoc_dataativacao']."', '".$v['assoc_datadesligamento']."', '".$v['assoc_contrato']."', '".$v['ag_codigoid']."', '".$v['assoc_identificacao']."', '".$deleteat."'),";
+      $sql .= " (".$v['assoc_codigoid'].", '".$v['assoc_nome']."', '".$v['assoc_matricula']."', '".$v['assoc_cpf']."', '".$v['assoc_rg']."', '".$v['assoc_datanascimento']."', '".$v['assoc_sexo']."', '".$v['assoc_profissao']."', '".$v['assoc_dataassociado']."', '".$v['assoc_fone']."', '".$v['assoc_email']."', '".$v['assoc_cep']."', '".$v['assoc_endereco']."', '".$v['assoc_complemento']."', '".$v['assoc_bairro']."', '".$v['assoc_uf']."', '".$v['assoc_cidade']."', '".$v['assoc_observacao']."', '".$v['tipassoc_codigoid']."', '".$v['cla_codigoid']."', '".$v['assoc_banco']."', '".$v['assoc_agencia']."', '".$v['assoc_conta']."', '".$v['assoc_tipoconta']."', '".$v['assoc_estadocivil']."', '".$v['assoc_fone2']."', '".$v['assoc_ativosn']."', '".$v['assoc_dataativacao']."', '".$v['assoc_datadesligamento']."', '".$v['assoc_contrato']."', '".$v['ag_codigoid']."', '".$v['assoc_identificacao']."'),";
       //, '".$v['assoc_foto']."'
       //, '".$v['assoc_fone3']."'
     }
@@ -181,7 +176,7 @@ class MigracaoController extends Controller{
 
     //parcelamento
     DB::statement('truncate table parcelamento');
-    $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn, deleted_at) values ";
+    $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn) values ";
     $dados = $this->origem->query("SELECT * FROM parcelamento");
     foreach($dados as $v){
         $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."'),";
