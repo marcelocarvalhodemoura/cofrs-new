@@ -266,6 +266,7 @@ class ConvenantController extends Controller
                         )
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
+                        ->where('parcelamento.deleted_at',null)
                         ->get();
                 }
 
