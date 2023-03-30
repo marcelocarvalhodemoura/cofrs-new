@@ -135,15 +135,16 @@ class MigracaoController extends Controller{
     //assoc_removesn
     $dados = $this->origem->query("SELECT * FROM associado");
     foreach($dados as $v){
+
+      $sql .= " (".$v['assoc_codigoid'].", '".$v['assoc_nome']."', '".$v['assoc_matricula']."', '".$v['assoc_cpf']."', '".$v['assoc_rg']."', '".$v['assoc_datanascimento']."', '".$v['assoc_sexo']."', '".$v['assoc_profissao']."', '".$v['assoc_dataassociado']."', '".$v['assoc_fone']."', '".$v['assoc_email']."', '".$v['assoc_cep']."', '".$v['assoc_endereco']."', '".$v['assoc_complemento']."', '".$v['assoc_bairro']."', '".$v['assoc_uf']."', '".$v['assoc_cidade']."', '".$v['assoc_observacao']."', '".$v['tipassoc_codigoid']."', '".$v['cla_codigoid']."', '".$v['assoc_banco']."', '".$v['assoc_agencia']."', '".$v['assoc_conta']."', '".$v['assoc_tipoconta']."', '".$v['assoc_estadocivil']."', '".$v['assoc_fone2']."', '".$v['assoc_ativosn']."', '".$v['assoc_dataativacao']."', '".$v['assoc_datadesligamento']."', '".$v['assoc_contrato']."', '".$v['ag_codigoid']."', '".$v['assoc_identificacao']."',  ";
+
       if($v['assoc_ativosn'] == 1){
-        $deleteat = NULL;
+        $sql .= "NULL";
       } else {
-        $deleteat = date('Y-m-d H:i:s');
+        $sql .= "'".date('Y-m-d H:i:s')."'";
       }
 
-      $sql .= " (".$v['assoc_codigoid'].", '".$v['assoc_nome']."', '".$v['assoc_matricula']."', '".$v['assoc_cpf']."', '".$v['assoc_rg']."', '".$v['assoc_datanascimento']."', '".$v['assoc_sexo']."', '".$v['assoc_profissao']."', '".$v['assoc_dataassociado']."', '".$v['assoc_fone']."', '".$v['assoc_email']."', '".$v['assoc_cep']."', '".$v['assoc_endereco']."', '".$v['assoc_complemento']."', '".$v['assoc_bairro']."', '".$v['assoc_uf']."', '".$v['assoc_cidade']."', '".$v['assoc_observacao']."', '".$v['tipassoc_codigoid']."', '".$v['cla_codigoid']."', '".$v['assoc_banco']."', '".$v['assoc_agencia']."', '".$v['assoc_conta']."', '".$v['assoc_tipoconta']."', '".$v['assoc_estadocivil']."', '".$v['assoc_fone2']."', '".$v['assoc_ativosn']."', '".$v['assoc_dataativacao']."', '".$v['assoc_datadesligamento']."', '".$v['assoc_contrato']."', '".$v['ag_codigoid']."', '".$v['assoc_identificacao']."', '".$deleteat."'),";
-      //, '".$v['assoc_foto']."'
-      //, '".$v['assoc_fone3']."'
+      $sql .= "),";
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela associado migrada </br />';
@@ -181,13 +182,16 @@ class MigracaoController extends Controller{
     $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn, deleted_at) values ";
     $dados = $this->origem->query("SELECT * FROM parcelamento");
     foreach($dados as $v){
+
+      $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."', ";
+
       if($v['par_habilitasn'] == 1){
-        $deleteat = NULL;
+        $sql .= "NULL";
       } else {
-        $deleteat = date('Y-m-d H:i:s');
+        $sql .= "'".date('Y-m-d H:i:s')."'";
       }
 
-      $sql .= " (".$v['par_codigoid'].", '".$v['par_numero']."', '".$v['par_valor']."', '".$v['lanc_codigoid']."', '".$v['par_vencimentoparcela']."', '".$v['par_observacao']."', '".$v['par_status']."', '".$v['com_codigoid']."', '".$v['par_equivalente']."', '".$v['par_habilitasn']."', '".$deleteat."'),";
+      $sql .= "),";
     }
     //, '".$v['lanc_valorparcela']."'
     DB::statement(substr($sql,0,-1));
