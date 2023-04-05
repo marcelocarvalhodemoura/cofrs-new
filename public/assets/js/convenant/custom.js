@@ -579,7 +579,7 @@ $(document).ready(function () {
                             '<th><span class="badge badge-primary">Parcela</span></th>' +
                             '<th><span class="badge badge-primary">Valor</span></th>' +
                             '<th><span class="badge badge-primary">Status</span></th>' +
-                            '<th><input id="portionSel" value="1" type="checkbox"></th>' +
+                            '<th><input id="portionSel" value="1" type="checkbox" onclick="selAll(' + item.lanc_codigoid + ')"></th>' +
                             '</tr>' +
                             '</thead>' +
                             '<tbody>';
@@ -640,6 +640,14 @@ $(document).ready(function () {
         });//ajax
 
     };
+
+function selAll(ulID) {
+    if($('#tableTest-'+ulID+' #portionSel').is(':checked')){
+        $('#tableTest-'+ulID+' input[type="checkbox"]').prop('checked', true);
+    } else {
+        $('#tableTest-'+ulID+' input[type="checkbox"]').prop('checked', false);
+    }
+}
 
 function loadUpload() {
     var uploadObj = $("#fileuploader").uploadFile({
