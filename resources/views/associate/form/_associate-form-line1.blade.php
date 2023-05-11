@@ -5,16 +5,16 @@
 
     </div>
     <div class="col-md-4 mb-6">
-        <label for="registration">Identificação <b class="error">*</b></label>
+        <label for="identify">Identificação <b class="error">*</b></label>
         <div class="input-group">
-            <input type="text" class="form-control" id="registration" name="registration" placeholder="informe a Identificação" maxlength="12" >
+            <input type="text" class="form-control" id="identify" name="identify" placeholder="informe a Identificação" maxlength="12" >
 
         </div>
     </div>
     <div class="col-md-4 mb-6">
         <label for="registration">Matrícula <b class="error">*</b></label>
         <div class="input-group">
-            <input type="text" class="form-control" id="identify" name="identify" placeholder="informe a Matrícula" maxlength="13" required>
+            <input type="text" class="form-control" id="registration" name="registration" placeholder="informe a Matrícula" maxlength="13" required>
 
         </div>
     </div>

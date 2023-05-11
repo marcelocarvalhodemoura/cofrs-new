@@ -118,8 +118,8 @@ class AssociateController extends Controller
                 ['id' => $request->post('associateId')],
                 [
                     'assoc_nome'  =>  $request->post('name'),
-                    'assoc_matricula' => $request->post('identify'),
-                    'assoc_identificacao' => $request->post('registration'),
+                    'assoc_matricula' => $request->post('registration'),
+                    'assoc_identificacao' => $request->post('identify'),
                     'assoc_cpf' => $request->post('cpf'),
                     'assoc_rg' => $request->post('rg'),
                     'assoc_datanascimento' => $datePtToMysql,

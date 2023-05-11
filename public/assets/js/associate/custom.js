@@ -489,8 +489,8 @@ $(document).ready(function() {
                     var bornFormated = born[2]+'/'+born[1]+'/'+born[0];
 
                     $("#name").val(response.assoc_nome);
-                    $("#identify").val(response.assoc_matricula);
-                    $("#registration").val(response.assoc_identificacao);
+                    $("#identify").val(response.assoc_identificacao);
+                    $("#registration").val(response.assoc_matricula);
                     $("#born").val(bornFormated);
                     $("#email").val(response.assoc_email);
                     $("#cpf").val(response.assoc_cpf);
