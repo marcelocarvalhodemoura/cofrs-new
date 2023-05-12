@@ -667,10 +667,10 @@ function loadUpload() {
         },
         */
         onSuccess: function (files, data, xhr, pd) {
-            //console.log(data);
+            console.log(data);
             /* Retorno do PHP */
             uploadObj.reset();
-            if (data[0].status === 'success') {
+            if (data[0].status == 'success') {
                 $('#monthlyPayment').modal('hide');
                 $('#retorno').html('');
                 swal({
@@ -678,6 +678,9 @@ function loadUpload() {
                     text: data[0].msg,
                     type: data[0].status,
                     confirmButtonClass: 'btn btn-success',
+                })
+                .then((modalReturn) => {
+                    location.reload();
                 });
             } else {
                 $('#retorno').html(data[0].msg);

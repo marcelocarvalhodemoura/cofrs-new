@@ -23,6 +23,8 @@ use SimpleXLSX;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\JsonResponse;
 use File;
+use App\Helpers;
+
 
 use DateTime;
 use DateInterval;
@@ -382,19 +384,27 @@ class ConvenantController extends Controller
     {
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
-
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        $retorno = "";
+        //var_dump($sheetData);
 
-        foreach ($sheetData as $content){
-
+        foreach ($sheetData as $linha => $content){
+            $erro = "";
             if($content['E'] !== "CPF"){
 
-                $dataAssociate = Associate::where('assoc_cpf', $content['E'])->get();
-
-                // var_dump(json_decode($dataAssociate));
-                // die('associateProcessed');
+                $dataAssociate = Associate::where('assoc_cpf', Helpers\formataCPF($content['E']))->get();
+                /*
+                var_dump($dataAssociate);
+                echo '<hr />';
+                echo(Helpers\formataCPF($content['E']));
+                die;
+                */
 
                 if(empty(json_decode($dataAssociate)) !== true){
+
+                    if($content['J'] == "") {
+                        $erro .= '- Campo e-mail (coluna J) não pode ser em branco';
+                    }
 
                     $tipoAssocModel = Typeassociate::select('*')
                         ->where('tipassoc_nome','=', $content['I'])
@@ -416,47 +426,56 @@ class ConvenantController extends Controller
 
                     $dataFormated = implode('-', array_reverse($formDataExplode));
 
-                    try{
-                        $associateModel = new Associate();
-
-                        $associateModel->assoc_nome = $content['A'];
-                        $associateModel->assoc_identificacao = $content['B'];
-                        $associateModel->assoc_matricula = $content['C'];
-                        $associateModel->assoc_datanascimento = $dateBirthdayFormated;
-                        $associateModel->assoc_cpf = $content['E'];
-                        $associateModel->assoc_rg = $content['F'];
-                        $associateModel->assoc_sexo = $content['G'];
-                        $associateModel->assoc_profissao = $content['H'];
-                        $associateModel->tipassoc_codigoid = $content['I'];
-                        $associateModel->assoc_email = $content['J'];
-                        $associateModel->cla_codigoid = $content['K'];
-                        $associateModel->assoc_estadocivil = $content['L'];
-                        $associateModel->assoc_fone = $content['M'];
-                        $associateModel->assoc_agencia = $content['N'];
-                        $associateModel->assoc_cep = $content['O'];
-                        $associateModel->assoc_endereco = $content['P'];
-                        $associateModel->assoc_bairro = $content['Q'];
-                        $associateModel->assoc_uf = $content['R'];
-                        $associateModel->assoc_cidade = $content['S'];
-                        $associateModel->assoc_dataativacao = $dataFormated;
-                        $associateModel->assoc_contrato = $content['U'];
-
-                        $associateModel->save();
-
-                    }catch(Exception $e){
-                        return  response()->json($e, 400);
+                    if($erro == ''){
+                        Associate::create([
+                            'assoc_nome' => $content['A'],
+                            'assoc_identificacao' => $content['B'],
+                            'assoc_matricula' => $content['C'],
+                            'assoc_datanascimento' => $dateBirthdayFormated,
+                            'assoc_cpf' => $content['E'],
+                            'assoc_rg' => $content['F'],
+                            'assoc_sexo' => $content['G'],
+                            'assoc_profissao' => $content['H'],
+                            'tipassoc_codigoid' => $content['I'],
+                            'assoc_email' => $content['J'],
+                            'cla_codigoid' => $content['K'],
+                            'assoc_estadocivil' => $content['L'],
+                            'assoc_fone' => $content['M'],
+                            'assoc_agencia' => $content['N'],
+                            'assoc_cep' => $content['O'],
+                            'assoc_endereco' => $content['P'],
+                            'assoc_bairro' => $content['Q'],
+                            'assoc_uf' => $content['R'],
+                            'assoc_cidade' => $content['S'],
+                            'assoc_dataativacao' => $dataFormated,
+                            'assoc_contrato' => $content['U'],
+                            ]);
                     }
+                } else {
+                    $erro .= "- CPF (".Helpers\formataCPF($content['E']).") não encontrado;<br />";
                 }
             }// Column is CPF
 
+            //se teve algum erro, registra para o retorno
+            if($erro != ""){
+                $retorno .= "<strong>Linha ".$linha.":</strong><br />".$erro."<hr />";
+            }
+
         }// Foreach end
 
-        $responseData = [
-            'status' => 'success',
-            'msg' => 'Arquivo processado com sucesso!',
-        ];
+        if($retorno != ""){
+            $responseData = [
+                'status' => 'error',
+                'msg' => $retorno,
+            ];
+        } else {
+            $responseData = [
+                'status' => 'success',
+                'msg' => 'Arquivo processado com sucesso!',
+            ];
+        }
 
-        return response()->json([$responseData], 200);
+        return ($responseData);
     }
 
     public static function convenantsProcessed($file)
@@ -667,14 +686,7 @@ class ConvenantController extends Controller
 
                 $process = self::associateProcessed($request->file);
 
-                if($process == true){
-                    $responseData = [
-                        'status' => 'success',
-                        'msg' => 'Arquivo de Convênios processado com sucesso!',
-                    ];
-
-                    return response()->json([$responseData], 200);
-                }
+                return response()->json([$process], 200);
             }
         }else {
             $responseData = $verify;
