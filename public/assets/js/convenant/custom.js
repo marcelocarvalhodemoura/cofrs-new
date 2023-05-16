@@ -129,7 +129,7 @@ $(document).ready(function () {
                    url = URL.createObjectURL(blob);
                    a.href = url;
                    // atribuir nome de download do arquivo
-                   a.download = 'arGeradoTeste.txt';
+                   a.download = 'arGerado.txt';
                    // fazer download
                    a.click();
                    // revogar URL criada
