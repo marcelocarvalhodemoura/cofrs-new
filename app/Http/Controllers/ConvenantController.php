@@ -392,15 +392,19 @@ class ConvenantController extends Controller
             $erro = "";
             if($content['E'] !== "CPF"){
 
-                $dataAssociate = Associate::where('assoc_cpf', Helpers\formataCPF($content['E']))->get();
+                $cpf = Helpers\formataCPF($content['E']);
+                $dataAssociate = Associate::where('assoc_cpf', $cpf)->get();
+                $dataAssociateCount = $dataAssociate->count();
+
                 /*
-                var_dump($dataAssociate);
+                var_dump($dataAssociate);die;
+                print_r(json_decode($dataAssociate[0]['id']));
                 echo '<hr />';
-                echo(Helpers\formataCPF($content['E']));
-                die;
+                echo($cpf);
+                die();
                 */
 
-                if(empty(json_decode($dataAssociate)) !== true){
+                if($dataAssociateCount == 0){
 
                     if($content['J'] == "") {
                         $erro .= '- Campo e-mail (coluna J) não pode ser em branco';
@@ -429,10 +433,10 @@ class ConvenantController extends Controller
                     if($erro == ''){
                         Associate::create([
                             'assoc_nome' => $content['A'],
-                            'assoc_identificacao' => $content['B'],
-                            'assoc_matricula' => $content['C'],
+                            'assoc_identificacao' => $content['C'],
+                            'assoc_matricula' => $content['B'],
                             'assoc_datanascimento' => $dateBirthdayFormated,
-                            'assoc_cpf' => $content['E'],
+                            'assoc_cpf' => $cpf,
                             'assoc_rg' => $content['F'],
                             'assoc_sexo' => $content['G'],
                             'assoc_profissao' => $content['H'],
@@ -452,7 +456,7 @@ class ConvenantController extends Controller
                             ]);
                     }
                 } else {
-                    $erro .= "- CPF (".Helpers\formataCPF($content['E']).") não encontrado;<br />";
+                    $erro .= "- CPF (".$cpf.") já existe na base de dados;<br />";
                 }
             }// Column is CPF
 
