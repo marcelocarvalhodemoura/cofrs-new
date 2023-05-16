@@ -223,6 +223,7 @@ class ReportsController extends Controller
           a.id = l.assoc_codigoid
           AND p.par_vencimentoparcela >= '".$inicio."'
           AND p.par_vencimentoparcela <= '".$fim."'
+          AND p.deleted_at = NULL
           AND l.con_codigoid = cv.id
           AND a.cla_codigoid = cl.id
           AND l.id = p.lanc_codigoid";
