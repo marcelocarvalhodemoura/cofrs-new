@@ -499,8 +499,6 @@ class ConvenantController extends Controller
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
                 if(!isset($dataAssociado[0]['assoc_nome'])){
                     $erro .= "- Associado não localizado;<br />";
-                } elseif($dataAssociado[0]['assoc_contrato'] != ""){
-                    $erro .= "- Associado já possui um contrato;<br />";
                 }
 
                 $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
