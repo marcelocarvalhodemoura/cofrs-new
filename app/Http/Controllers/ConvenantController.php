@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Agreement;
 use App\Models\Associate;
+use App\Models\Agent;
 
 use App\Models\Competence;
 use App\Models\Convenant;
@@ -416,11 +417,29 @@ class ConvenantController extends Controller
 
                     $content['I'] = $tipoAssocModel[0]->id;
 
+                    if($content['I'] == 0) {
+                        $erro .= '- Campo Tipo de Associado (coluna I) está inválido';
+                    }
+
                     $classificationModel = Classification::select('*')
                         ->where('cla_nome', '=',$content['K'])
                         ->get();
 
                     $content['K'] = $classificationModel[0]->id;
+
+                    if($content['K'] == 0) {
+                        $erro .= '- Campo Classificação (coluna K) está inválido';
+                    }
+
+                    $agenteModel = Agent::select('*')
+                        ->where('ag_nome', '=',$content['N'])
+                        ->get();
+
+                    $content['N'] = $agenteModel[0]->id;
+
+                    if($content['N'] == 0) {
+                        $erro .= '- Campo Agente (coluna N) está inválido';
+                    }
 
                     $dateBirthday =  explode('/', $content['D']);
 
@@ -438,14 +457,14 @@ class ConvenantController extends Controller
                             'assoc_datanascimento' => $dateBirthdayFormated,
                             'assoc_cpf' => $cpf,
                             'assoc_rg' => $content['F'],
-                            'assoc_sexo' => $content['G'],
+                            'assoc_sexo' => ucfirst(strtolower($content['G'])),
                             'assoc_profissao' => $content['H'],
                             'tipassoc_codigoid' => $content['I'],
                             'assoc_email' => $content['J'],
                             'cla_codigoid' => $content['K'],
-                            'assoc_estadocivil' => $content['L'],
+                            'assoc_estadocivil' => ucfirst(strtolower($content['L'])),
                             'assoc_fone' => $content['M'],
-                            'assoc_agencia' => $content['N'],
+                            'ag_codigoid' => $content['N'],
                             'assoc_cep' => $content['O'],
                             'assoc_endereco' => $content['P'],
                             'assoc_bairro' => $content['Q'],
