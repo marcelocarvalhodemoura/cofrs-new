@@ -581,6 +581,7 @@ class ConvenantController extends Controller
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
                         'lanc_numerodeparcela' => intval($content['D']),
+                        'lanc_contrato' => ($content['G']),
                         'lanc_datavencimento' => $dv->format('Y-m-d'),
                         'con_codigoid' => $dataConvenio[0]['id'],
                         'assoc_codigoid' => $dataAssociado[0]['id'],
