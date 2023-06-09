@@ -104,7 +104,7 @@ class ConvenantController extends Controller
 
 //                        $bigestDate = explode("-", $convenantDiverso->datamaior);
 
-                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_matricula, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
+                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
 
 
                     }
@@ -125,7 +125,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_matricula, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'0000000000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'0000000000'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
@@ -145,7 +145,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_matricula, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
@@ -177,7 +177,7 @@ class ConvenantController extends Controller
                     ->where('con_referencia', '=', $reference)
                     ->where('cla_codigoid', '=', 15)
                     ->where('par_numero', '=', 1)
-                    ->orderBy('assoc_identificacao', 'asc')
+                    ->orderBy('assoc_matricula', 'asc')
                     ->get();
                 break;
 
@@ -210,7 +210,7 @@ class ConvenantController extends Controller
                     ->where('cla_codigoid', '=', 15)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
-                    ->groupBy('assoc_identificacao')
+                    ->groupBy('lancamento.lanc_contrato')
                     ->get();
                 break;
         }
