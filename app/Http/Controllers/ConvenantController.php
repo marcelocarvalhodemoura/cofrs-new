@@ -177,36 +177,40 @@ class ConvenantController extends Controller
                     ->where('con_referencia', '=', $reference)
                     ->where('cla_codigoid', '=', 15)
                     ->where('par_numero', '=', 1)
-                    ->orderBy('assoc_matricula', 'asc')
+                    ->orderBy('assoc_identificacao', 'asc')
                     ->get();
                 break;
 
             case 'DIVERSOS':
                 $referenceSql = Portion::select('*')
+                    ->selectRaw('SUM(par_valor) as valor_total_diversos')
+                    ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
+                    
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+
                     ->where('cla_codigoid', '=', 15)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
-                    ->selectRaw('SUM(par_valor) as valor_total_diversos')
-                    ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
-                    ->groupBy('assoc_matricula')
-                    ->orderBy('assoc_matricula', 'asc')
+
+                    ->groupBy('assoc_identificacao')
+                    ->orderBy('assoc_identificacao', 'asc')
                     ->get();
                 break;
             case 'EMPRESTIMO':
                 $referenceSql = Portion::select('*')
+                    ->selectRaw('SUM(par_valor) as valor_total_emprestimo')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+                    ->where('par_habilitasn', '=', 1)
                     ->where('cla_codigoid', '=', 15)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
-                    ->selectRaw('SUM(par_valor) as valor_total_emprestimo')
-                    ->groupBy('assoc_matricula')
+                    ->groupBy('assoc_identificacao')
                     ->get();
                 break;
         }
