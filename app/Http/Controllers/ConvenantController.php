@@ -617,7 +617,7 @@ class ConvenantController extends Controller
                         //cria um intervalo de 1 mês
                         $d = DateTime::createFromFormat('d/m/Y', $data);
                         $interval = new DateInterval('P1M');
-                        for ($i = 0; $i < intval($content['D']); $i++){
+                        for ($i = 1; $i <= intval($content['D']); $i++){
                             //adiciona o intervalo a cara repetição
                             $d->add($interval);
 
