@@ -530,7 +530,7 @@ $(document).ready(function () {
 
                         return $("#tableCovenants tbody").append(tr2);
                 } else {
-                    console.log(response);
+                    // console.log(response);
                     response.forEach(function (item) {
                         if(item.portion.length == 0){
                             return;

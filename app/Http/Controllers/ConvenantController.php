@@ -133,9 +133,11 @@ class ConvenantController extends Controller
                 if($typeConvenant === 'EMPRESTIMO'){
                     $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO');
 
-
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
+                        $explodeDate = explode('-', $loan->lanc_datavencimento);
+                        $day = str_pad($explodeDate[2], 2, "0", STR_PAD_LEFT);
+                        $month = str_pad($explodeDate[1], 2, "0", STR_PAD_LEFT);
 
                         $contractMonthPay = str_pad($loan->lanc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT);
@@ -145,7 +147,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$day.'00'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
