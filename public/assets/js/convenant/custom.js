@@ -512,7 +512,7 @@ $(document).ready(function () {
 
                 $("#tableCovenants tbody tr").remove();
 
-                if (response.length === 0) {
+                if (response.length === 0 || response.status === 'error') {
                     let tr2 = '<tr>' +
                         '<td colspan="7">' +
                         '<table class="table" width="100%" style="margin-bottom: -13px!important">' +

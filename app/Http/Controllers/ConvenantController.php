@@ -185,7 +185,7 @@ class ConvenantController extends Controller
                 $referenceSql = Portion::select('*')
                     ->selectRaw('SUM(par_valor) as valor_total_diversos')
                     ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
-                    
+
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
@@ -230,9 +230,11 @@ class ConvenantController extends Controller
      */
     public function getCovenants(Request $request)
     {
+
         if($request->ajax()){
 
             $dynamicWhere = [];
+            $dynamicWherePortion = [];
 
             if($request->post('selAssociate')){
                 $dynamicWhere[] = ['lancamento.assoc_codigoid', '=', $request->selAssociate];
@@ -242,7 +244,16 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['lancamento.con_codigoid','=', $request->selAgreement];
             }
 
+            if ($request->post('selCompetence')) {
+                $dynamicWherePortion[] = ['competencia.id', '=', $request->selCompetence];
+            }
+
+            if ($dynamicWhere === []){
+                return response()->json(['status'=>'error', 'msg'=> 'Selecione um filtro para pesquisar!']);
+            }
+
             try {
+
                 //load Convenants from table lancamentos
                 $convenantList = Convenant::select(
                     'assoc_nome',
@@ -274,6 +285,7 @@ class ConvenantController extends Controller
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
                         ->where('parcelamento.deleted_at',null)
+                        ->where($dynamicWherePortion)
                         ->get();
                 }
 
