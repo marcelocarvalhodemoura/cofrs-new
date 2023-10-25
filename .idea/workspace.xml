@@ -4,11 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="" />
+    <list default="true" id="509c9090-58a0-4205-a3e2-acadb9d71e9c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.arquivo.txt.icloud" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/plugins/pdfmake/build/.pdfmake.js.map.icloud" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/plugins/pdfmake/build/.pdfmake.min.js.map.icloud" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/covenants/list.blade.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/public/plugins/pdfmake/composer.json" />
+    </option>
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
@@ -38,7 +50,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/usr/local/Cellar/php/8.1.8/bin/php">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
@@ -167,6 +179,9 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
     </include_path>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="1sITFnWcuvRtRvbKJwJH5w3uEsQ" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -180,6 +195,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/devweb/Documents/webproject/cofrs-new&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -339,6 +355,12 @@
       <workItem from="1658868092047" duration="593000" />
       <workItem from="1660307293337" duration="25000" />
       <workItem from="1673955670339" duration="70000" />
+      <workItem from="1694540031974" duration="67000" />
+      <workItem from="1694540108952" duration="817000" />
+      <workItem from="1697589730275" duration="35000" />
+      <workItem from="1697589810240" duration="449000" />
+      <workItem from="1698253819086" duration="75000" />
+      <workItem from="1698253906878" duration="812000" />
     </task>
     <servers />
   </component>
