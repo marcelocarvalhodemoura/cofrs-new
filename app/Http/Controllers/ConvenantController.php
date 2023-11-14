@@ -145,9 +145,11 @@ class ConvenantController extends Controller
                         $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 26 ,  "0", STR_PAD_RIGHT);
+//                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 26 ,  "0", STR_PAD_BOTH);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_BOTH);
+                        $removeValue = str_pad('0', 17, "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.'00000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$valuePortionMonthlyPayment.$removeValue"\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
