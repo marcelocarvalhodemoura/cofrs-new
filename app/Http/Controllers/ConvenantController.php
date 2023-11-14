@@ -147,7 +147,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$day.'00'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.'0000'.$valuePortionMonthlyPayment."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
