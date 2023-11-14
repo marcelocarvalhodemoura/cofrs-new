@@ -94,7 +94,7 @@ class ConvenantController extends Controller
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
 
                         $contract = str_pad($convenantDiverso->lanc_contrato, 40, " ", STR_PAD_RIGHT);
-                        $reference = str_pad($convenantDiverso->con_referencia, 20, " ", STR_PAD_RIGHT);
+                        $reference = str_pad($convenantDiverso->con_referencia, 22, " ", STR_PAD_RIGHT);
 
                         //Format money to 2 decimal
                         $diversosTotal = number_format($convenantDiverso->valor_total_diversos, 2, '.', '');
@@ -246,13 +246,10 @@ class ConvenantController extends Controller
                 $dynamicWhere[] = ['lancamento.con_codigoid','=', $request->selAgreement];
             }
 
-            if ($request->post('selCompetence')) {
-                $dynamicWherePortion[] = ['competencia.id', '=', $request->selCompetence];
-            }
+//            if ($request->post('selCompetence')) {
+//                $dynamicWherePortion = ['parcelamento.com_codigoid', '=', $request->selCompetence];
+//            }
 
-            if ($dynamicWhere === []){
-                return response()->json(['status'=>'error', 'msg'=> 'Selecione um filtro para pesquisar!']);
-            }
 
             try {
 
@@ -287,7 +284,6 @@ class ConvenantController extends Controller
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
                         ->where('parcelamento.deleted_at',null)
-                        ->where($dynamicWherePortion)
                         ->get();
                 }
 
