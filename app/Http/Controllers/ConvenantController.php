@@ -135,21 +135,26 @@ class ConvenantController extends Controller
 
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
-                        $explodeDate = explode('-', $loan->lanc_datavencimento);
-                        $day = str_pad($explodeDate[2], 2, "0", STR_PAD_LEFT);
-                        $month = str_pad($explodeDate[1], 2, "0", STR_PAD_LEFT);
-
+                        //First Part
+                        $idDigited = str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        //Second Part
+                        $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT); // Type of contract
+                        //Third Part
                         $contractMonthPay = str_pad($loan->lanc_contrato, 40, " ", STR_PAD_RIGHT);
-                        $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT);
+                        //Fourth Part
+                        $explodeDate = explode('-', $loan->lanc_datavencimento);
+                        $dateFinal = str_pad($explodeDate[2].$explodeDate[1], 6, "0", STR_PAD_LEFT);
+                        //Fifth Part
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
-
-//                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 26 ,  "0", STR_PAD_BOTH);
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
-                        $removeValue = str_pad('0', 17, "0", STR_PAD_RIGHT);
-
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$valuePortionMonthlyPayment.$removeValue."\r\n";
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_RIGHT);
+                        //Sixth Part
+                        $excludeValue = str_pad('000000000', 9, "0", STR_PAD_RIGHT);
+                        //Seventh Part
+                        $complementZero = str_pad('0', 13, "0", STR_PAD_RIGHT);
+                        //Concatenate all parts
+                        $contentFile .= "D".$idDigited.$reference.$contractMonthPay.$dateFinal.$valuePortionMonthlyPayment.$excludeValue.$complementZero."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
