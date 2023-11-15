@@ -93,20 +93,23 @@ class ConvenantController extends Controller
                     //List Diversos
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
 
-                        $contract = str_pad($convenantDiverso->lanc_contrato, 40, " ", STR_PAD_RIGHT);
+                        $idDigited = str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        //Second Part
                         $reference = str_pad($convenantDiverso->con_referencia, 20, " ", STR_PAD_RIGHT);
-
+                        //Third Part
+                        $contract = str_pad($convenantDiverso->lanc_contrato, 40, " ", STR_PAD_RIGHT);
+                        //Fourth Part
+                        $currentDate = str_pad($request->yearCompetence.$request->monthCompetence, 6, "0", STR_PAD_LEFT);
+                        //Fifth Part
                         //Format money to 2 decimal
                         $diversosTotal = number_format($convenantDiverso->valor_total_diversos, 2, '.', '');
                         $diversosTotal = explode('.', $diversosTotal);
-
-                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 27 ,  "0", STR_PAD_RIGHT);
-
-//                        $bigestDate = explode("-", $convenantDiverso->datamaior);
-
-                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
-
-
+                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 9 ,  "0", STR_PAD_LEFT);
+                        //Sixth Part
+                        $excludeValue = str_pad('000000000', 9, "0", STR_PAD_RIGHT);
+                        //Seventh Part
+                        $complementZero = str_pad('0', 13, "0", STR_PAD_RIGHT);
+                        $contentFile .= "D" . $idDigited.$reference . $contract .$currentDate.$valuePortion.$excludeValue.$complementZero."\r\n";
                     }
                 }
 
@@ -116,16 +119,25 @@ class ConvenantController extends Controller
                     $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE');
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
-
-                        $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
+                        $idDigited = str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        //Second Part
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
+                        //Third Part
+                        $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
+                        //Fourth Part
+                        $dateFinal = str_pad("0", 6, "0", STR_PAD_LEFT);
+                        //Fifth Part
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
+                        //Sixth Part
+                        $excludeValue = str_pad('000000000', 9, "0", STR_PAD_RIGHT);
+                        //Seventh Part
+                        $complementZero = str_pad('0', 13, "0", STR_PAD_RIGHT);
 
-                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'0000000000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".$idDigited.$reference.$contractMonthPay.$dateFinal.$valuePortionMonthlyPayment.$excludeValue.$complementZero."\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
