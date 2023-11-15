@@ -143,7 +143,7 @@ class ConvenantController extends Controller
                         $contractMonthPay = str_pad($loan->lanc_contrato, 40, " ", STR_PAD_RIGHT);
                         //Fourth Part
                         $explodeDate = explode('-', $loan->lanc_datavencimento);
-                        $dateFinal = str_pad($explodeDate[2].$explodeDate[1], 6, "0", STR_PAD_LEFT);
+                        $dateFinal = str_pad($explodeDate[0].$explodeDate[1], 6, "0", STR_PAD_LEFT);
                         //Fifth Part
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
