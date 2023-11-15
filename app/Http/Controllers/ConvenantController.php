@@ -148,7 +148,7 @@ class ConvenantController extends Controller
                         //Format money to 2 decimal
                         $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
                         //Sixth Part
                         $excludeValue = str_pad('000000000', 9, "0", STR_PAD_RIGHT);
                         //Seventh Part
