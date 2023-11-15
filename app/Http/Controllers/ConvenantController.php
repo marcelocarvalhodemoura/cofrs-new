@@ -93,7 +93,7 @@ class ConvenantController extends Controller
                     //List Diversos
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
 
-                        $idDigited = str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        $idDigited = str_pad(trim($convenantDiverso->assoc_identificacao), 12, "0", STR_PAD_LEFT);
                         //Second Part
                         $reference = str_pad($convenantDiverso->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Third Part
@@ -119,7 +119,7 @@ class ConvenantController extends Controller
                     $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE');
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
-                        $idDigited = str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        $idDigited = str_pad(trim($convenantMonthlyPayment->assoc_identificacao), 12, "0", STR_PAD_LEFT);
                         //Second Part
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Third Part
@@ -148,7 +148,7 @@ class ConvenantController extends Controller
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
                         //First Part
-                        $idDigited = str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT);
+                        $idDigited = str_pad(trim($loan->assoc_identificacao), 12, "0", STR_PAD_LEFT);
                         //Second Part
                         $reference = str_pad($loan->con_referencia, 20, " ", STR_PAD_RIGHT); // Type of contract
                         //Third Part
