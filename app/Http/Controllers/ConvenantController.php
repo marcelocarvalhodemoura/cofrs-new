@@ -170,7 +170,7 @@ class ConvenantController extends Controller
 
         switch ($reference){
             case 'MENSALIDADE':
-                $referenceSql = Portion::select('*')
+                $referenceSql = Portion::select('assoc_identificacao', 'par_valor', 'con_referencia', 'assoc_contrato')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
@@ -184,9 +184,9 @@ class ConvenantController extends Controller
                 break;
 
             case 'DIVERSOS':
-                $referenceSql = Portion::select('*')
+                $referenceSql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato')
                     ->selectRaw('SUM(par_valor) as valor_total_diversos')
-                    ->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
+                    //->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
 
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
@@ -202,7 +202,7 @@ class ConvenantController extends Controller
                     ->get();
                 break;
             case 'EMPRESTIMO':
-                $referenceSql = Portion::select('*')
+                $referenceSql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato', 'lanc_datavencimento')
                     ->selectRaw('SUM(par_valor) as valor_total_emprestimo')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
