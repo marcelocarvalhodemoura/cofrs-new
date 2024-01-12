@@ -21,10 +21,16 @@ class MigracaoController extends Controller{
   public function __construct(){
     \Config::set("database.connections.cofrs_old", [
       "driver" => "mysql",
+      /*
       "host" => "187.45.196.168",
       "database" => "cofrs_velho",
       "username" => "cofrs_velho",
       "password" => "e2q2d5n6@"
+      */
+      "host" => "localhost",
+      "database" => "cofrs_old",
+      "username" => "root",
+      "password" => ""
   ]);
     $this->origem = DB::connection('cofrs_old')->getPdo();
   }
