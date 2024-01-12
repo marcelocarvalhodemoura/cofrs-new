@@ -179,6 +179,7 @@ class ConvenantController extends Controller
                     ->where('con_referencia', '=', $reference)
                     ->where('cla_codigoid', '=', 15)
                     ->where('par_numero', '=', 1)
+                    ->whereNull('parc.deleted_at')
                     ->orderBy('assoc_matricula', 'asc')
                     ->get();
                 break;
@@ -196,6 +197,7 @@ class ConvenantController extends Controller
                     ->where('cla_codigoid', '=', 15)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
+                    ->whereNull('parcelamento.deleted_at')
 
                     ->groupBy('assoc_identificacao')
                     ->orderBy('assoc_identificacao', 'asc')
@@ -212,6 +214,7 @@ class ConvenantController extends Controller
                     ->where('cla_codigoid', '=', 15)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
+                    ->whereNull('parcelamento.deleted_at')
                     ->groupBy('lancamento.lanc_contrato')
                     ->get();
                 break;
