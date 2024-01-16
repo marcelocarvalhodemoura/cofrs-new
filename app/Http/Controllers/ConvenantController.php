@@ -104,7 +104,7 @@ class ConvenantController extends Controller
 
 //                        $bigestDate = explode("-", $convenantDiverso->datamaior);
 
-                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.$valuePortion."000000000\r\n";
+                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.$valuePortion."0000000000000000000000\r\n";
                     }
                 }
 
@@ -123,7 +123,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
-                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'000000'.$valuePortionMonthlyPayment."000000000\r\n";
+                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'000000'.$valuePortionMonthlyPayment."0000000000000000000000\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
@@ -145,7 +145,7 @@ class ConvenantController extends Controller
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$valuePortionMonthlyPayment."000000000\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$valuePortionMonthlyPayment."0000000000000000000000\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
