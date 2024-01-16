@@ -100,13 +100,11 @@ class ConvenantController extends Controller
                         $diversosTotal = number_format($convenantDiverso->valor_total_diversos, 2, '.', '');
                         $diversosTotal = explode('.', $diversosTotal);
 
-                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 27 ,  "0", STR_PAD_RIGHT);
+                        $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
 //                        $bigestDate = explode("-", $convenantDiverso->datamaior);
 
-                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.'0000'.$valuePortion."\r\n";
-
-
+                        $contentFile .= "D" . str_pad($convenantDiverso->assoc_identificacao, 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.$valuePortion."000000000\r\n";
                     }
                 }
 
@@ -123,9 +121,9 @@ class ConvenantController extends Controller
                         $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 27 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
-                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'0000000000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($convenantMonthlyPayment->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.'000000'.$valuePortionMonthlyPayment."000000000\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
@@ -145,9 +143,9 @@ class ConvenantController extends Controller
                         $monthlyPaymentTotal = number_format($loan->valor_total_emprestimo, 2, '.', '');
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
-                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 26 ,  "0", STR_PAD_RIGHT);
+                        $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
-                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.'00000'.$valuePortionMonthlyPayment."\r\n";
+                        $contentFile .= "D".str_pad($loan->assoc_identificacao, 12, "0", STR_PAD_LEFT).$reference.$contractMonthPay.$explodeDate[0].$month.$valuePortionMonthlyPayment."000000000\r\n";
 
                     }//end to Foreach Monthly Payment
                 }
