@@ -936,6 +936,7 @@ class ConvenantController extends Controller
     public function dropBill(Request $request){
         $responseData = "";
         $tempoInicial = time();
+        
 
         if($request->hasFile('file')){
             // se enviou o arquivo
@@ -984,7 +985,7 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 24);
                         $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
                         $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
-                        $linha[$numeroLinha]['contrato'] = substr($ln, 134, 40);
+                        $linha[$numeroLinha]['contrato'] = trim(substr($ln, 134, 40));
                         $linha[$numeroLinha]['contatoFormatado'] = substr($ln, 134, 15);//parte do contrato
                         $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
                         $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
@@ -1157,7 +1158,7 @@ class ConvenantController extends Controller
             $quantidade = $parcelamento->count();
             $arr_rtn['parcelas_encontradas'] = $quantidade;
 
-            if($quantidade == 0){
+            if($quantidade != 0){
                 $parcelas = $parcelamento->get();
                 foreach ($parcelas as $parc){
                     Portion::where('id', $parc->id)
