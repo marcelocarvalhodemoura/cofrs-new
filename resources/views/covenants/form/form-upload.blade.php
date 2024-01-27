@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-12 mb-3">
             <label>Competência</label>
-            <select class="form-control" id="selCompetitionDropBill" onchange="loadUploadDropBill()" disabled>
+            <select class="form-control" id="selCompetitionDropBill" disabled>
                 <option value="" selected disabled>Selecione</option>
                 @foreach( $competitionList as $com )
                     <option value="{{ $com->com_nome }}" <?php if($com->com_nome == $currentCompetence) echo 'selected'; ?> >{{ $com->com_nome }}</option>
