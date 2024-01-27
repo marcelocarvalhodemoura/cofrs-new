@@ -958,7 +958,7 @@ class ConvenantController extends Controller
             $ponteiro = fopen($request->file('file'), "r");
 
             if($ponteiro) {
-                $numeroLinha = 0;
+                $numeroLinha = 1;
                 $competenciaFormatada = $request->selCompetitionDropBill;
                 $competenciaExplodida = explode("/", $competenciaFormatada);
                 $linha = [];
@@ -967,6 +967,9 @@ class ConvenantController extends Controller
                 //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
                 while (!feof($ponteiro)) {
                     $ln = fgets($ponteiro, 4096);
+                    if(trim($ln) == ""){
+                        continue;
+                    }
                     $linha[$numeroLinha]['convenio'] = $request->typeArchive;
                     $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
                     $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
@@ -999,6 +1002,8 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
                     }
 
+                    //print_r($linha); die;
+
                     //verifica os dados do arquivo
                     $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
 
@@ -1016,6 +1021,7 @@ class ConvenantController extends Controller
                 //print_r($linha);
 
                 // arquivo de diferenças
+                /*
                 if($request->typeArchive == 'ipe') {
                     $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
 
@@ -1082,12 +1088,14 @@ class ConvenantController extends Controller
 
                 // grava o arquivo de diferenças
                 Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
+                */
 
                 //$arq = asset('storage/'.$nomeArquivo);
 
                 $tempo = gmdate("H:i:s", (time() - $tempoInicial));
-
-                $responseMSG .= '<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a><br /><small>Processado em '.$tempo.'</small>';
+                
+                //<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a>
+                $responseMSG .= '<br /><small>Processado em '.$tempo.'</small>';
 
                 $responseData = [
                     'status' => 'success',
@@ -1115,6 +1123,7 @@ class ConvenantController extends Controller
             'msg' => '',
             'parcelas_encontradas' => 0,
         ];
+
         // verifica o convênio
         if($linha['convenio'] == 'ipe'){
             // verifica se este contrato existe na competencia selecionada
@@ -1139,17 +1148,21 @@ class ConvenantController extends Controller
                         ->where('parcelamento.par_status','=','Pendente');
 
             //dd($parcelamento->toSql(),$parcelamento->getBindings());
-
-            // valida o
+            /*
             if($linha['valorRejeitado'] == $linha['valorPagar']) {
-                $arr_rtn['msg'] = 'Valor pago não confere';
+                $arr_rtn['msg'] = 'Valor rejeitado ('.$linha['valorRejeitado'].') é igual ao com o a pagar ('.$linha['valorPagar'].')';
                 $par_status = 'Pendente';
-            } elseif (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido"){
-                $arr_rtn['msg'] = 'Valor insuficiente';
+            } else
+            */
+            if (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido"){
+                $arr_rtn['msg'] = 'Insuficiencia de saldo';
                 $par_status = 'Vencido';
             } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Obito"){
                 $arr_rtn['msg'] = 'Óbito';
                 $par_status = 'Vencido';
+            } elseif($linha['valorRejeitado'] > 0){
+                $arr_rtn['msg'] = 'Existe um valor Valor rejeitado ('.$linha['valorRejeitado'].')';
+                $par_status = 'Pendente';
             } else {
                 $arr_rtn['msg'] = '';
                 $par_status = 'Pago';
