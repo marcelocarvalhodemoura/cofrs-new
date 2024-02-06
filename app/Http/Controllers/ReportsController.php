@@ -241,8 +241,10 @@ class ReportsController extends Controller
         }
 
         if($request->post('status') != ''){
-          $sqlBusca .= " AND p.par_status = ".$request->post('status');
+          $sqlBusca .= " AND p.par_status = '".$request->post('status')."'";
         }
+
+        //dd($sqlBusca);
 
         $busca = \DB::select($sqlBusca);
         if($busca){
