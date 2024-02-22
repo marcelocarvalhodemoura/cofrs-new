@@ -1192,25 +1192,27 @@ class ConvenantController extends Controller
                                 ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
                                 ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
                                 ->where('parcelamento.par_habilitasn','=','1')
-                                ->where('associado.assoc_matricula','=', $linha['matricula'])
+                                ->where('associado.assoc_identificacao','=', $linha['matricula'])
                                 ->where('associado.assoc_ativosn','=','1')
                                 ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
                                 ->where('parcelamento.par_status','=','Pendente')
                                 ->where('convenio.con_referencia','=',$linha['referencia']);
-
+                /*
                 if($linha['referencia'] == "SEG MARITIMA") {
                     $parcelamento->where('associado.cla_codigoid','=','44');
                 } else if($linha['referencia'] == "MENSALIDADE ") {
                     $parcelamento->where('associado.cla_codigoid','=','42');
                 }
+                */
+
+                //dd($parcelamento->toSql(),$parcelamento->getBindings());
 
                 $quantidade = $parcelamento->count();
                 $arr_rtn['parcelas_encontradas'] = $quantidade;
-
                 $par_status = 'Pago';
                 $arr_rtn['msg'] = '';
 
-                if($quantidade == 0){
+                if($quantidade > 0){
                     $parcelas = $parcelamento->get();
                     foreach ($parcelas as $parc){
                         Portion::where('id', $parc->id)
