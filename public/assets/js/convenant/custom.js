@@ -723,7 +723,7 @@ function loadUploadDropBill() {
         fileName: "file",
         formData: {
                 '_token': $('input[name="_token"]').val(),
-                'typeArchive': $('input[name="typeArchive"]').val(),
+                'typeArchive': $('input[name="typeArchive"]:checked').val(),
                 'selCompetitionDropBill': $('#selCompetitionDropBill').val()
             },
         autoSubmit: true,
