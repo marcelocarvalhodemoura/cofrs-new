@@ -37,11 +37,11 @@ class MigracaoController extends Controller{
 
   public function index(){
 
-    ini_set('memory_limit', "2048M");
+    ini_set('memory_limit', "5048M");
     DB::statement('SET FOREIGN_KEY_CHECKS = 0');
     ini_set('max_execution_time', '-1');
 
-
+/*
     //agente
     DB::statement('truncate table agente');
     $sql = "INSERT INTO agente (id, ag_nome) values ";
@@ -71,7 +71,7 @@ class MigracaoController extends Controller{
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela tipoassociado migrada </br />';
-
+*/
     return $this->contas();
   }
 
@@ -103,7 +103,7 @@ class MigracaoController extends Controller{
   }
 
   public function outros(){
-
+/*
     //convenio
     DB::statement('truncate table convenio');
     $sql = "INSERT INTO convenio (id, con_nome, tipconv_codigoid, con_referencia, con_prolabore) values ";
@@ -128,14 +128,16 @@ class MigracaoController extends Controller{
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela tipoconvenio migrada </br />';
+  */
 
     return $this->associados();
   }
 
   public function associados() {
+/*
     // VERIFICAR CAMPOS QUE NÃO FORAM ENCONTRADOS
     //associado
-    DB::statement('SET @@global.max_allowed_packet = 100000000');
+    DB::statement('SET @@global.max_allowed_packet = 100000000000');
     DB::statement('truncate table associado');
     $sql = "INSERT INTO associado (id, assoc_nome, assoc_matricula, assoc_cpf, assoc_rg, assoc_datanascimento, assoc_sexo, assoc_profissao, created_at, assoc_fone, assoc_email, assoc_cep, assoc_endereco, assoc_complemento, assoc_bairro, assoc_uf, assoc_cidade, assoc_observacao, tipassoc_codigoid, cla_codigoid, assoc_banco, assoc_agencia, assoc_conta, assoc_tipoconta, assoc_estadocivil, assoc_fone2, assoc_ativosn, assoc_dataativacao, assoc_datadesligamento, assoc_contrato, ag_codigoid, assoc_identificacao, deleted_at) values ";
     //assoc_removesn
@@ -158,6 +160,7 @@ class MigracaoController extends Controller{
 
     //dependentes NÃO POSSUI DADOS NA ORIGEM
 
+  */
     return $this->competencias();
   }
 
@@ -184,6 +187,7 @@ class MigracaoController extends Controller{
     echo 'Tabela lancamento migrada </br />';
 
     //parcelamento
+    DB::statement('SET @@global.max_allowed_packet = 100000000');
     DB::statement('truncate table parcelamento');
     $sql = "INSERT INTO parcelamento (id, par_numero, par_valor, lanc_codigoid, par_vencimentoparcela, par_observacao, par_status, com_codigoid, par_equivalente, par_habilitasn, deleted_at) values ";
     $dados = $this->origem->query("SELECT * FROM parcelamento");

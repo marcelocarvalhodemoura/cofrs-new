@@ -265,6 +265,7 @@ class ConvenantController extends Controller
                     'assoc_cpf',
                     'con_nome',
                     'con_referencia',
+                    'con_codigoid',
                     'assoc_contrato',
                     'lanc_contrato',
                     'lanc_datavencimento',
@@ -811,6 +812,38 @@ class ConvenantController extends Controller
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
 
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateLancamento(Request $request){
+
+        try {
+            //edita as parcelas
+            $parcelas_afetadas = Portion::where('lanc_codigoid', $request->idLancamento)
+                ->whereIn('par_status', ['Pendente','Renegociado','Reparcelado','Transferido','Vencido'])
+                ->update([
+                    'par_valor' => $request->portion,
+                ]);
+            
+            $vlTotal = (($request->vlTotal / $request->number) * ($request->number - $parcelas_afetadas)) + ($parcelas_afetadas * $request->portion);
+
+            //edita o lançamento
+            Convenant::where('id', $request->idLancamento)
+                ->update([
+                    'lanc_contrato' => $request->contract,
+                    'lanc_valortotal' => $vlTotal,
+                    'con_codigoid' => $request->convenants
+                ]);
+
+            return response()->json(['status'=>'success', 'msg'=>'Lançamento alterado com sucesso!']);
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
         }
