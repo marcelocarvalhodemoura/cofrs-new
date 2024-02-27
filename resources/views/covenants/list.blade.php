@@ -119,6 +119,7 @@
         </div>
 
     </div>
+    @include('covenants.modal.editLancamento')
 @endsection
 
 @push('scripts')
