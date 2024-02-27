@@ -235,7 +235,7 @@ $(document).ready(function () {
                         $("#tableCovenants tbody tr").remove();
 
                         const tr2 = '<tr>' +
-                            '<td colspan="6">' +
+                            '<td colspan="8">' +
                             '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
                             '<tbody>' +
                             '<tr>' +
@@ -273,7 +273,7 @@ $(document).ready(function () {
      * Load Table Convenants without data
      */
     let tr = '<tr class="table-warning">' +
-        '<td colspan="7" class="text-center">' +
+        '<td colspan="8" class="text-center">' +
         '<strong>Selecione o campo!</strong>' +
         '</td>' +
         '</tr>';
@@ -514,7 +514,7 @@ $(document).ready(function () {
 
                 if (response.length === 0 || response.status === 'error') {
                     let tr2 = '<tr>' +
-                        '<td colspan="7">' +
+                        '<td colspan="8">' +
                         '<table class="table" width="100%" style="margin-bottom: -13px!important">' +
                         '<tbody>' +
                         '<tr>' +
@@ -543,12 +543,12 @@ $(document).ready(function () {
                         let total = item.lanc_valortotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
                         //console.log(item.con_referencia);
                         tr += '<tr>' +
-                            '<td colspan="7">' +
+                            '<td colspan="8">' +
                             '<a href="#tableTest-' + item.lanc_codigoid + '" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">\n' +
                             '<table width="100%" class="table" style="margin-bottom: -13px!important">' +
                             '<tbody>' +
                             '<tr>' +
-                            '<td class="text-primary" width="20%">' + item.assoc_nome + '</td>' +
+                            '<td width="20%" class="text-primary">' + item.assoc_nome + '</td>' +
                             '<td width="10%">' + item.assoc_cpf + '</td>' +
                             '<td width="15%"><b class="shadow-none badge outline-badge-primary">' + item.con_nome + '</b></td>';
                             if(item.con_referencia == 'MENSALIDADE'){
@@ -560,8 +560,8 @@ $(document).ready(function () {
                             }
                             tr +='<td width="10%">' + dateFormated + '</td>' +
                             '<td width="10%" align="center">' + item.lanc_numerodeparcela + '</td>' +
-                            '<td width="10%">' + total + '</td>' +
-                            '<td width="10%"><button class="btn-outline-primary btn-sm" onclick="editLancamento(' + item.lanc_codigoid + ',' + item.con_codigoid + ',\'' + item.lanc_contrato + '\',' + item.lanc_numerodeparcela + ',' + item.lanc_valortotal + ')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button></td>' +
+                            '<td width="5%">' + total + '</td>' +
+                            '<td width="5%"><button class="btn-outline-primary btn-sm" onclick="editLancamento(' + item.lanc_codigoid + ',' + item.con_codigoid + ',\'' + item.lanc_contrato + '\',' + item.lanc_numerodeparcela + ',' + item.lanc_valortotal + ')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button></td>' +
                             '</tr>' +
                             '</tbody>' +
                             '</table>\n' +

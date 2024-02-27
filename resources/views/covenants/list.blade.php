@@ -104,7 +104,8 @@
                                         <th width="15%">Contrato</th>
                                         <th width="10%">Vencimento</th>
                                         <th width="10%">Parcelas</th>
-                                        <th width="10%">Total</th>
+                                        <th width="5%">Total</th>
+                                        <th width="5%">Editar</th>
                                     </thead>
                                     <tbody>
 
