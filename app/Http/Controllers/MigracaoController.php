@@ -41,7 +41,6 @@ class MigracaoController extends Controller{
     DB::statement('SET FOREIGN_KEY_CHECKS = 0');
     ini_set('max_execution_time', '-1');
 
-/*
     //agente
     DB::statement('truncate table agente');
     $sql = "INSERT INTO agente (id, ag_nome) values ";
@@ -71,7 +70,7 @@ class MigracaoController extends Controller{
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela tipoassociado migrada </br />';
-*/
+
     return $this->contas();
   }
 
@@ -103,7 +102,7 @@ class MigracaoController extends Controller{
   }
 
   public function outros(){
-/*
+
     //convenio
     DB::statement('truncate table convenio');
     $sql = "INSERT INTO convenio (id, con_nome, tipconv_codigoid, con_referencia, con_prolabore) values ";
@@ -128,13 +127,12 @@ class MigracaoController extends Controller{
     }
     DB::statement(substr($sql,0,-1));
     echo 'Tabela tipoconvenio migrada </br />';
-  */
 
     return $this->associados();
   }
 
   public function associados() {
-/*
+
     // VERIFICAR CAMPOS QUE NÃO FORAM ENCONTRADOS
     //associado
     DB::statement('SET @@global.max_allowed_packet = 100000000000');
@@ -160,7 +158,6 @@ class MigracaoController extends Controller{
 
     //dependentes NÃO POSSUI DADOS NA ORIGEM
 
-  */
     return $this->competencias();
   }
 
