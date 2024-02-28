@@ -648,7 +648,7 @@ function editLancamento(idLancamento, itemConvenio, itemContrato, itemParcelas, 
     $('#formEditLancamento #convenants  option[value="'+itemConvenio+'"]').prop('selected', true);
     $('#formEditLancamento #contract').val(itemContrato);
     $('#formEditLancamento #number').val(itemParcelas);
-    $('#formEditLancamento #portion').val(itemVlTotal/itemParcelas);
+    $('#formEditLancamento #portion').val((itemVlTotal/itemParcelas).toLocaleString('pt-br', { style: 'decimal', minimumFractionDigits: 2 }));
     $('#formEditLancamento #idLancamento').val(idLancamento);
     $('#formEditLancamento #vlTotal').val(itemVlTotal);
 }
