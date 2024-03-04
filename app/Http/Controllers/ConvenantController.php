@@ -824,24 +824,39 @@ class ConvenantController extends Controller
     public function updateLancamento(Request $request){
 
         try {
-            //edita as parcelas
-            $parcelas_afetadas = Portion::where('lanc_codigoid', $request->idLancamento)
-                ->whereIn('par_status', ['Pendente','Renegociado','Reparcelado','Transferido','Vencido'])
-                ->update([
-                    'par_valor' => $request->portion,
-                ]);
-            
-            $vlTotal = (($request->vlTotal / $request->number) * ($request->number - $parcelas_afetadas)) + ($parcelas_afetadas * $request->portion);
-
-            //edita o lançamento
             Convenant::where('id', $request->idLancamento)
                 ->update([
                     'lanc_contrato' => $request->contract,
-                    'lanc_valortotal' => $vlTotal,
                     'con_codigoid' => $request->convenants
                 ]);
 
             return response()->json(['status'=>'success', 'msg'=>'Lançamento alterado com sucesso!']);
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateParcelas(Request $request){
+        //die(json_decode($request->idparcelas)[0]);
+        try {
+            //edita as parcelas
+            $parcelas_afetadas = Portion::whereIn('id', json_decode($request->idparcelas))
+                ->whereIn('par_status', ['Pendente','Renegociado','Reparcelado','Transferido','Vencido'])
+                ->update([
+                    'par_valor' => $request->valor,
+                ]);
+
+            //edita o lançamento
+            DB::statement('UPDATE lancamento l SET l.lanc_valortotal = (SELECT SUM(par_valor) FROM parcelamento p WHERE p.deleted_at IS NULL AND p.lanc_codigoid = l.id) WHERE l.id = '.$request->idLancamento);
+            
+
+            return response()->json(['status'=>'success', 'msg'=>'Parcelas alteradas com sucesso!']);
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }catch (Exception $e){

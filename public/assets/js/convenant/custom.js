@@ -561,7 +561,7 @@ $(document).ready(function () {
                             tr +='<td width="10%">' + dateFormated + '</td>' +
                             '<td width="10%" align="center">' + item.lanc_numerodeparcela + '</td>' +
                             '<td width="5%">' + total + '</td>' +
-                            '<td width="5%"><button class="btn-outline-primary btn-sm" onclick="editLancamento(' + item.lanc_codigoid + ',' + item.con_codigoid + ',\'' + item.lanc_contrato + '\',' + item.lanc_numerodeparcela + ',' + item.lanc_valortotal + ')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button></td>' +
+                            '<td width="5%"><button class="btn-outline-primary btn-sm" onclick="editLancamento(' + item.lanc_codigoid + ',' + item.con_codigoid + ',\'' + item.lanc_contrato + '\')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button></td>' +
                             '</tr>' +
                             '</tbody>' +
                             '</table>\n' +
@@ -579,7 +579,7 @@ $(document).ready(function () {
                             '<th><span class="badge badge-primary">Parcela</span></th>' +
                             '<th><span class="badge badge-primary">Valor</span></th>' +
                             '<th><span class="badge badge-primary">Status</span></th>' +
-                            '<th><input id="portionSel" value="1" type="checkbox" onclick="selAll(' + item.lanc_codigoid + ')"></th>' +
+                            '<th><input id="portionSel" value="' + item.lanc_codigoid + '" type="checkbox" onclick="selAll(' + item.lanc_codigoid + ')"></th>' +
                             '</tr>' +
                             '</thead>' +
                             '<tbody>';
@@ -641,16 +641,12 @@ $(document).ready(function () {
 
     };
 
-function editLancamento(idLancamento, itemConvenio, itemContrato, itemParcelas, itemVlTotal){
-    $("#loader3").hide();
+function editLancamento(idLancamento, itemConvenio, itemContrato){
     $("#convenantModaleditLancamento").modal('show');
 
     $('#formEditLancamento #convenants  option[value="'+itemConvenio+'"]').prop('selected', true);
     $('#formEditLancamento #contract').val(itemContrato);
-    $('#formEditLancamento #number').val(itemParcelas);
-    $('#formEditLancamento #portion').val((itemVlTotal/itemParcelas).toLocaleString('pt-br', { style: 'decimal', minimumFractionDigits: 2 }));
     $('#formEditLancamento #idLancamento').val(idLancamento);
-    $('#formEditLancamento #vlTotal').val(itemVlTotal);
 }
 
 $("#formEditLancamento").validate({
@@ -706,6 +702,90 @@ $("#formEditLancamento").validate({
 
                     $('#formEditLancamento')[0].reset();
 
+                    $.unblockUI();
+
+                    filtroConvenant();
+                }
+            }
+        });
+    }
+});
+
+$("#btnEditPortion").click(()=> {
+    const id = new Array();
+
+    $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+        id.push($(this).val());
+    });
+
+    if (id.length == 0) {
+        return swal({
+            title: "Atenção !",
+            text: "Selecione ao menos 1 parcela",
+            type: "info",
+            confirmButtonClass: 'btn btn-primary',
+        });
+    } else {
+        $("#convenantModalEditParcela").modal('show');
+        $('#formEditParcelas #idparcelas').val(JSON.stringify(id));
+        $('#formEditParcelas #idLancamento').val($("#portionSel:checked").val());
+    }
+
+});
+
+$("#formEditParcelas").validate({
+    rules: {
+        valor: "required",
+    },
+    messages: {
+        valor: "Valor da parcela é um campo obrigatório",
+    },
+    errorElement: "span",
+    highlight: function () {
+        $("#formEditParcelas").addClass("was-validated");
+    },
+    unhighlight: function () {
+        $("#formEditParcelas").addClass("was-validated");
+    },
+    submitHandler: function () {
+        $('#convenantModalEditParcela').modal('hide');
+
+        $.blockUI({
+            message: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader spin"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>',
+            overlayCSS: {
+                backgroundColor: '#1b2024',
+                opacity: 0.8,
+                zIndex: 1200,
+                cursor: 'wait'
+            },
+            css: {
+                border: 0,
+                color: '#fff',
+                zIndex: 1201,
+                padding: 0,
+                backgroundColor: 'transparent'
+            }
+        });
+
+        $.ajax({
+            method: "POST",
+            url: "/convenants/updateParcelas",
+            data: $("#formEditParcelas").serialize(),
+            success: (response) => {
+                if (response.status === 'success') {
+
+
+                    swal({
+                        title: 'Processado!',
+                        text: response.msg,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-success',
+                    });
+
+                    $('#formEditParcelas')[0].reset();
+
+                    $.unblockUI();
+
                     filtroConvenant();
                 }
             }
@@ -715,6 +795,8 @@ $("#formEditLancamento").validate({
 
 
 function selAll(ulID) {
+    $('#tableCovenants input[type="checkbox"]:not(#tableTest-'+ulID+' #portionSel').prop('checked', false);
+
     if($('#tableTest-'+ulID+' #portionSel').is(':checked')){
         $('#tableTest-'+ulID+' input[type="checkbox"]').prop('checked', true);
     } else {

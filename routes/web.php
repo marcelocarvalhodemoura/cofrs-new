@@ -120,6 +120,7 @@ Route::post('/convenants/monthly/add', [ConvenantController::class, 'storeMonthl
 Route::post('/convenants/file/create', [ConvenantController::class, 'createFile']);
 Route::post('/convenants/dropBill', [ConvenantController::class, 'dropBill']);
 Route::post('/convenants/updateLancamento', [ConvenantController::class, 'updateLancamento']);
+Route::post('/convenants/updateParcelas', [ConvenantController::class, 'updateParcelas']);
 
 
 /**
