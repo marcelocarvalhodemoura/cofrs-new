@@ -1,6 +1,6 @@
 <div class="form-row">
     <div class="col-md-4 mb-4">
-        <label for="email">E-mail <b class="error">*</b></label>
+        <label for="email">E-mail</label>
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroupPrepend">@</span>

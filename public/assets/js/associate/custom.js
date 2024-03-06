@@ -190,10 +190,12 @@ $(document).ready(function() {
             job: "required",
             typeassociate: "required",
             identify: "required",
+            /*
             email:  {
                 required: true,
                 email: true
             },
+            */
             classification: "required",
             civilstatus: "required",
             phone: "required",
