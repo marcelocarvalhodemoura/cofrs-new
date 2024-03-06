@@ -35,6 +35,7 @@
                                 @include('covenants.modal.download-file')
                                 @include('covenants.modal.delete')
                                 @include('covenants.modal.editParcela')
+                                @include('covenants.modal.editStatusParcela')
                             </div>
                         </div>
                         <form id="convenantsForm">
