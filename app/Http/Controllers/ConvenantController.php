@@ -864,6 +864,30 @@ class ConvenantController extends Controller
         }
     }
 
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateStatusParcelas(Request $request){
+        //die(json_decode($request->idparcelas)[0]);
+        try {
+            //edita as parcelas
+            $parcelas_afetadas = Portion::whereIn('id', json_decode($request->idparcelas))
+                ->update([
+                    'par_status' => $request->statusParc,
+                ]);
+
+
+            return response()->json(['status'=>'success', 'msg'=>'Parcelas alteradas com sucesso!']);
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
