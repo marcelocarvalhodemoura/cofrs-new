@@ -29,7 +29,7 @@ class Associate extends Migration
             $table->string('assoc_sexo');
             $table->string('assoc_profissao');
             $table->string('assoc_fone');
-            $table->string('assoc_email');
+            $table->string('assoc_email')->nullable();
             $table->string('assoc_cep');
             $table->string('assoc_endereco');
             $table->string('assoc_complemento');
