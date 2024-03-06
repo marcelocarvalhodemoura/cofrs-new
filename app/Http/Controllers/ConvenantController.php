@@ -881,6 +881,8 @@ class ConvenantController extends Controller
 
             $currentMonth = explode("-", $dateConvert);
 
+            $vcto = date('Y-m',strtotime($dateConvert.'+'.($request->number-1).' months'));
+            /*
             $monthUpdated = intval($currentMonth[1]) + $request->number;
             $yearUpdated  = intval($currentMonth[0]);
 
@@ -888,12 +890,13 @@ class ConvenantController extends Controller
                 $yearUpdated++;
                 $monthUpdated = $monthUpdated - 12;
             }
+            */
 
             //create Convenants
             $convenantModel->lanc_valortotal = str_replace(',','.', $request->total);
             $convenantModel->lanc_numerodeparcela = $request->number;
             $convenantModel->con_codigoid = $request->convenants;
-            $convenantModel->lanc_datavencimento = $yearUpdated.'-'.$monthUpdated.'-10';
+            $convenantModel->lanc_datavencimento = $vcto.'-10';
             $convenantModel->assoc_codigoid = $request->associate;
             $convenantModel->lanc_contrato = $request->contract;
             $convenantModel->save();
