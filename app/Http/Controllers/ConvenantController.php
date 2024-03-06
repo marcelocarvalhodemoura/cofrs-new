@@ -849,7 +849,7 @@ class ConvenantController extends Controller
             $parcelas_afetadas = Portion::whereIn('id', json_decode($request->idparcelas))
                 ->whereIn('par_status', ['Pendente','Renegociado','Reparcelado','Transferido','Vencido'])
                 ->update([
-                    'par_valor' => $request->valor,
+                    'par_valor' => str_replace(',','.', $request->valor),
                 ]);
 
             //edita o lançamento
