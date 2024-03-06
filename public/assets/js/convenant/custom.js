@@ -357,6 +357,7 @@ $(document).ready(function () {
     });
 
     $("#portion").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false });
+    $("#valor").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false });
 
     $("#portion").blur(function () {
 
@@ -726,9 +727,11 @@ $("#btnEditPortion").click(()=> {
             confirmButtonClass: 'btn btn-primary',
         });
     } else {
+        //alert($("input[type=checkbox][name=\'actionCheck[]\']:checked").parents('tr').data('lanc-id'));
+
         $("#convenantModalEditParcela").modal('show');
         $('#formEditParcelas #idparcelas').val(JSON.stringify(id));
-        $('#formEditParcelas #idLancamento').val($("#portionSel:checked").val());
+        $('#formEditParcelas #idLancamento').val($("input[type=checkbox][name=\'actionCheck[]\']:checked").parents('tr').data('lanc-id'));
     }
 
 });
