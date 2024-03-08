@@ -56,7 +56,7 @@
     <div class="form-row">
         <div class="col-md-12 mb-4">
             <label for="convenants">Contrato do convênio<b class="error">*</b></label>
-            <input type="text" class="form-control" id="contract" name="contract" maxlength="30"  required>
+            <input type="text" class="form-control" id="contract" name="contract" maxlength="30" autocomplete="off" required />
         </div>
     </div>
     <div class="modal-footer">
