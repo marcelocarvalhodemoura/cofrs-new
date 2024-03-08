@@ -974,37 +974,34 @@ class ConvenantController extends Controller
 
     public function remove(Request $request): JsonResponse
     {
+        $err = '';
+        $lancamentos = [];
+        $parcelas = DB::select('SELECT * FROM parcelamento WHERE id IN ('.implode(',',$request->id).')');
+        //dd($parcelas);
 
-
-        foreach($request->id as $id){
-            try {
-                $portion = Portion::find($id);
-
-                $convenants = Portion::where('lanc_codigoid', '=', $portion->lanc_codigoid)->get();
-
-                if($portion->par_status === 'Pago') {
-                    response()->json(['status'=>'error', 'msg'=> 'Não é possível excluir um lançamento pago']);
-                } else {
-                    $portion->delete();
-
-                    $convenants = Portion::where('lanc_codigoid', '=', $portion->lanc_codigoid)->get();
-
-                    if(count($convenants) === 0){
-                        Convenant::find($portion->lanc_codigoid)->delete();
-                    }
-                }
-
-
-
-
-
-            }catch (Exception $e){
-                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        foreach($parcelas as $parc){
+            //verifico os lançamentos envolvidos
+            $lancamentos[$parc->lanc_codigoid] = 1;
+            
+            //se não for pago deleto a parcela
+            if($parc->par_status != 'Pago') {
+                Portion::find($parc->id)->delete();
+            } else {
+                $err .= 'Parcela '.$parc->par_numero.', valor R$ '.$parc->par_valor.' está paga e não pode ser deletada.<br>';
             }
         }
 
-        return response()->json(['status'=>'success', 'msg'=> 'Parcela removida com sucesso']);
+        //DELETA OS LANÇAMENTOS CASO ELES FIQUEM SEM NENHUMA PARCELA
+        foreach(array_keys($lancamentos) as $v){
+            Convenant::raw('DELETE FROM lancamento WHERE id = '.$v.' AND (SELECT COUNT(*) FROM parcelamento p WHERE id = p.lanc_codigoid) = 0');
+        }
 
+        if($err != ''){
+            $err .= 'Demais parcelas removidas com sucesso';
+            return response()->json(['status'=>'error', 'titulo'=> 'Não é possível excluir um lançamento pago', 'msg' => $err]);
+        } else {
+            return response()->json(['status'=>'success', 'titulo'=> 'Sucesso', 'msg' => 'Parcela(s) removida(s) com sucesso']);
+        }
     }
 
     /**
