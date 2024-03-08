@@ -457,31 +457,44 @@ $(document).ready(function () {
         if (id.length === 0) {
             return swal({
                 title: "Atenção !",
-                text: "Selecione apenas 1 registro por vez",
+                text: "Selecione ao menos 1 registro",
                 type: "info",
                 confirmButtonClass: 'btn btn-primary',
             });
+        } else {
+            swal({
+                title: "Confirma?",
+                text: "Após a confirmação o(s) registro(s) será(ão) removido(s).",
+                type: "warning",
+                confirmButtonClass: 'btn btn btn-primary',
+                cancelButtonClass: 'btn btn-danger mr-3',
+                buttonsStyling: false,
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Remova!",
+                closeOnConfirm: false
+            }).then(function (result) {
+                $.ajax({
+                    method: "POST",
+                    url: '/convenants/remove',
+                    data: {
+                        'id': id,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: response => {
+                        swal({
+                            title: response.titulo,
+                            text: response.msg,
+                            type: response.status,
+                            confirmButtonClass: 'btn btn-primary',
+                        });
+                        //$("#tableCovenants tbody tr").remove();
+                        filtroConvenant();
+                    }
+                });
+            });
         }
 
-        $.ajax({
-            method: "POST",
-            url: '/convenants/remove',
-            data: {
-                'id': id,
-                '_token': $('input[name="_token"]').val()
-            },
-            success: response => {
-                if (response.status === 'success') {
-                    swal({
-                        title: "Sucesso !",
-                        text: "Registro removido com sucesso",
-                        type: "success",
-                        confirmButtonClass: 'btn btn-primary',
-                    });
-                    $("#tableCovenants tbody tr").remove();
-                }
-            }
-        });
     });
 
     function filtroConvenant() {
