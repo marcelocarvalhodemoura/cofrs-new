@@ -72,11 +72,13 @@
                                     <label>Estatus</label>
                                     <select class="form-control  basic"  id="selStatus" name="selStatus">
                                         <option value="">Selecione</option>
-                                        <option value="Pago">Pago</option>
-                                        <option value="Cancelado">Cancelado</option>
-                                        <option value="Pendente">Pendente</option>
-                                        <option value="Transferido">Transferido</option>
-                                        <option value="Vencido">Vencido</option>
+                                        <?php
+                                        foreach($statusList as $estatus){
+                                            ?>
+                                            <option value="{{ $estatus->est_nome }}">{{ $estatus->est_nome }}</option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-1">

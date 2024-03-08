@@ -7,11 +7,13 @@
             <label for="statusParc">Status <b class="error">*</b></label>
             <select class="form-control" id="statusParc" name="statusParc" style="z-index: 99999!important;">
                 <option value="" selected disabled>Selecione</option>
-                <option value="Pago">Pago</option>
-                <option value="Cancelado">Cancelado</option>
-                <option value="Pendente">Pendente</option>
-                <option value="Transferido">Transferido</option>
-                <option value="Vencido">Vencido</option>
+                <?php
+                foreach($statusList as $estatus){
+                    ?>
+                    <option value="{{ $estatus->est_nome }}">{{ $estatus->est_nome }}</option>
+                    <?php
+                }
+                ?>
             </select>
         </div>
         <span class="form-text text-danger ms-1">As parcelas selecionadas serão alteradas independente do status atual.</span>

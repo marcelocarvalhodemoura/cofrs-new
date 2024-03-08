@@ -9,6 +9,7 @@ use App\Models\Agent;
 use App\Models\Competence;
 use App\Models\Convenant;
 use App\Models\Portion;
+use App\Models\Status;
 
 use App\Models\Typeassociate;
 use App\Models\Classification;
@@ -49,6 +50,7 @@ class ConvenantController extends Controller
         $associateList = Associate::orderBy('assoc_nome','asc')->get();
         $competitionList = Competence::orderBy('com_datainicio','desc')->get();
         $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
+        $statusList = Status::orderBy('est_nome', 'asc')->get();
 
         $currentCompetence = date('m/Y');
 
@@ -66,6 +68,7 @@ class ConvenantController extends Controller
             'associateList'=> $associateList,
             'competitionList'=> $competitionList,
             'agreementList' => $agreementList,
+            'statusList' => $statusList,
         ];
 
         return view('covenants.list', $lists)->with($data);
