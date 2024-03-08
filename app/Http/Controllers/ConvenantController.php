@@ -987,7 +987,7 @@ class ConvenantController extends Controller
             if($parc->par_status != 'Pago') {
                 Portion::find($parc->id)->delete();
             } else {
-                $err .= 'Parcela '.$parc->par_numero.', valor R$ '.$parc->par_valor.' está paga e não pode ser deletada.<br>';
+                $err .= 'Parcela '.$parc->par_numero.', valor R$ '.$parc->par_valor.' está paga e não pode ser deletada.\n';
             }
         }
 
@@ -997,8 +997,8 @@ class ConvenantController extends Controller
         }
 
         if($err != ''){
-            $err .= 'Demais parcelas removidas com sucesso';
-            return response()->json(['status'=>'error', 'titulo'=> 'Não é possível excluir um lançamento pago', 'msg' => $err]);
+            //$err .= 'Demais parcelas removidas com sucesso';
+            return response()->json(['status'=>'warning', 'titulo'=> 'Existe(m) parcela(s) paga(s)', 'msg' => 'Alguma(s) parcela(s) esta(ão) paga(s) e não pode(m) ser deletada(s).']);
         } else {
             return response()->json(['status'=>'success', 'titulo'=> 'Sucesso', 'msg' => 'Parcela(s) removida(s) com sucesso']);
         }
