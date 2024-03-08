@@ -52,7 +52,9 @@
                             <th>Nome</th>
                             <th>CPF</th>
                             <th>Convênio</th>
-                            <th>Matricula</th>
+                            <th>ID</th>
+                            <th>Parcela atual</th>
+                            <th>Total de parcelas</th>
                             <th>Vencimento</th>
                             <th>Contrato</th>
                             <th>Valor</th>
