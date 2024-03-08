@@ -7,12 +7,12 @@
 
             <ul class="navbar-nav theme-brand flex-row  text-center">
                 <li class="nav-item theme-logo">
-                    <a href="/sales">
+                    <a href="/dashboard">
                         <img src="{{asset('assets/images/logooficial.png')}}" class="navbar-logo" alt="logo">
                     </a>
                 </li>
                 <li class="nav-item theme-text">
-                    <a href="/sales" class="nav-link"> COFRS </a>
+                    <a href="/dashboard" class="nav-link"> COFRS </a>
                 </li>
                 <li class="nav-item toggle-sidebar">
                     <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom">
