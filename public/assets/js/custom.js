@@ -132,3 +132,20 @@ function GetIEVersion() {
   else
     return 0; //It is not IE
 }
+
+/*
+=========================================
+|                                       |
+|           money to float              |
+|                                       |
+=========================================
+*/ 
+
+function campo6_10Up(valor) {
+    // transforma para numero
+    valor = formataNumero(valor);
+    return valor;    
+}
+function formataNumero(n) {
+    return n.replace(/[^\d,]/g, '').replace(",", ".");
+}

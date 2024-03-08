@@ -378,7 +378,8 @@ $(document).ready(function () {
         // var valorTotal;
         var data = new Date();
         // var dia = data.getDate();
-        var valorFormatado = $(this).val().replace(',', '.');
+        //var valorFormatado = $(this).val().replace(',', '.');
+        var valorFormatado = campo6_10Up($(this).val());
         // var mes = data.getMonth() + 1;
         // var ano = data.getFullYear();
         // var dataFormatada;
