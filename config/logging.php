@@ -39,19 +39,21 @@ return [
             'driver' => 'stack',
             'channels' => ['single'],
             'ignore_exceptions' => false,
+            'days' => 30,
         ],
 
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel-single.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
         ],
 
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel-daily.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'days' => 30,
         ],
 
         'slack' => [
@@ -60,6 +62,7 @@ return [
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             'level' => env('LOG_LEVEL', 'critical'),
+            'days' => 30,
         ],
 
         'papertrail' => [
@@ -85,25 +88,30 @@ return [
         'syslog' => [
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
         ],
 
         'errorlog' => [
             'driver' => 'errorlog',
             'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
         ],
 
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
+            'days' => 30,
         ],
 
         'emergency' => [
             'path' => storage_path('logs/laravel-emergency.log'),
+            'days' => 30,
         ],
 
         'deprecations' => [
             'driver' => 'single',
             'path' => storage_path('logs/php-deprecation-warnings.log'),
+            'days' => 30,
         ],
     ],
 
