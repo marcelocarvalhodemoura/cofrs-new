@@ -205,7 +205,7 @@ class ReportsController extends Controller
           a.assoc_nome,
           a.assoc_cpf,
           cv.con_nome,
-          a.assoc_matricula,
+          a.assoc_identificacao,
           p.par_vencimentoparcela,
           p.par_numero,
           p.par_equivalente,
@@ -253,11 +253,13 @@ class ReportsController extends Controller
             'nome' => $b->assoc_nome,
             'cpf' => $b->assoc_cpf,
             'convenio' => $b->con_nome,
-            'matricula' => $b->assoc_matricula,
+            'matricula' => $b->assoc_identificacao,
             'vencimento' => $b->par_vencimentoparcela,
             'contrato' => $b->lanc_contrato,
             'valor' => number_format($b->par_valor,2),
             'status' => $b->par_status,
+            'par_numero' => $b->par_numero,
+            'lanc_numerodeparcela' => $b->lanc_numerodeparcela,
             );
           }
         } else {
