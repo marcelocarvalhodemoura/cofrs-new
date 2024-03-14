@@ -918,7 +918,6 @@ class ConvenantController extends Controller
                 $monthUpdated = $monthUpdated - 12;
             }
             */
-
             //create Convenants
             $convenantModel->lanc_valortotal = str_replace(',','.', $request->total);
             $convenantModel->lanc_numerodeparcela = $request->number;
@@ -951,7 +950,7 @@ class ConvenantController extends Controller
                         $portionModel = new Portion();
 
                         $portionModel->par_numero = $i;
-                        $portionModel->par_valor = str_replace(',','.',$request->portion);
+                        $portionModel->par_valor = str_replace(',','.', str_replace('.','',$request->portion));
                         $portionModel->lanc_codigoid = $lasInsertIdConvenat->id;
                         $portionModel->par_vencimentoparcela = $currentMonth[0].'-'.$currentMonth[1].'-10';
                         $portionModel->par_observacao = '';
