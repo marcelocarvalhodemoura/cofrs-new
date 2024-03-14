@@ -1,7 +1,7 @@
 @if ($page_name != 'coming_soon' && $page_name != 'contact_us' && $page_name != 'error404' && $page_name != 'error500' && $page_name != 'error503' && $page_name != 'faq' && $page_name != 'helpdesk' && $page_name != 'maintenence' && $page_name != 'privacy' && $page_name != 'auth_boxed' && $page_name != 'auth_default')
 
 <!--  BEGIN SIDEBAR  -->
-<div class="sidebar-wrapper sidebar-theme">
+<div class="sidebar-wrapper sidebar-theme" aria-expanded="true">
 
     <nav id="sidebar">
         <div class="profile-info">
@@ -12,6 +12,7 @@
                 <p class="">{{ \Illuminate\Support\Facades\Session::get('type') }}</p>
             </div>
         </div>
+        <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
             @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
             {{-- <li class="menu menu-heading">--}}
