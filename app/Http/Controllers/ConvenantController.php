@@ -957,7 +957,7 @@ class ConvenantController extends Controller
                         $portionModel->par_status = 'Pendente';
                         $portionModel->com_codigoid = $competenceID->id;
                         $portionModel->par_equivalente = $i;
-                        $portionModel->par_habilitasn = 0;
+                        $portionModel->par_habilitasn = 1;
                         $portionModel->save();
                     }
 
