@@ -122,6 +122,7 @@ Route::post('/convenants/dropBill', [ConvenantController::class, 'dropBill']);
 Route::post('/convenants/updateLancamento', [ConvenantController::class, 'updateLancamento']);
 Route::post('/convenants/updateParcelas', [ConvenantController::class, 'updateParcelas']);
 Route::post('/convenants/updateStatusParcelas', [ConvenantController::class, 'updateStatusParcelas']);
+Route::post('/convenants/addParcela', [ConvenantController::class, 'addParcela']);
 
 
 /**

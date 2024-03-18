@@ -867,6 +867,41 @@ class ConvenantController extends Controller
         }
     }
 
+    public function addParcela(Request $request){
+        try {
+            $parcela = Portion::where('lanc_codigoid', $request->idLancamento)->orderBy('par_numero','desc')->first();
+
+            $dateConvert = str_replace("/", "-", $request->firstPortion);
+
+            $competenceID = Competence::where('com_nome', '=', date('m/Y', strtotime($dateConvert)))->first();
+
+            for ($i = 1; $request->number >= $i; $i++) {
+                $portionModel = new Portion();
+
+                $portionModel->par_numero = $parcela->par_numero + $i;
+                $portionModel->par_valor = str_replace(',','.', str_replace('.','',$request->valor));
+                $portionModel->lanc_codigoid = $request->idLancamento;
+                $portionModel->par_vencimentoparcela = date('Y-m-d', strtotime($dateConvert.' +'.($i-1).'months'));
+                $portionModel->par_observacao = '';
+                $portionModel->par_status = 'Pendente';
+                $portionModel->com_codigoid = $competenceID->id;
+                $portionModel->par_equivalente = $parcela->par_numero + $i;
+                $portionModel->par_habilitasn = 1;
+                $portionModel->save();
+            }
+
+            //edita o lançamento
+            DB::statement('UPDATE lancamento AS l, 
+                                (SELECT SUM(p.par_valor) AS valor, COUNT(p.id) AS parcelas FROM parcelamento p WHERE p.lanc_codigoid = '.$request->idLancamento.' AND p.deleted_at IS NULL) AS par
+                            SET l.lanc_valortotal = par.valor, l.lanc_numerodeparcela = par.parcelas
+                            WHERE l.id =  '.$request->idLancamento);
+
+            return response()->json(['status'=>'success', 'msg'=>'Parcelas adicionadas com sucesso!']);
+        } catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
 
     /**
      * @param Request $request
