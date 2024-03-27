@@ -295,6 +295,7 @@ class ConvenantController extends Controller
                         ->where('parcelamento.lanc_codigoid', $item->lanc_codigoid)
                         ->where('parcelamento.deleted_at',null)
                         ->where($dynamicWherePortion)
+                        ->orderBy('com_datafinal','asc')
                         ->get();
                 }
 
