@@ -289,6 +289,9 @@ class ConvenantController extends Controller
                         'par_numero',
                         'par_valor',
                         'par_status',
+                        'par_vencimentoparcela',
+                        'par_equivalente',
+                        'par_observacao',
                         'parcelamento.id AS par_codigoid'
                         )
                         ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
@@ -1343,6 +1346,24 @@ class ConvenantController extends Controller
 
 
         return $arr_rtn;
+    }
+
+    public function editParcelaObs(Request $request){
+        //die(json_decode($request->idparcelas)[0]);
+        try {
+            //edita as parcelas
+            $parcelas_afetadas = Portion::where('id', $request->idParcela)
+                ->update([
+                    'par_observacao' => $request->par_observacao,
+                ]);
+
+
+            return response()->json(['status'=>'success', 'msg'=>'Parcela alterada com sucesso!']);
+            }catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
+        }
     }
 
 }

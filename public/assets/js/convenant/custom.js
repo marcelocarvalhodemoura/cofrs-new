@@ -596,6 +596,7 @@ $(document).ready(function () {
                             '<th><span class="badge badge-primary">Parcela</span></th>' +
                             '<th><span class="badge badge-primary">Valor</span></th>' +
                             '<th><span class="badge badge-primary">Status</span></th>' +
+                            '<th>&nbsp;</th>' +
                             '<th><input id="portionSel" value="' + item.lanc_codigoid + '" type="checkbox" onclick="selAll(' + item.lanc_codigoid + ')"></th>' +
                             '</tr>' +
                             '</thead>' +
@@ -605,6 +606,10 @@ $(document).ready(function () {
 
                             var portionPrice = value.par_valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
                             var dynamicClass = "";
+
+                            var d = value.par_vencimentoparcela.split('-');
+                            var dt = d[2]+'/'+d[1]+'/'+d[0];
+
 
                             switch (value.par_status) {
                                 case 'Pendente':
@@ -630,6 +635,7 @@ $(document).ready(function () {
                                 '<td>' + value.par_numero + '</td>' +
                                 '<td>' + portionPrice + '</td>' +
                                 '<td><b class="badge badge-' + dynamicClass + '">' + value.par_status + '</b></td>' +
+                                '<td><button class="btn-outline-primary btn-sm bs-popover" data-placement="top" data-container="body" data-trigger="hover" data-content="Ver observações" onclick="editObservacoes(' + value.par_codigoid + ',' + value.par_numero + ',' + value.par_equivalente + ',\'' + dt + '\', \'' + portionPrice + '\', \'' + encodeURI(value.par_observacao) + '\')" alt="Ver observações"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button></td>' +
                                 '<td><input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="' + value.par_codigoid + '"/></td>' +
                                 '</tr>';
                         });
@@ -660,6 +666,65 @@ $(document).ready(function () {
         });//ajax
 
     };
+
+function editObservacoes(idParcela, par_numero, par_equivalente, par_vencimentoparcela, portionPrice, obs){
+    $('#formEditParcelaObs')[0].reset();
+    $('#formEditParcelaObs #idParcela').val(idParcela);
+    //$('#formEditParcelaObs #par_vencimentoparcela').val(par_vencimentoparcela);
+    $('#formEditParcelaObs #par_vencimentoparcela').val(par_vencimentoparcela);
+    $('#formEditParcelaObs #portionPrice').val(portionPrice);
+    $('#formEditParcelaObs #par_numero').val(par_numero);
+    $('#formEditParcelaObs #par_equivalente').val(par_equivalente);
+    $('#formEditParcelaObs #par_observacao').val(decodeURI(obs));
+    $("#convenantModalEditParcelaObs").modal('show');
+}
+
+$("#formEditParcelaObs #btnSave").on('click', function(){
+        $('#convenantModalEditParcelaObs').modal('hide');
+
+        $.blockUI({
+            message: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader spin"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>',
+            overlayCSS: {
+                backgroundColor: '#1b2024',
+                opacity: 0.8,
+                zIndex: 1200,
+                cursor: 'wait'
+            },
+            css: {
+                border: 0,
+                color: '#fff',
+                zIndex: 1201,
+                padding: 0,
+                backgroundColor: 'transparent'
+            }
+        });
+
+        $.ajax({
+            method: "POST",
+            url: "/convenants/editParcelaObs",
+            data: $("#formEditParcelaObs").serialize(),
+            success: (response) => {
+                if (response.status === 'success') {
+
+
+                    swal({
+                        title: 'Processado!',
+                        text: response.msg,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-success',
+                    });
+
+                    $('#formEditParcelaObs')[0].reset();
+
+                    $.unblockUI();
+
+                    filtroConvenant();
+                }
+            }
+        }); 
+});
+
+
 
 function addParcela(idLancamento){
     $('#formAddParcela')[0].reset();
