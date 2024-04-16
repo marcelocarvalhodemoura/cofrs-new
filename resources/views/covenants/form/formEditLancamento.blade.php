@@ -17,7 +17,7 @@
     <div class="form-row">
         <div class="col-12 mb-4">
             <label for="convenants">Contrato do convênio</label>
-            <input type="text" class="form-control" id="contract" name="contract" maxlength="30" />
+            <input type="text" class="form-control" id="contract" name="contract" maxlength="200" />
         </div>
     </div>
 
