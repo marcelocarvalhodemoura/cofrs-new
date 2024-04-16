@@ -9,6 +9,7 @@
     @include('associate.form._associate-form-line6')
     @include('associate.form._associate-form-line7')
     @include('associate.form._associate-form-line8')
+    @include('associate.form._associate-form-line9')
 
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal">

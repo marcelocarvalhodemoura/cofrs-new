@@ -514,6 +514,7 @@ $(document).ready(function() {
                     $("#contract").val(response.assoc_contrato);
                     $("#third_party_contract").val(response.assoc_contrato_terceiros);
                     $("#description").val(response.assoc_observacao);
+                    $("#assoc_ativosn").val(response.assoc_ativosn);
                     $("#bank").val(response.assoc_banco);
                     $("#bank_agency").val(response.assoc_agencia);
                     $("#count").val(response.assoc_conta);
