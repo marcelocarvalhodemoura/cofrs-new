@@ -126,6 +126,7 @@
     </div>
     @include('covenants.modal.editLancamento')
     @include('covenants.modal.addParcela')
+    @include('covenants.modal.editParcelaObs')
 @endsection
 
 @push('scripts')
