@@ -8,7 +8,7 @@
                 <div class="form-container">
                     <div class="form-content" style="display:none;">
                         <img src="assets/images/logooficial.png" width="30%" />
-                        <h1 class="">Sitema COFRS</h1>
+                        <h1 class="">Sistema COFRS</h1>
                         <p class="">Sistema exclusivo de funcionários do COFRS.</p>
 
                         <form class="text-left" id="formAuth" class="needs-validation">
