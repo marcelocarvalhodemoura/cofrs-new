@@ -237,7 +237,7 @@ class ReportsController extends Controller
         }
 
         if($request->post('referencia') != ''){
-          $sqlBusca .= " AND cv.con_referencia = ".$request->post('convenio');
+          $sqlBusca .= " AND cv.con_referencia = '".$request->post('referencia')."'";
         }
 
         if($request->post('status') != ''){
