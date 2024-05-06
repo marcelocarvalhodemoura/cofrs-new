@@ -20,7 +20,16 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-2 mb-3">
+            <label for="assoc_ativosn">Status do cadastro</label>
+            <select name="assoc_ativosn" id="assoc_ativosn" class="custom-select">
+                <option value="">-Selecione-</option>
+                <option value="1">Ativo</option>
+                <option value="2">Desativado</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
             <label for="classificacao">Classificação</label>
             <select class="custom-select" id="classificacao" name="classificacao">
                 <option value="">-Selecione-</option>
