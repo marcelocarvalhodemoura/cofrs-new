@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label>Competência</label>
-                                    <select class="form-control  basic" name="selCompetition" id="selCompetition">
+                                    <select class="form-control  basic" name="selCompetence" id="selCompetence">
                                         <option value="">Selecione</option>
                                         @foreach( $competitionList as $com )
                                             <option value="{{ $com->id }}">{{ $com->com_nome }}</option>
