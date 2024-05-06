@@ -501,6 +501,7 @@ class ConvenantController extends Controller
                             'assoc_cidade' => $content['S'],
                             'assoc_dataativacao' => $dataFormated,
                             'assoc_contrato' => $content['U'],
+                            'created_at' => date("Y-m-d H:i:s"),
                             ]);
                     }
                 } else {
