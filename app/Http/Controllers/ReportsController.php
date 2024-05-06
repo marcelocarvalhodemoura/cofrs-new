@@ -141,6 +141,10 @@ class ReportsController extends Controller
           $sqlBusca .= "AND cv.con_referencia = ".$request->post('convenio');
         }
 
+        if($request->post('assoc_ativosn') != ''){
+          $sqlBusca .= "AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+        }
+
         $busca = \DB::select($sqlBusca);
 
         if($busca){
@@ -244,6 +248,9 @@ class ReportsController extends Controller
           $sqlBusca .= " AND p.par_status = '".$request->post('status')."'";
         }
 
+        if($request->post('assoc_ativosn') != ''){
+          $sqlBusca .= "AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+        }
         //dd($sqlBusca);
 
         $busca = \DB::select($sqlBusca);
