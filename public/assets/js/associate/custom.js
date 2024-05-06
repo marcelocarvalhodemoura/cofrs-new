@@ -487,8 +487,13 @@ $(document).ready(function() {
                 success:response => {
 
                     var born = response.assoc_datanascimento.split('-');
-
                     var bornFormated = born[2]+'/'+born[1]+'/'+born[0];
+
+                    var dataativacao = response.assoc_dataativacao.split('-');
+                    var dataativacaoFormated = dataativacao[2]+'/'+dataativacao[1]+'/'+dataativacao[0];
+
+                    var datadesligamento = response.assoc_datadesligamento.split('-');
+                    var datadesligamentoFormated = datadesligamento[2]+'/'+datadesligamento[1]+'/'+datadesligamento[0];
 
                     $("#name").val(response.assoc_nome);
                     $("#identify").val(response.assoc_identificacao);
@@ -515,6 +520,8 @@ $(document).ready(function() {
                     $("#third_party_contract").val(response.assoc_contrato_terceiros);
                     $("#description").val(response.assoc_observacao);
                     $("#assoc_ativosn").val(response.assoc_ativosn);
+                    $("#assoc_dataativacao").val(dataativacaoFormated);
+                    $("#assoc_datadesligamento").val(datadesligamentoFormated);
                     $("#bank").val(response.assoc_banco);
                     $("#bank_agency").val(response.assoc_agencia);
                     $("#count").val(response.assoc_conta);

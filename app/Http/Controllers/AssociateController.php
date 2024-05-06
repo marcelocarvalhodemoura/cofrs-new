@@ -146,7 +146,7 @@ class AssociateController extends Controller
                     'assoc_contrato' => $request->post('contract'),
                     'assoc_contrato_terceiros' => $request->post('third_party_contract'),
                     'ag_codigoid' => $request->post('typeagent'),
-                    'assoc_removesn' => 0
+                    'assoc_removesn' => 0,
                 ]
             );
 
