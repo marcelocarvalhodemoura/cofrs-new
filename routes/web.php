@@ -17,6 +17,7 @@ use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\MigracaoController;
+use App\Http\Controllers\AlertController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -171,4 +172,14 @@ Route::post('/aReport', [ReportsController::class, 'aReport']);
 
 
 Route::get('/migracao', [MigracaoController::class, 'index']);
+
+
+Route::get('/aAlerts', [AlertController::class, 'aAlerts']);
+Route::get('/aVerAlerta', [AlertController::class, 'aVerAlerta']);
+Route::get ('/aVisualizado', [AlertController::class, 'aVisualizado']);
+Route::get ('/meus-alertas', [AlertController::class, 'meusAlertas']);
+Route::get('/aUsersAlert', [AlertController::class, 'aUsersAlert']);
+Route::get('/aQuemViu', [AlertController::class, 'aQuemViu']);
+Route::get ('/alertas', [AlertController::class, 'index']);
+Route::post('/alertas/store', [AlertController::class, 'store']);
 

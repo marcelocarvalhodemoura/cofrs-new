@@ -595,10 +595,14 @@ code {
   border-radius: 50%;
   padding: 3px 0px 0px;
   font-size: 10px;
+  display: block;
+  /*
   color: #fff !important;
   background: #25d5e4;
-  display: block;
   border: 1px solid #25d5e4;
+  */
+  border-width: 1px;
+  border-style: solid;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu {
   min-width: 15rem;
@@ -622,8 +626,10 @@ code {
   width: 23px;
   height: 23px;
   font-weight: 600;
+  /*
   color: #e2a03f;
   fill: rgba(226, 160, 63, 0.2705882353);
+  */
   margin-right: 9px;
   align-self: center;
 }
