@@ -180,6 +180,7 @@ class ReportsController extends Controller
                           WHERE l.con_codigoid = c.id AND l.id = p.lanc_codigoid
                             AND p.par_vencimentoparcela >= '".$inicio."'
                             AND p.par_vencimentoparcela <= '".$fim."'
+                            AND p.deleted_at IS NULL
                             AND p.par_status = e.est_nome ) AS valor
                       FROM
                         estatus e,
