@@ -57,6 +57,7 @@ $(document).ready(function() {
     $('#phone2').inputmask("(99) 99999-9999");
     $('#cpf').inputmask("999.999.999-99");
     $('#born').inputmask("99/99/9999");
+    $('#assoc_datadesligamento').inputmask("99/99/9999");
 
     /**
      * Input mask in Dependent form

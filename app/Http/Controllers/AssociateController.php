@@ -111,6 +111,7 @@ class AssociateController extends Controller
     {
         if($request->ajax()){
             $datePtToMysql = implode('-', array_reverse(explode('/', $request->post('born'))));
+            $assoc_datadesligamento = implode('-', array_reverse(explode('/', $request->post('assoc_datadesligamento'))));
         }
 
         try {
@@ -143,6 +144,7 @@ class AssociateController extends Controller
                     'assoc_estadocivil' => $request->post('civilstatus'),
                     'assoc_fone2' => $request->post('phone2'),
                     'assoc_ativosn' => $request->post('assoc_ativosn'),
+                    'assoc_datadesligamento' => $assoc_datadesligamento,
                     'assoc_contrato' => $request->post('contract'),
                     'assoc_contrato_terceiros' => $request->post('third_party_contract'),
                     'ag_codigoid' => $request->post('typeagent'),
