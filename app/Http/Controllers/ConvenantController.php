@@ -880,11 +880,13 @@ class ConvenantController extends Controller
         try {
             $parcela = Portion::where('lanc_codigoid', $request->idLancamento)->orderBy('par_numero','desc')->first();
 
-            $dateConvert = str_replace("/", "-", $request->firstPortion);
+            //$dateConvert = str_replace("/", "-", $request->firstPortion);
+            $dateConvert = implode("-", array_reverse(explode("/", $request->firstPortion)));
 
-            $competenceID = Competence::where('com_nome', '=', date('m/Y', strtotime($dateConvert)))->first();
 
             for ($i = 1; $request->number >= $i; $i++) {
+                $competenceID = Competence::where('com_nome', '=', date('m/Y', strtotime($dateConvert.' +'.($i-1).'months')))->first();
+
                 $portionModel = new Portion();
 
                 $portionModel->par_numero = $parcela->par_numero + $i;
