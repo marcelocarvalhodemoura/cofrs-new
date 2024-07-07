@@ -250,7 +250,11 @@ class ReportsController extends Controller
         }
 
         if($request->post('assoc_ativosn') != ''){
-          $sqlBusca .= "AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+          $sqlBusca .= " AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+        }
+
+        if($request->post('cpf') != ''){
+          $sqlBusca .= " AND a.assoc_cpf = '".$request->post('cpf')."'";
         }
         //dd($sqlBusca);
 
