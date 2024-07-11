@@ -27,7 +27,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 @include('typecategoryconvenants.modal.create')
-{{--                                @include('user.modal.edit')--}}
+                                @include('typecategoryconvenants.modal.edit')
 {{--                                @include('user.modal.password')--}}
 {{--                                @include('user.modal.delete')--}}
                             </div>

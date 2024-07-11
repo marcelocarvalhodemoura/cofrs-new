@@ -76,5 +76,15 @@ class TypeCategoryConvenantController extends Controller
 
     }
 
+    public function getAgreement($id)
+    {
+        try{
+            return response()->json(TypeCategoryConvenant::find($id));
+        }catch (Exception $e){
+            return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+        }
+
+    }
+
 
 }
