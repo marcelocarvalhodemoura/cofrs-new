@@ -140,6 +140,7 @@ Route::get('/categories-convenants/load/{id}', [CategoryConvenantController::cla
 
 Route::get('/covenants-type', [TypeCategoryConvenantController::class, 'index']);
 Route::post('/convenants-type/store', [TypeCategoryConvenantController::class, 'store']);
+Route::get('/convenants-type/getAgreement/{id}', [TypeCategoryConvenantController::class, 'getAgreement']);
 
 /**
  * Banks Route

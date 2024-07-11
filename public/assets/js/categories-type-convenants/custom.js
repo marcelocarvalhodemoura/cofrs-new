@@ -89,66 +89,60 @@ $(document).ready(function(){
     /**
      * submit User Edit Form
      */
-    $('#formUserEdit').validate({
-            rules: {
-                name:"required",
-                user:"required",
-                email:{
-                    required: true,
-                    email: true
-                },
-                usertype: "required",
-            },
-            messages: {
-                name: "Nome é um campo obrigatório",
-                user: "Usuário é um campo obrigatório",
-                email: {
-                    required: "E-mail é um campo obrigatório",
-                    email: "E-mail inválido"
-                },
-                usertype: "Tipo é um campo obrigatório"
-            },
-            errorElement: "span",
-            highlight: function () {
-                $( "#formUserEdit" ).addClass( "was-validated" );
-            },
-            unhighlight: function () {
-                $( "#formUserEdit" ).addClass( "was-validated" );
-            },
-            submitHandler: function () {
-                //send data
-                $.ajax({
-                    url: '/users/store',
-                    method: 'POST',
-                    data: $("#formUserEdit").serialize(),
-                    success: function (data) {
+    $("#formtypecategoryconvenants").validate({
+        rules: {
+            name:"required",
+            typeCategory:"required",
+            elaborate:"required",
+            reference: "required",
 
-                        if (data.status === 'success') {
+        },
+        messages: {
+            name: "Nome é um campo obrigatório",
+            typeCategory: "Tipo é um campo obrigatório",
+            elaborate: "Prolabore é um campo obrigatório",
+            reference: "Referência é um campo obrigatório"
+        },
+        errorElement: "span",
+        highlight: function () {
+            $( "#formtypecategoryconvenants" ).addClass( "was-validated" );
+        },
+        unhighlight: function () {
+            $( "#formtypecategoryconvenants" ).addClass( "was-validated" );
+        },
+        submitHandler: function () {
+            $.ajax({
+                url:'/convenants-type/store',
+                method:'POST',
+                data: $('#formtypecategoryconvenants').serialize(),
+                success: function(data){
 
-                            table.ajax.reload();
+                    if(data.status === 'success'){
 
-                            $('#editUserModal').modal('hide');
+                        table.ajax.reload();
 
-                            swal({
-                                title: 'Bom trabalho!',
-                                text: "Formulário salvo com sucesso",
-                                type: 'success',
-                                confirmButtonClass: 'btn btn-primary',
-                            });
+                        $('#editTypeCategoryModal').modal('hide');
 
-                        }
+                        swal({
+                            title: 'Bom trabalho!',
+                            text: "Formulário salvo com sucesso",
+                            type: 'success',
+                        });
+
+                        $('#formtypecategoryconvenants')[0].reset();
                     }
+                }
 
-                });
-            }
+            });
         }
-    );
+    });
+
     /**
      * Validate checkbox in the datatables
      *
      * @type {any[]}
      */
-    $('#btnUserEdit').on('click', function (e){
+    $('#btntypecategoryconvenantsEdit').on('click', function (e){
 
         var id = new Array();
 
@@ -162,20 +156,21 @@ $(document).ready(function(){
         if(id > 0){
 
             $.ajax({
-                url:'/users/load/'+id,
+                url:'/convenants-type/getAgreement/'+id,
                 method:'GET',
                 success: function(response){
 
-                    $('input#name.form-control').val(response[0].usr_nome);
-                    $('input#user.form-control').val(response[0].usr_usuario);
-                    $('input#email.form-control').val(response[0].usr_email);
-                    $('select#usertype.custom-select').val(response[0].tipusr_codigoid);
+                    $('#formtypecategoryconvenants #name').val(response.con_nome);
+                    $('#formtypecategoryconvenants #elaborate').val(response.con_prolabore);
 
-                    $('#formUserEdit').append('<input type="hidden" id="userId" name="userId" value="'+response[0].id+'"/>');
+                    $('#formtypecategoryconvenants #reference').val(response.con_referencia);
+                    $('#formtypecategoryconvenants #typeCategory').val(response.tipconv_codigoid);
+
+                    $('#formtypecategoryconvenants').append('<input type="hidden" id="typeCategoryId" name="typeCategoryId" value="'+response.id+'"/>');
                 }
             });
 
-            $('#editUserModal').modal()
+            $('#editTypeCategoryModal').modal()
         }else{
 
             swal({
@@ -189,155 +184,6 @@ $(document).ready(function(){
     });
 
 
-    /**
-     * Modal Change Pass
-     *
-     */
-    $('#btnPasswordModal').on('click', function(e){
-        var id = new Array();
-
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
-            //get value in the input
-            id.push($(this).val());
-            //alert(usuarioMarcados);
-        });
-
-        //validate if exist value
-        if(id > 0){
-            $('#passwordModal').modal('show');
-            $("#editUserID").val(id);
-        }else{
-
-            swal({
-                title: "Atenção !",
-                text: "Selecione apenas 1 registro por vez",
-                type:"info",
-                confirmButtonClass: 'btn btn-primary',
-            });
-        }
-    });
-
-    /**
-     * Forgot Password
-     */
-
-    $("#formSavePassword").validate({
-        rules:{
-            editPassword: "required",
-            editPassword2: {
-                required: true,
-                equalTo: '#editPassword'
-            }
-        },
-        messages: {
-            editPassword: "Senha é um campo obrigatório",
-            editPassword2: {
-                required: "Conf. Senha é um campo obrigatório",
-                equalTo: "Conf. de Senha deve ser igual ao campo Senha"
-            }
-        },
-        errorElement: "span",
-        highlight: function () {
-            $( "#formSavePassword" ).addClass( "was-validated" );
-        },
-        unhighlight: function () {
-            $( "#formSavePassword" ).addClass( "was-validated" );
-        },
-        submitHandler: function () {
-            const id = $("#editUserID").val();
-
-            $.ajax({
-                url: "/users/pass/"+id,
-                method:"POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: $("#formSavePassword").serialize(),
-                success: function(response){
-
-
-                    if(response.status == 'error'){
-                        msg = response.msg;
-                        titleAlert = 'Atenção!';
-                        typeAlert = 'info';
-                    }else{
-                        typeAlert = 'success';
-                        titleAlert = 'Bom trabalho!'
-                        msg = response.msg;
-                        $('#formSavePassword')[0].reset();
-                        $('#passwordModal').modal('hide');
-                    }
-
-                    swal({
-                        title: titleAlert,
-                        text: msg,
-                        type:typeAlert,
-                        confirmButtonClass: 'btn btn-primary',
-                    });
-                }
-
-            });
-        }
-    });
-
-
-    /**
-     * Remove user data
-     */
-
-    $('#bntUserDelete').on('click', function(e){
-        e.preventDefault();
-
-        var id = new Array();
-
-        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function(){
-            //get value in the input
-            id.push($(this).val());
-            //alert(usuarioMarcados);
-        });
-
-        //validate if exist value
-        if(id > 0){
-
-            swal({
-                title: "Confirma?",
-                text: "Após a confirmação o usuário será removido.",
-                type: "warning",
-                confirmButtonClass: 'btn btn btn-primary',
-                cancelButtonClass: 'btn btn-danger mr-3',
-                buttonsStyling: false,
-                showCancelButton: true,
-                cancelButtonText:"Cancelar",
-                confirmButtonText: "Remova!",
-                closeOnConfirm: false
-            }).then(function(result) {
-
-                $.ajax({
-                    method:"POST",
-                    url:"/users/delete/"+id,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{ id:id },
-                    success: function(response){
-                        // if (response == true){
-                        table.ajax.reload();
-                        // }
-
-                    }
-                });
-
-            });
-        }else{
-            swal({
-                title: "Atenção !",
-                text: "Selecione apenas 1 registro por vez",
-                type:"info",
-                confirmButtonClass: 'btn btn-primary',
-            });
-        }
-
-    });
 
 });
 
