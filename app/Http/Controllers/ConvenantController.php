@@ -1036,9 +1036,21 @@ class ConvenantController extends Controller
             }
         }
 
-        //DELETA OS LANÇAMENTOS CASO ELES FIQUEM SEM NENHUMA PARCELA
+        //Atualiza os lançamentos
         foreach(array_keys($lancamentos) as $v){
-            Convenant::raw('DELETE FROM lancamento WHERE id = '.$v.' AND (SELECT COUNT(*) FROM parcelamento p WHERE id = p.lanc_codigoid) = 0');
+            $resumo = DB::select('SELECT SUM(par_valor) as valor, COUNT(id) as parcelas FROM parcelamento p WHERE p.lanc_codigoid = '.$v.' AND p.deleted_at IS NULL');
+            //dd($resumo);
+            if($resumo[0]->parcelas > 0){
+                Convenant::where('id', $v)
+                ->update([
+                    'lanc_valortotal' => $resumo[0]->valor,
+                    'lanc_numerodeparcela' => $resumo[0]->parcelas,
+                ]);
+
+            } else {
+                Convenant::find($v)->delete();
+            }
+
         }
 
         if($err != ''){
