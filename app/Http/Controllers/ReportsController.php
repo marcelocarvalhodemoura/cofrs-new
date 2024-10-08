@@ -176,10 +176,11 @@ class ReportsController extends Controller
 
           $sqlBusca = "SELECT
                         e.est_nome,
-                        (SELECT SUM(p.par_valor) FROM lancamento l, parcelamento p
+                        (SELECT SUM(p.par_valor) FROM lancamento l, parcelamento p, associado a
                           WHERE l.con_codigoid = c.id AND l.id = p.lanc_codigoid
                             AND p.par_vencimentoparcela >= '".$inicio."'
                             AND p.par_vencimentoparcela <= '".$fim."'
+                            AND l.assoc_codigoid = a.id
                             AND p.deleted_at IS NULL
                             AND p.par_status = e.est_nome ) AS valor
                       FROM
