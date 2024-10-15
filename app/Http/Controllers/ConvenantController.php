@@ -553,11 +553,17 @@ class ConvenantController extends Controller
                     continue;
                 }
             if($content['A'] !== 'ID'){
+                /* removida essa validação em 15/10/2024, substituída pela validação de ID
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
                 if(!isset($dataAssociado[0]['assoc_nome'])){
                     $erro .= "- Associado não localizado;<br />";
                 }
-
+                */
+                $dataAssociado = Associate::where('assoc_identificacao', '=', $content['A'])->get();
+                if(!isset($dataAssociado[0]['assoc_identificacao'])){
+                    $erro .= "- Associado não localizado;<br />";
+                }
+                
                 $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
                 if(!isset($dataConvenio[0]['con_nome'])){
                     $erro .= "- Convênio inválido;<br />";
@@ -609,9 +615,11 @@ class ConvenantController extends Controller
         // fase de armazenamento
         foreach ($sheetData as $content){
             if($content['A'] !== 'ID'){
-
+                /* removida essa validação em 15/10/2024, substituída pela validação de ID
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
-
+                */
+                $dataAssociado = Associate::where('assoc_identificacao', '=', $content['A'])->get();
+                
                 if($dataAssociado[0]['assoc_nome']){
                     $valorTotal = intval($content['E']) * intval($content['D']);
 
