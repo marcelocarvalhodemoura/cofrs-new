@@ -6,7 +6,7 @@
 
         <div class="row layout-top-spacing">
 
-            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-one">
                     <div class="widget-heading">
                         <h6 class="">Resumo das operações em {{$vigencia}}</h6>
@@ -30,26 +30,30 @@
                 </div>
             </div>
 
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
-                <div class="widget widget-card-four">
-                    <div class="widget-content">
-                        <div class="w-content">
-                            <div class="w-info">
-                                <h6 class="value">$ 45,141</h6>
-                                <p class="">Expenses</p>
-                            </div>
-                            <div class="">
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-two">
+                            <div class="widget-content">
+
+                                <div class="media text-danger">
+                                    <div class="w-img">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6>Contratos não averbados</h6>
+                                        <p class="meta-date-time">Vigência {{$nao_averbados->vigencia}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="card-bottom-section">
+                                    <h6>{{$nao_averbados->quantidade}} contratos</h6>
+                                    @if ($nao_averbados->quantidade > 0)
+                                    <button type="button" onclick="nAverbadosModal()" class="btn btn-outline-danger">Detalhes</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: 57%" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
                     </div>
-                </div>
-            </div>
+
 
 {{--            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">--}}
 {{--                <div class="widget widget-account-invoice-two">--}}
@@ -344,6 +348,36 @@
         </div>
 
     </div>
+
+
+    
+
+<!-- Não Averbados Modal -->
+<div class="modal fade" id="nAverbadosModal" tabindex="-1" role="dialog" aria-labelledby="nAverbadosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nAverbadosModalLabel">Contratos não averbados em {{$vigencia}}</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover" id="tableNAverbados">
+                    <thead>
+                        <th>Associado</th>
+                        <th>Contrato</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @endsection
 

@@ -48,6 +48,7 @@ Route::get('', function () {
 Route::post('/auth', [UserController::class, 'authentication']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('/dashboard/aNAverbados', [DashboardController::class, 'aNAverbados']);
 
 
 

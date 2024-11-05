@@ -23,6 +23,27 @@ class DashboardController extends Controller
 
         $vigencia = date('m/Y');
 
+        $sql = "SELECT
+                COUNT(l.id) AS quantidade
+                FROM
+                parcelamento p,
+                lancamento l,
+                associado a
+                WHERE
+                p.par_numero = 1
+                AND p.par_vencimentoparcela > '".date('Y-m-t')."'
+                AND p.par_habilitasn = 1
+                AND l.id = p.lanc_codigoid
+                AND a.id = l.assoc_codigoid";
+        $rst = \DB::select($sql);
+        //dd($rst);
+
+        //alerta de não-averbados
+        $nao_averbados = (object) array(
+            'vigencia' => $vigencia,
+            'quantidade' => $rst[0]->quantidade,
+        );
+
         $resumo_operacoes = Cashflow::select('credito', DB::raw("SUM(valor) as valor"))
         ->where(DB::raw("YEAR(data_vencimento)"), '=', date('Y'))
         ->where(DB::raw("MONTH(data_vencimento)"), '=', date('m'))
@@ -83,8 +104,31 @@ class DashboardController extends Controller
             'ass_nconveniados' => $ass_nconveniados,
             'ass_conveniados' => $ass_conveniados,
             'crescimento_operacoes' => $crescimento_operacoes,
+            'nao_averbados' => $nao_averbados,
         ];
 
         return view('dashboard')->with($data);
+    }
+
+
+    public function aNAverbados() {
+        $sql = "SELECT
+                    a.assoc_nome,
+                    l.lanc_contrato
+                FROM
+                    parcelamento p,
+                    lancamento l,
+                    associado a
+                WHERE
+                    p.par_numero = 1
+                    AND p.par_vencimentoparcela > '".date('Y-m-t')."'
+                    AND p.par_habilitasn = 1
+                    AND l.id = p.lanc_codigoid
+                    AND a.id = l.assoc_codigoid";
+
+        $rst = \DB::select($sql);
+
+        return $rst;
+
     }
 }
