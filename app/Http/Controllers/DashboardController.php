@@ -124,7 +124,8 @@ class DashboardController extends Controller
                     AND p.par_vencimentoparcela > '".date('Y-m-t')."'
                     AND p.par_habilitasn = 1
                     AND l.id = p.lanc_codigoid
-                    AND a.id = l.assoc_codigoid";
+                    AND a.id = l.assoc_codigoid
+                ORDER BY l.lanc_contrato";
 
         $rst = \DB::select($sql);
 
