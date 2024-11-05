@@ -332,12 +332,32 @@ $(document).ready(function () {
             $("#formConvenants").addClass("was-validated");
         },
         submitHandler: function () {
+            $.blockUI({
+                fadeIn: 800,
+                message: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Processando...</span></div>',
+                overlayCSS: {
+                  backgroundColor: '#1b2024',
+                  opacity: 0.8,
+                  zIndex: 1200,
+                  cursor: 'wait'
+                },
+                css: {
+                    border: 0,
+                    color: '#fff',
+                    zIndex: 1201,
+                    padding: 0,
+                    backgroundColor: 'transparent'
+                }
+              });
+            
 
             $.ajax({
                 method: "POST",
                 url: "/convenants/store",
                 data: $("#formConvenants").serialize(),
                 success: (response) => {
+                    $.unblockUI();
+
                     if (response.status === 'success') {
 
                         $('#convenantModalCreate').modal('hide');
