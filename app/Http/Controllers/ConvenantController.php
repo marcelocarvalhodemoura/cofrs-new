@@ -997,23 +997,32 @@ class ConvenantController extends Controller
                     }
 
                     //get competencia redister id
+                    /*
                     $competenceID = Competence::where('com_nome', '=', $currentMonth[1].'/'.$currentMonth[0])->first();
 
-
                     if($competenceID !== null) {
-                        $portionModel = new Portion();
-
-                        $portionModel->par_numero = $i;
-                        $portionModel->par_valor = str_replace(',','.', str_replace('.','',$request->portion));
-                        $portionModel->lanc_codigoid = $lasInsertIdConvenat->id;
-                        $portionModel->par_vencimentoparcela = $currentMonth[0].'-'.$currentMonth[1].'-10';
-                        $portionModel->par_observacao = '';
-                        $portionModel->par_status = 'Pendente';
-                        $portionModel->com_codigoid = $competenceID->id;
-                        $portionModel->par_equivalente = $i;
-                        $portionModel->par_habilitasn = 1;
-                        $portionModel->save();
                     }
+                    */
+                    $competenceID = Competence::firstOrCreate(
+                        ['com_nome' => $currentMonth[1].'/'.$currentMonth[0] ],
+                        [
+                            'com_datainicio' => $currentMonth[0].'-'.$currentMonth[1].'-01',
+                            'com_datafinal' => date('Y-m-t', strtotime($currentMonth[0].'-'.$currentMonth[1].'-01'))
+                         ]
+                    );
+
+                    $portionModel = new Portion();
+
+                    $portionModel->par_numero = $i;
+                    $portionModel->par_valor = str_replace(',','.', str_replace('.','',$request->portion));
+                    $portionModel->lanc_codigoid = $lasInsertIdConvenat->id;
+                    $portionModel->par_vencimentoparcela = $currentMonth[0].'-'.$currentMonth[1].'-10';
+                    $portionModel->par_observacao = '';
+                    $portionModel->par_status = 'Pendente';
+                    $portionModel->com_codigoid = $competenceID->id;
+                    $portionModel->par_equivalente = $i;
+                    $portionModel->par_habilitasn = 1;
+                    $portionModel->save();
 
                 $currentMonth[1]++;
 
