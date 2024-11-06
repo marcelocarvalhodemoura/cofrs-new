@@ -154,8 +154,11 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled " id="report" data-parent="#accordionExample">
+                <li class="">
+                        <a href="/report/associate">Por associado</a>
+                    </li>
                     <li class="">
-                        <a href="/report/associate">Associado</a>
+                        <a href="/report/allAssociate">Todos os associados</a>
                     </li>
                     <li class="">
                         <a href="/report/covenant">Conveniados</a>

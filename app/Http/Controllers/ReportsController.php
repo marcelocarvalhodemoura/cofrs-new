@@ -47,6 +47,10 @@ class ReportsController extends Controller
     return view('reports.associate')->with($data);
   }
 
+  public function allAssociate(Request $request) {
+    $cidades = Associate::distinct()->orderBy('assoc_cidade', 'asc')->get('assoc_cidade');
+  }
+
   public function agreement(Request $request) {
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
 

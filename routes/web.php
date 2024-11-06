@@ -167,6 +167,7 @@ Route::get('/Cashflow/load/{id}', [CashflowController::class, 'getItem']);
 
 
 Route::get('/report/associate', [ReportsController::class, 'associate']);
+Route::get('/report/allAssociate', [ReportsController::class, 'allAssociate']);
 Route::get('/report/agreement', [ReportsController::class, 'agreement']);
 Route::get('/report/covenant', [ReportsController::class, 'covenant']);
 Route::get('/report/cashflow', [ReportsController::class, 'cashflow']);
