@@ -24,17 +24,20 @@ class DashboardController extends Controller
         $vigencia = date('m/Y');
 
         $sql = "SELECT
-                COUNT(l.id) AS quantidade
+                    COUNT(l.id) AS quantidade
                 FROM
-                parcelamento p,
-                lancamento l,
-                associado a
+                    parcelamento p,
+                    lancamento l,
+                    associado a
                 WHERE
-                p.par_numero = 1
-                AND p.par_vencimentoparcela > '".date('Y-m-t')."'
-                AND p.par_habilitasn = 1
-                AND l.id = p.lanc_codigoid
-                AND a.id = l.assoc_codigoid";
+                    p.par_numero = 1
+                    AND p.par_vencimentoparcela > '".date('Y-m-t')."'
+                    AND p.par_habilitasn = 1
+                    AND p.deleted_at IS NULL
+                    AND l.id = p.lanc_codigoid
+                    AND a.id = l.assoc_codigoid
+                    AND a.assoc_ativosn = 1
+                ";
         $rst = \DB::select($sql);
         //dd($rst);
 
@@ -123,8 +126,10 @@ class DashboardController extends Controller
                     p.par_numero = 1
                     AND p.par_vencimentoparcela > '".date('Y-m-t')."'
                     AND p.par_habilitasn = 1
+                    AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
                     AND a.id = l.assoc_codigoid
+                    AND a.assoc_ativosn = 1
                 ORDER BY l.lanc_contrato";
 
         $rst = \DB::select($sql);
