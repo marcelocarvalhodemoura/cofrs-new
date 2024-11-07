@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Associate;
 use App\Models\Agreement;
 use App\Models\Classification;
+use App\Models\Typeassociate;
 
 class ReportsController extends Controller
 {
@@ -48,8 +49,27 @@ class ReportsController extends Controller
   }
 
   public function allAssociate(Request $request) {
-    $cidades = Associate::distinct()->orderBy('assoc_cidade', 'asc')->get('assoc_cidade');
-  }
+    $sql = "SELECT DISTINCT(assoc_cidade), COUNT(id) AS cont FROM associado GROUP BY assoc_cidade ORDER BY assoc_cidade";
+    $cidades = \DB::select($sql);
+    $sql = "SELECT DISTINCT(assoc_uf), COUNT(id) AS cont FROM associado GROUP BY assoc_uf ORDER BY assoc_uf";
+    $estados = \DB::select($sql);
+    $tipo = Typeassociate::orderBy('tipassoc_nome', 'asc')->get();
+    $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
+
+
+    $data = [
+      'category_name' => 'reports',
+      'page_name' => 'reports',
+      'has_scrollspy' => 0,
+      'scrollspy_offset' => '',
+      'alt_menu' => 0,
+      'estados' => $estados,
+      'cidades' => $cidades,
+      'tipo' => $tipo,
+      'classificationList' => $classificationList,
+    ];
+     return view('reports.allAssociate')->with($data);
+ }
 
   public function agreement(Request $request) {
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
@@ -93,9 +113,11 @@ class ReportsController extends Controller
 
   public function aReport(Request $request) {
 
-    $pp = explode(' a ',$request->post('periodo'));
-    $inicio = implode('-',array_reverse(explode('/',$pp[0])));
-    $fim = implode('-',array_reverse(explode('/',$pp[1])));
+    if($request->post('periodo')){
+      $pp = explode(' a ',$request->post('periodo'));
+      $inicio = implode('-',array_reverse(explode('/',$pp[0])));
+      $fim = implode('-',array_reverse(explode('/',$pp[1])));
+      }
 
     $retorno = [];
 
@@ -170,6 +192,112 @@ class ReportsController extends Controller
         }
 
         break;
+      case "allAssociate":
+  
+          if($request->post('assoc_ativosn') == 1){
+            $assoc_ativosn = "Ativos";
+          }elseif($request->post('assoc_ativosn') == 2){
+            $assoc_ativosn = "Inativos";
+          }else{
+            $assoc_ativosn = "Todos";            
+          }
+
+          if($request->post('classificacao') != ""){
+            $classificationList = Classification::where('id', $request->post('classificacao'))->first();
+            $classificacao = $classificationList->cla_nome;
+          } else {
+            $classificacao = "Todos";
+          }
+
+          if($request->post('referencia') != ""){
+            $classificationList = Typeassociate::where('id', $request->post('referencia'))->first();
+            $referencia = $classificationList->tipassoc_nome;
+          } else {
+            $referencia = "Todos";
+          }
+
+          if($request->post('uf') != ""){
+            $uf = $request->post('uf');
+          } else {
+            $uf = "Todos";
+          }
+
+          if($request->post('cidade') != ""){
+            $cidade = $request->post('cidade');
+          } else {
+            $cidade = "Todos";
+          }
+
+          $retorno['cabecalho'] = "UF: ".$uf."<br />
+            Cidade: ".$cidade."<br />
+            Status do cadastro: ".$assoc_ativosn."<br />
+            Classificação: ".$classificacao."<br />
+            Tipo: ".$referencia."<br />
+            ";
+  
+          $sqlBusca = "SELECT
+                          a.assoc_nome,
+                          a.assoc_cpf,
+                          a.assoc_datanascimento,
+                          a.assoc_uf,
+                          a.assoc_cidade,
+                          a.assoc_cep,
+                          CONCAT(a.assoc_endereco, ' ', a.assoc_complemento) AS endereco,
+                          a.assoc_bairro,
+                          IF(a.assoc_ativosn = 1, 'Ativo','Inativo') AS ativo,
+                          t.tipassoc_nome,
+                          c.cla_nome
+                        FROM
+                          associado a,
+                          tipoassociado t,
+                          classificacao c
+                        WHERE
+                          a.tipassoc_codigoid = t.id
+                          AND c.id = a.cla_codigoid";
+  
+          if($request->post('uf') != ""){
+            $sqlBusca .= " AND a.assoc_uf = '".$request->post('uf')."'";
+          }
+
+          if($request->post('cidade') != ""){
+            $sqlBusca .= " AND a.assoc_cidade = '".$request->post('cidade')."'";
+          }
+  
+          if($request->post('assoc_ativosn') != ''){
+            $sqlBusca .= " AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+          }
+  
+          if($request->post('classificacao') != ''){
+            $sqlBusca .= " AND c.id = ".$request->post('classificacao');
+          }
+  
+          if($request->post('referencia') != ''){
+            $sqlBusca .= " AND t.id = ".$request->post('referencia');
+          }
+
+          $busca = \DB::select($sqlBusca);
+  
+          if($busca){
+            foreach($busca as $b){
+              $retorno['tabela'][] = array(
+                'assoc_nome' => $b->assoc_nome,
+                'assoc_cpf' => $b->assoc_cpf,
+                'assoc_datanascimento' => $b->assoc_datanascimento,
+                'assoc_uf' => $b->assoc_uf,
+                'assoc_cidade' => $b->assoc_cidade,
+                'assoc_cep' => $b->assoc_cep,
+                'endereco' => $b->endereco,
+                'assoc_bairro' => $b->assoc_bairro,
+                'ativo' => $b->ativo,
+                'tipassoc_nome' => $b->tipassoc_nome,
+                'cla_nome' => $b->cla_nome,
+              );
+            }
+          } else {
+            $retorno['erro'] = "Não existem resultados para esta busca";
+          }
+  
+          break;        
       case "agreement":
         $cab1 = \DB::table('convenio')->select('con_nome', 'con_referencia', 'con_prolabore')->where("id", "=", $request->post('convenio'))->first();
 

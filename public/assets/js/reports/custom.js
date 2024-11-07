@@ -177,9 +177,6 @@ function montaTabela(dataSet,typeReport){
   var tr2;
 
   if(typeReport == 'associate'){
-    var tr2;
-    $("#reporttable tbody tr").remove();
-
     dataSet.map((value,index) => {
       let vencimento = new Date(value.vencimento);
 
@@ -193,6 +190,28 @@ function montaTabela(dataSet,typeReport){
         <td>${value.contrato}</td>
         <td align="right">${value.valor}</td>
         <td align="center">${value.status}</td>
+      </tr>`;
+      $("#reporttable tbody").append(tr2);
+    });
+  }
+
+  if(typeReport == 'allAssociate'){
+    dataSet.map((value,index) => {
+
+      let datanascimento = new Date(value.assoc_datanascimento);
+
+      tr2 = `<tr>
+        <td>${value.assoc_nome}</td>
+        <td>${value.assoc_cpf}</td>
+        <td align="center" data-order="${value.assoc_datanascimento}">${datanascimento.toLocaleDateString("pt-BR")}</td>
+        <td align="center">${value.assoc_uf}</td>
+        <td align="">${value.assoc_cidade}</td>
+        <td align="center">${value.assoc_cep}</td>
+        <td>${value.endereco}</td>
+        <td align="">${value.assoc_bairro}</td>
+        <td align="">${value.ativo}</td>
+        <td align="">${value.tipassoc_nome}</td>
+        <td align="">${value.cla_nome}</td>
       </tr>`;
       $("#reporttable tbody").append(tr2);
     });
@@ -246,7 +265,7 @@ function montaTabela(dataSet,typeReport){
       { extend: 'excel', className: 'btn btn-sm' },
       { extend: 'pdfHtml5',
         className: 'btn btn-sm',
-        orientation: 'landscape',
+        orientation: 'portrait',
         pageSize: 'A4',
         messageTop: function() {
           return $("#reportModal .modal-body h4").text();
@@ -261,7 +280,7 @@ function montaTabela(dataSet,typeReport){
               columns: [
                 {
                   alignment: 'left',
-                  fontSize: 18,
+                  fontSize: 12,
                   margin: [20,20,0,0],
                   text: 'Sistema COFRS'
                 }

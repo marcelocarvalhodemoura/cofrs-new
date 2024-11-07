@@ -9,7 +9,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                     <li class="breadcrumb-item active"><a href="">Relatórios</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="">Por associado</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="">Todos os associados</a></li>
                 </ol>
             </nav>
         </div>
@@ -50,29 +50,20 @@
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
-                            <th>Convênio</th>
-                            <th>Classificação</th>
-                            <th>Vencimento</th>
-                            <th>Parcela</th>
-                            <th>Equivalência</th>
-                            <th>Quantidade</th>
-                            <th>Contrato</th>
-                            <th>Valor</th>
-                            <th>Status de pagamento</th>
+                            <th>Associado</th>
+                            <th>CPF</th>
+                            <th>Data de nascimento</th>
+                            <th>UF</th>
+                            <th>Cidade</th>
+                            <th>CEP</th>
+                            <th>Endereço</th>
+                            <th>Bairro</th>
+                            <th>Status</th>
+                            <th>Tipo</th>
+                            <th>Classificacao</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Convênio</td>
-                            <td>Classificação</td>
-                            <td>Vencimento</td>
-                            <td>Parcela</td>
-                            <td>Equivalência</td>
-                            <td>Quantidade</td>
-                            <td>Contrato</td>
-                            <td>Valor</td>
-                            <td>Status de pagamento</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
