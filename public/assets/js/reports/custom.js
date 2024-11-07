@@ -265,7 +265,7 @@ function montaTabela(dataSet,typeReport){
       { extend: 'excel', className: 'btn btn-sm' },
       { extend: 'pdfHtml5',
         className: 'btn btn-sm',
-        orientation: 'portrait',
+        pageOrientation: 'portrait',
         pageSize: 'A4',
         messageTop: function() {
           return $("#reportModal .modal-body h4").text();
@@ -273,6 +273,7 @@ function montaTabela(dataSet,typeReport){
         customize: function(doc){
           doc.content.splice(0,1);
           doc.pageMargins = [20,50,0,40];
+          doc.defaultStyle.fontSize = 6;
           var now = new Date();
 					var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
           doc['header'] = (function(){

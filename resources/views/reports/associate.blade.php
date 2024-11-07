@@ -24,7 +24,7 @@
                     <br />
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            @include('reports.form.form-AllAssociate')
+                            @include('reports.form.form-associate')
                         </div>
                     </div>
                 </div>
