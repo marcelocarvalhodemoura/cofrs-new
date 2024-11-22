@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
+use App\Models\Associate;
 
 /**
  * Class BanksController
@@ -207,4 +208,91 @@ class MigracaoController extends Controller{
     DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
   }
+
+
+  public function atualiza_endereco(){
+    ini_set('max_execution_time', '-1');
+    
+    $sql = "SELECT
+              id,
+              assoc_nome,
+              assoc_cpf,
+              assoc_cep,
+              assoc_endereco,
+              assoc_complemento,
+              assoc_bairro,
+              assoc_uf,
+              assoc_cidade,
+              assoc_observacao
+            FROM
+              associado
+            WHERE
+              assoc_cep != ''
+              and id > 2697
+            ORDER BY
+              id ASC
+          
+            ";
+    $associados = \DB::select($sql);
+    foreach($associados as $assoc){
+      $numero = preg_replace("/[^0-9\/]/","",$assoc->assoc_endereco);
+      /*
+      if($numero != ''){
+        echo $assoc->id.' - '.$assoc->assoc_endereco.' - '.$numero.'<br>';
+        }
+      continue;
+      */
+
+      $url = 'https://opencep.com/v1/'.str_replace('-', '', $assoc->assoc_cep);
+      $ch = curl_init($url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      $response = curl_exec($ch);
+      
+      if($response === false){
+        echo 'Erro API - '.curl_error($ch).';'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.'<br>';
+      }
+
+      curl_close($ch);
+
+      $json = json_decode($response);
+
+      if(isset($json->error)){
+        echo 'Erro CEP;'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.'<br>';
+      } else {
+        //$endereco = $json->logradouro;
+        //$bairro = $json->bairro;
+        $cidade = $json->localidade;
+        $uf = $json->uf;
+
+        if($json->logradouro != ''){
+          $endereco = $json->logradouro;
+        } else {
+          $endereco = $assoc->assoc_endereco;
+        }
+
+        $endereco .= ' '.$numero;
+
+        if($json->bairro != ''){
+          $bairro = $json->bairro;
+        } else {          
+          $bairro = $assoc->assoc_bairro;
+        }
+
+        $arr_upd = [
+                    'assoc_endereco' => $endereco,
+                    'assoc_bairro' => $bairro,
+                    'assoc_cidade' => $cidade,
+                    'assoc_uf' => $uf,
+                    'assoc_observacao' => $assoc->assoc_observacao.' Endereço substituído em 21/11/2024: '.$assoc->assoc_endereco.' '.$assoc->assoc_complemento.' - '.$assoc->assoc_bairro.' - '.$assoc->assoc_cidade.' - '.$assoc->assoc_uf
+        ];
+
+        $upd = DB::table('associado')
+                ->where('id', $assoc->id)
+                ->update($arr_upd);
+        
+        sleep(1);
+      }
+    }
+  }
+
 }

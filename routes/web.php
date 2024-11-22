@@ -175,6 +175,7 @@ Route::post('/aReport', [ReportsController::class, 'aReport']);
 
 
 Route::get('/migracao', [MigracaoController::class, 'index']);
+Route::get('/enderecos', [MigracaoController::class, 'atualiza_endereco']);
 
 
 Route::get('/aAlerts', [AlertController::class, 'aAlerts']);
