@@ -909,10 +909,10 @@ class ConvenantController extends Controller
                 $portionModel->save();
             }
 
-            //edita o lançamento
+            //atualiza o lançamento
             DB::statement('UPDATE lancamento AS l, 
-                                (SELECT SUM(p.par_valor) AS valor, COUNT(p.id) AS parcelas FROM parcelamento p WHERE p.lanc_codigoid = '.$request->idLancamento.' AND p.deleted_at IS NULL) AS par
-                            SET l.lanc_valortotal = par.valor, l.lanc_numerodeparcela = par.parcelas
+                                (SELECT SUM(p.par_valor) AS valor, COUNT(p.id) AS parcelas, MAX(p.par_vencimentoparcela) AS vencimento FROM parcelamento p WHERE p.lanc_codigoid = '.$request->idLancamento.' AND p.deleted_at IS NULL) AS par
+                            SET l.lanc_valortotal = par.valor, l.lanc_numerodeparcela = par.parcelas, l.lanc_datavencimento = par.vencimento
                             WHERE l.id =  '.$request->idLancamento);
 
             return response()->json(['status'=>'success', 'msg'=>'Parcelas adicionadas com sucesso!']);
