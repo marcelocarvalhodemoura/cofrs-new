@@ -214,7 +214,7 @@ class MigracaoController extends Controller{
     ini_set('max_execution_time', '-1');
     
     $sql = "SELECT
-              id,
+              a.id,
               assoc_nome,
               assoc_cpf,
               assoc_cep,
@@ -223,12 +223,15 @@ class MigracaoController extends Controller{
               assoc_bairro,
               assoc_uf,
               assoc_cidade,
-              assoc_observacao
+              assoc_observacao,
+              IF(assoc_ativosn = 1, 'Ativo', 'Inativo') as assoc_ativosn,
+              tipassoc_nome
             FROM
-              associado
+              associado a,
+              tipoassociado t
             WHERE
-              assoc_cep != ''
-              and id > 2697
+              a.tipassoc_codigoid = t.id
+              AND assoc_cep != ''
             ORDER BY
               id ASC
           
@@ -249,7 +252,7 @@ class MigracaoController extends Controller{
       $response = curl_exec($ch);
       
       if($response === false){
-        echo 'Erro API - '.curl_error($ch).';'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.'<br>';
+        echo 'Erro API - '.curl_error($ch).';'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.';'.$assoc->assoc_ativosn.';'.$assoc->tipassoc_nome.'<br>';
       }
 
       curl_close($ch);
@@ -257,10 +260,12 @@ class MigracaoController extends Controller{
       $json = json_decode($response);
 
       if(isset($json->error)){
-        echo 'Erro CEP;'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.'<br>';
+        echo 'Erro CEP;'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.';'.$assoc->assoc_ativosn.';'.$assoc->tipassoc_nome.'<br>';
       } else {
         //$endereco = $json->logradouro;
         //$bairro = $json->bairro;
+        echo 'Ok - '.curl_error($ch).';'.$assoc->id.';'.$assoc->assoc_nome.';'.$assoc->assoc_cpf.';'.$assoc->assoc_cep.';'.$assoc->assoc_endereco.';'.$assoc->assoc_complemento.';'.$assoc->assoc_bairro.';'.$assoc->assoc_uf.';'.$assoc->assoc_cidade.';'.$assoc->assoc_ativosn.';'.$assoc->tipassoc_nome.'<br>';
+
         $cidade = $json->localidade;
         $uf = $json->uf;
 
@@ -290,7 +295,7 @@ class MigracaoController extends Controller{
                 ->where('id', $assoc->id)
                 ->update($arr_upd);
         
-        sleep(1);
+        sleep(3);
       }
     }
   }
