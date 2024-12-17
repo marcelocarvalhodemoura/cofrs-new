@@ -537,6 +537,8 @@ class ConvenantController extends Controller
 
     public static function convenantsProcessed($file)
     {
+        ini_set('max_execution_time', '-1');
+
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         $retorno = "";
@@ -552,7 +554,7 @@ class ConvenantController extends Controller
                 $content['G'] == "" ){
                     continue;
                 }
-            if($content['A'] !== 'ID'){
+            if($content['A'] != 'ID' && $content['A'] != ""){
                 /* removida essa validação em 15/10/2024, substituída pela validação de ID
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
                 if(!isset($dataAssociado[0]['assoc_nome'])){
@@ -614,15 +616,14 @@ class ConvenantController extends Controller
 
         // fase de armazenamento
         foreach ($sheetData as $content){
-            if($content['A'] !== 'ID'){
+            if($content['A'] != 'ID' && $content['A'] != ""){
                 /* removida essa validação em 15/10/2024, substituída pela validação de ID
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
                 */
                 $dataAssociado = Associate::where('assoc_identificacao', '=', $content['A'])->get();
-                
+                //dd($dataAssociado[0]['assoc_nome']);
                 if($dataAssociado[0]['assoc_nome']){
                     $valorTotal = intval($content['E']) * intval($content['D']);
-
                     $dataConvenio = TypeCategoryConvenant::where('con_nome', '=', $content['C'])->get();
 
                     $dt = explode('/',strval($content['F']));
@@ -636,8 +637,6 @@ class ConvenantController extends Controller
 
 
                     $dv = DateTime::createFromFormat('d/m/Y', $data);
-                    $interval = new DateInterval('P'.intval($content['D']).'M');
-                    $dv->add($interval);
 
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
@@ -649,6 +648,8 @@ class ConvenantController extends Controller
                         //'est_codigoid' => 2,
                     ]);
 
+                    //$interval = new DateInterval('P'.intval($content['D']).'M');
+                    //$dv->add($interval);
 
 
                     if($lancamento){
@@ -656,8 +657,6 @@ class ConvenantController extends Controller
                         $d = DateTime::createFromFormat('d/m/Y', $data);
                         $interval = new DateInterval('P1M');
                         for ($i = 1; $i <= intval($content['D']); $i++){
-                            //adiciona o intervalo a cara repetição
-                            $d->add($interval);
 
                             $dataCompetencia = Competence::where('com_nome', '=', $d->format('m/Y'))->get();
 
@@ -672,6 +671,8 @@ class ConvenantController extends Controller
                                 'par_equivalente' => $i,
                                 'par_habilitasn' => 0
                             ]);
+                            //adiciona o intervalo a cada repetição
+                            $d->add($interval);
                         }
 
                     }
