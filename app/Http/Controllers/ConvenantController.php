@@ -637,6 +637,8 @@ class ConvenantController extends Controller
 
 
                     $dv = DateTime::createFromFormat('d/m/Y', $data);
+                    $interval = DateInterval::createFromDateString('+'.intval($content['D']-1).' month');
+                    $dv->add($interval);
 
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
@@ -648,8 +650,6 @@ class ConvenantController extends Controller
                         //'est_codigoid' => 2,
                     ]);
 
-                    //$interval = new DateInterval('P'.intval($content['D']).'M');
-                    //$dv->add($interval);
 
 
                     if($lancamento){
