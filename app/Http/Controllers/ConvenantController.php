@@ -640,6 +640,8 @@ class ConvenantController extends Controller
                     $interval = DateInterval::createFromDateString('+'.intval($content['D']-1).' month');
                     $dv->add($interval);
 
+//                    die($dv->format('Y-m-d'));
+
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
                         'lanc_numerodeparcela' => intval($content['D']),

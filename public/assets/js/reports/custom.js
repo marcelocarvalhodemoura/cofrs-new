@@ -230,7 +230,6 @@ function montaTabela(dataSet,typeReport){
   if(typeReport == 'covenant'){
     dataSet.map((value,index) => {
 
-    let vencimento = new Date(value.vencimento);
 
     tr2 = `<tr>
             <td>${value.nome}</td>
@@ -239,7 +238,7 @@ function montaTabela(dataSet,typeReport){
             <td>${value.matricula}</td>
             <td>${value.par_numero}</td>
             <td>${value.lanc_numerodeparcela}</td>
-            <td align="center" data-order="${value.vencimento}">${vencimento.toLocaleDateString("pt-BR")}</td>
+            <td align="center" data-order="${value.vencimento}">${value.vencimentoFormatado}</td>
             <td>${value.contrato}</td>
             <td align="right">${value.valor}</td>
             <td align="center">${value.status}</td>

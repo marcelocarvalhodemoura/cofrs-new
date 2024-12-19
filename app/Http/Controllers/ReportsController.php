@@ -400,6 +400,7 @@ class ReportsController extends Controller
             'convenio' => $b->con_nome,
             'matricula' => $b->assoc_identificacao,
             'vencimento' => $b->par_vencimentoparcela,
+            'vencimentoFormatado' => implode('/',array_reverse(explode('-',$b->par_vencimentoparcela))),
             'contrato' => $b->lanc_contrato,
             'valor' => number_format($b->par_valor,2),
             'status' => $b->par_status,
