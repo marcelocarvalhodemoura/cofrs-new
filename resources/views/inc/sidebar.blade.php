@@ -175,6 +175,18 @@
             {{-- <li class="menu menu-heading">--}}
             {{-- <div class="heading">SUPORTE</div>--}}
             {{-- </li>--}}
+
+            @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2]))
+            <li class="menu ">
+                <a href="/log-viewer" aria-expanded="false" class="dropdown-toggle" target="_blank">
+                    <div class="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        <span>Logs <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px;height: 16px; margin-left: 5px;"><g fill="none" fill-rule="evenodd"><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8"/></g></svg></span>
+                    </div>
+                </a>
+            </li>
+            @endif
+
             <li class="menu ">
                 <a href="/support" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -189,9 +201,10 @@
                         </svg>
                         <span>Ajuda</span>
                     </div>
-
                 </a>
             </li>
+
+            
         </ul>
 
     </nav>
