@@ -11,6 +11,7 @@ use \Yajra\DataTables\DataTables;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -24,6 +25,7 @@ class UserController extends Controller
         if(!in_array(Session::get('typeId'),[1,2])){
             return redirect()->route('dashboard');
         }
+
 
         //load all UserTypes
         $userType = UserType::all();
@@ -43,6 +45,8 @@ class UserController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de usuários do sistema.');
         }
 
         $data = [
@@ -64,8 +68,9 @@ class UserController extends Controller
             return redirect()->route('login');
         }
 
-
         $userModel = User::find($request->userId);
+
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o cadastro do usuário '.$userModel->user.'.');
 
         $data = [
             'category_name' => 'users',
@@ -85,6 +90,8 @@ class UserController extends Controller
      */
     public function logOut(Request $request)
     {
+        Log::channel('daily')->info('Usuário '.Session::get('user').' se deslogou.');
+
         $request->session()->flush();
 
         return redirect()->route('login');
@@ -123,6 +130,7 @@ class UserController extends Controller
             'typeId' => $userModel[0]->tipusr_codigoid,
         ]);
 
+        Log::channel('daily')->info('Usuário '.Session::get('user').' logou no sistema.');
 
         return response()->json([
             'status' => 'success',
@@ -133,7 +141,9 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        return response()->json(User::where('id', '=', $id)->get());
+        $userModel = User::where('id', '=', $id)->get();
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o cadastro do usuário '.$userModel[0]->usr_usuario);
+        return response()->json($userModel);
     }
 
     public function store(Request $request)
@@ -150,8 +160,11 @@ class UserController extends Controller
 
             $userModel->save();
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' criou o cadastro do usuário '.$request->post('user').'.');
+
             return response()->json(['status' => 'success', 'msg' => 'Usuário salvo com sucesso!']);
         } catch (Exception $e) {
+            Log::channel('daily')->error('Usuário '.Session::get('user').' tentou criar o cadastro do usuário '.$request->post('user').' e obteve o erro: '.$e->getMessage().'.');
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }
@@ -169,9 +182,12 @@ class UserController extends Controller
             $userModel->tipusr_codigoid = $request->post('usertype');
             $userModel->save();
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' alterou o cadastro do usuário '.$request->post('user').'.');
+
             return response()->json(['status' => 'success', 'msg' => 'Usuário salvo com sucesso!']);
 
         } catch (Exception $e) {
+            Log::channel('daily')->error('Usuário '.Session::get('user').' tentou alterar o cadastro do usuário '.$request->post('user').' e obteve o erro: '.$e->getMessage().'.');
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }
@@ -196,8 +212,12 @@ class UserController extends Controller
 
                 $userModel->save();
 
+                Log::channel('daily')->info('Usuário '.Session::get('user').' alterou a senha do usuário '.$userModel->usr_usuario.'.');
+
                 return response()->json(['status' => 'success', 'msg' => 'Usuário atualizado com sucesso!']);
             } catch (Exception $e) {
+                Log::channel('daily')->error('Usuário '.Session::get('user').' tentou alterar a senha do usuário '.$request->usr_usuario.' e obteve o erro: '.$e->getMessage().'.');
+
                 return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
             }
         }
@@ -212,10 +232,14 @@ class UserController extends Controller
 
     protected function delete($id)
     {
+        $userModel = User::find($id);
         try {
+            $msg = 'Usuário '.Session::get('user').' deletou o usuário '.$userModel->usr_usuario.'.';
             User::find($id)->delete();
+            Log::channel('daily')->info($msg);
             return true;
         } catch (Exception $e) {
+            Log::channel('daily')->error('Usuário '.Session::get('user').' tentou deletar o usuário '.$userModel->usr_usuario).' e obteve o erro: '.$e->getMessage().'.';
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }

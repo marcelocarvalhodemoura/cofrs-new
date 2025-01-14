@@ -32,6 +32,18 @@ return [
     |                    "errorlog", "monolog",
     |                    "custom", "stack"
     |
+
+    RFC 5424 The Syslog Protocol Março 2009
+    Severidade numérica
+
+    0 emergency: sistema é inutilizável
+    1 alert: medidas devem ser tomadas imediatamente
+    2 critical: condições críticas
+    3 error: condições de erro
+    4 warning: condições de aviso
+    5 notice: condição normal, mas significativa
+    6 info: mensagens informativas
+    7 debug: mensagens de depuração-nível
     */
 
     'channels' => [

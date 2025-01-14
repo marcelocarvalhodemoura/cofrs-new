@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cashflow;
 use App\Models\Associate;
 use DateTime;
+use Illuminate\Support\Facades\Log;
+
+
 
 class DashboardController extends Controller
 {
     public function index()
     {
+
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
@@ -21,6 +25,7 @@ class DashboardController extends Controller
             return redirect()->route('associates');
         }
 
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o Dashboard');
         $vigencia = date('m/Y');
 
         $sql = "SELECT
