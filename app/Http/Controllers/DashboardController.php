@@ -36,7 +36,7 @@ class DashboardController extends Controller
                     associado a
                 WHERE
                     p.par_numero = 1
-                    AND p.par_vencimentoparcela > '".date('Y-m-t')."'
+                    AND p.par_vencimentoparcela > '".date('Y-m-t',strtotime('+1month'))."'
                     AND p.par_habilitasn = 1
                     AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
@@ -129,7 +129,7 @@ class DashboardController extends Controller
                     associado a
                 WHERE
                     p.par_numero = 1
-                    AND p.par_vencimentoparcela > '".date('Y-m-t')."'
+                    AND p.par_vencimentoparcela > '".date('Y-m-t',strtotime('+1month'))."'
                     AND p.par_habilitasn = 1
                     AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
