@@ -6,6 +6,7 @@ use App\Models\Depent;
 use App\Models\Installment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Associate;
 use App\Models\Agreement;
@@ -45,6 +46,8 @@ class ReportsController extends Controller
       'referenceList' => $referenceList,
     ];
 
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Por Associado.');
+
     return view('reports.associate')->with($data);
   }
 
@@ -68,7 +71,10 @@ class ReportsController extends Controller
       'tipo' => $tipo,
       'classificationList' => $classificationList,
     ];
-     return view('reports.allAssociate')->with($data);
+
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Todos os Associado.');
+
+    return view('reports.allAssociate')->with($data);
  }
 
   public function agreement(Request $request) {
@@ -82,6 +88,8 @@ class ReportsController extends Controller
       'alt_menu' => 0,
       'agreementList' => $agreementList,
     ];
+
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Conveniados.');
 
     return view('reports.agreement')->with($data);
   }
@@ -102,6 +110,8 @@ class ReportsController extends Controller
       'classificationList' => $classificationList,
       'referenceList' => $referenceList,
     ];
+
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Convênios.');
 
     return view('reports.covenants')->with($data);
 
@@ -191,6 +201,7 @@ class ReportsController extends Controller
           $retorno['erro'] = "Não existem resultados para esta busca";
         }
 
+        Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Associados.');
         break;
       case "allAssociate":
   
@@ -297,6 +308,7 @@ class ReportsController extends Controller
             $retorno['erro'] = "Não existem resultados para esta busca";
           }
   
+          Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Todos os Associados.');
           break;        
       case "agreement":
         $cab1 = \DB::table('convenio')->select('con_nome', 'con_referencia', 'con_prolabore')->where("id", "=", $request->post('convenio'))->first();
@@ -335,6 +347,7 @@ class ReportsController extends Controller
         } else {
           $retorno['erro'] = "Não existem resultados para esta busca";
         }
+        Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Convênios.');
         break;
       case "covenant":
         $retorno['cabecalho'] = "Status de Pagamento";
@@ -412,6 +425,7 @@ class ReportsController extends Controller
           $retorno['erro'] = "Não existem resultados para esta busca";
         }
 
+        Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Convêniados.');
         break;
       case "cashflow":
         break;

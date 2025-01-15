@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use \Yajra\DataTables\DataTables;
 use App\Helpers;
+use Illuminate\Support\Facades\Log;
+
 
 class AlertController extends Controller
 {
@@ -37,6 +39,8 @@ class AlertController extends Controller
           })
           ->rawColumns(['action'])
           ->make(true);
+      } else {
+          Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de alertas do sistema.');
       }
 
     $lists = [
@@ -75,7 +79,9 @@ class AlertController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
-      }
+      } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de alertas pessoais.');
+        }
 
     $data = [
       'category_name' => 'meus-alertas',
@@ -131,6 +137,12 @@ class AlertController extends Controller
     }                   
 
     public function store(Request $request){
+      if($request->post('id')){
+        $msg = "editou";
+      } else {
+        $msg = "adicionou";
+      }
+
 
       try {
         $insert = Alert::updateOrCreate(
@@ -150,11 +162,15 @@ class AlertController extends Controller
         foreach ($request->post('users') as $key => $value) {
             AlertUser::insert(['id_alert' => $insert->id, 'id_user' => $value]);
         }
+
+        Log::channel('daily')->info('Usuário '.Session::get('user').' '.$msg.' o alerta '.$request->post('titulo').'.');
         
         return response()->json(['status' => 'success', 'msg' => 'Salvo com sucesso!']);
-    } catch (Exception $e) {
+
+      } catch (Exception $e) {
+        Log::channel('daily')->info('Usuário '.Session::get('user').' tentou '.$msg.' o alerta '.$request->post('titulo').' e obteve o erro:'.$e->getMessage().'.');
         return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
-    }
+      }
   }
 
 }
