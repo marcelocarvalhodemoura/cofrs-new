@@ -168,7 +168,7 @@ class AlertController extends Controller
         return response()->json(['status' => 'success', 'msg' => 'Salvo com sucesso!']);
 
       } catch (Exception $e) {
-        Log::channel('daily')->info('Usuário '.Session::get('user').' tentou '.$msg.' o alerta '.$request->post('titulo').' e obteve o erro:'.$e->getMessage().'.');
+        Log::channel('daily')->error('Usuário '.Session::get('user').' tentou '.$msg.' o alerta '.$request->post('titulo').' e obteve o erro:'.$e->getMessage().'.');
         return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
       }
   }

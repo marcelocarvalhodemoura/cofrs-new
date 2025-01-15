@@ -9,6 +9,7 @@ use App\Models\Associate;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use  \Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class AssociateController extends Controller
 {
@@ -38,6 +39,8 @@ class AssociateController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de associados.');
         }
 
         $data = [
@@ -54,6 +57,8 @@ class AssociateController extends Controller
 
     public function getDependents($id)
     {
+        $ass = Associate::find($id);
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de dependentes do associado '.$ass->assoc_nome.'.');
         return response()->json(Depent::where('assoc_codigoid', '=', $id)->get());
     }
 
@@ -81,9 +86,14 @@ class AssociateController extends Controller
 
             }
 
+            $ass = Associate::find($dependentsForm["assocID"]);
+            Log::channel('daily')->info('Usuário '.Session::get('user').' atualizou os dependentes do associado '.$ass->assoc_nome.'.');
+    
             return response()->json(['status'=> 'success', 'msg'=>'Dependentes salvos com sucesso!']);
 
         }catch (Exception $e){
+            $ass = Associate::find($dependentsForm["assocID"]);
+            Log::channel('daily')->info('Usuário '.Session::get('user').' tentou atualizar os dependentes do associado '.$ass->assoc_nome.'.');
 
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
 
@@ -92,12 +102,16 @@ class AssociateController extends Controller
 
     public function deleteDependents($id)
     {
-        try {
+        $dp = Depent::find($id);
+        $ass = Associate::find($dp->assoc_codigoid);
 
-            return Depent::find($id)->delete();
+        try {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' deletou o dependente '.$dp->dep_nome.' do associado '.$ass->assoc_nome.'.');
+
+            return $dp->delete();
 
         }catch (Exception $exception){
-
+            Log::channel('daily')->info('Usuário '.Session::get('user').' tentou deletar o dependente '.$dp->dep_nome.' do associado '.$ass->assoc_nome.'.');
             return response()->json(['status'=>'error', 'msg'=> $exception->getMessage()]);
 
         }
@@ -112,6 +126,12 @@ class AssociateController extends Controller
         if($request->ajax()){
             $datePtToMysql = implode('-', array_reverse(explode('/', $request->post('born'))));
             $assoc_datadesligamento = implode('-', array_reverse(explode('/', $request->post('assoc_datadesligamento'))));
+        }
+
+        if($request->post('associateId')){
+            $msg = "editou";
+        } else {
+            $msg = "adicionou";
         }
 
         try {
@@ -152,8 +172,11 @@ class AssociateController extends Controller
                 ]
             );
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' '.$msg.' o associado '.$request->post('name').'.');
+
             return response()->json(['status'=> 'success', 'msg'=>'Associado salvo com sucesso!']);
         }catch (Exception $e){
+            Log::channel('daily')->info('Usuário '.Session::get('user').' tentou '.$msg.' o associado '.$request->post('name').' e obteve o erro:'.$e->getMessage().'.');
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
 
@@ -162,7 +185,10 @@ class AssociateController extends Controller
     public function getAssociate($id)
     {
         try{
-            return response()->json(Associate::find($id));
+            $ass = Associate::find($id);
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o cadastro do associado '.$ass->assoc_nome.'.');
+            return response()->json($ass);
+
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
         }
@@ -171,11 +197,15 @@ class AssociateController extends Controller
 
     public function delete($id)
     {
+        $ass = Associate::find($id);
         try{
+            Log::channel('daily')->info('Usuário '.Session::get('user').' deletou o associado '.$ass->assoc_nome.'.');
+            return response()->json($ass);
 
             return Associate::find($id)->delete();
 
         }catch (Exception $e){
+            Log::channel('daily')->error('Usuário '.Session::get('user').' tentou deletar o associado '.$ass->assoc_nome.' e obteve o erro:'.$e->getMessage().'.');
 
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
 
@@ -189,6 +219,8 @@ class AssociateController extends Controller
      */
     public function associateConvenants($id)
     {
+        $ass = Associate::find($id);
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou a lista de convênios do associado '.$ass->assoc_nome.'.');
         //load all Portion
         return $portions = Installment::join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
             ->join('parcelamento', 'parcelamento.lanc_codigoid', '=', 'lancamento.id')
