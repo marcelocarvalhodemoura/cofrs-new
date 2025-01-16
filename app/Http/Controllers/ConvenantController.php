@@ -26,6 +26,7 @@ use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\JsonResponse;
 use File;
 use App\Helpers;
+use Illuminate\Support\Facades\Log;
 
 
 use DateTime;
@@ -70,6 +71,8 @@ class ConvenantController extends Controller
             'agreementList' => $agreementList,
             'statusList' => $statusList,
         ];
+
+        Log::channel('daily')->info('Usuário '.Session::get('user').' acessou a tela de Conveniados.');
 
         return view('covenants.list', $lists)->with($data);
     }
@@ -159,6 +162,8 @@ class ConvenantController extends Controller
         } else {
             echo "tesouro";
         }
+
+        Log::channel('daily')->info('Usuário '.Session::get('user').' exportou o arquivo da competência '.$request->monthCompetence . '/' . $request->yearCompetence.'.');
 
         Storage::disk('local')->put('example.txt', $contentFile);
 
@@ -306,6 +311,8 @@ class ConvenantController extends Controller
                         ->get();
                 }
 
+                Log::channel('daily')->info('Usuário '.Session::get('user').' realizou uma busca de associados com convenios.');
+
                 return response()->json($convenantList);
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
@@ -329,6 +336,8 @@ class ConvenantController extends Controller
                         'par_status' => $status
                     ]
                 );
+
+            Log::channel('daily')->info('Usuário '.Session::get('user').' o status da parcela '.$id.' para '.$status.'.');
 
             return $portion;
         } catch (Exception $e) {
@@ -526,6 +535,8 @@ class ConvenantController extends Controller
                 'msg' => $retorno,
             ];
         } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' adicionou associados via arquivo xls.');
+
             $responseData = [
                 'status' => 'success',
                 'msg' => 'Arquivo processado com sucesso!',
@@ -686,6 +697,7 @@ class ConvenantController extends Controller
         }
 
         if($spreadsheet){
+            Log::channel('daily')->info('Usuário '.Session::get('user').' processou o arquivo de retorno.');
 
             return 'success';
         }else{
@@ -807,12 +819,13 @@ class ConvenantController extends Controller
 
                 $modelPortion = new Portion();
 
-                $modelPortion->par_valor       = $portion["par_valor"];
-                $modelPortion->lanc_codigoid   = $convenants_id;
-                $modelPortion->par_numero      = $portion["par_numero"] + 1;
-                $modelPortion->par_equivalente = $portion["par_numero"] + 1;
-                $modelPortion->com_codigoid    = $newCompetence[0]->id;
-                $modelPortion->par_status      = 'Pendente';
+                $modelPortion->par_valor                = $portion["par_valor"];
+                $modelPortion->lanc_codigoid            = $convenants_id;
+                $modelPortion->par_numero               = $portion["par_numero"] + 1;
+                $modelPortion->par_equivalente          = $portion["par_numero"] + 1;
+                $modelPortion->com_codigoid             = $newCompetence[0]->id;
+                $modelPortion->par_vencimentoparcela    = $newCompetenceExploded[1].'-'.$newCompetenceExploded[0].'-10';
+                $modelPortion->par_status               = 'Pendente';
 
                 $modelPortion->save();
 
@@ -825,6 +838,8 @@ class ConvenantController extends Controller
                             'lanc_datavencimento' =>$newCompetenceExploded[1].'-'. $newCompetenceExploded[0] .'-'. $day,
                             'lanc_numerodeparcela' => $convenants[0]->lanc_numerodeparcela + 1
                         ]);
+
+                    Log::channel('daily')->info('Usuário '.Session::get('user').' renegociou a parcela '.$portion_id.'.');
 
                     return response()->json(['status'=>'success', 'msg'=>'Parcela renegociada com sucesso!']);
                 }catch (Exception $e){
@@ -853,6 +868,8 @@ class ConvenantController extends Controller
                     'con_codigoid' => $request->convenants
                 ]);
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' alterou o lançamento '.$request->idLancamento.'.');
+
             return response()->json(['status'=>'success', 'msg'=>'Lançamento alterado com sucesso!']);
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
@@ -878,6 +895,7 @@ class ConvenantController extends Controller
             //edita o lançamento
             DB::statement('UPDATE lancamento l SET l.lanc_valortotal = (SELECT SUM(par_valor) FROM parcelamento p WHERE p.deleted_at IS NULL AND p.lanc_codigoid = l.id) WHERE l.id = '.$request->idLancamento);
             
+            Log::channel('daily')->info('Usuário '.Session::get('user').' alterou as parcelas '.($request->idparcelas).'.');
 
             return response()->json(['status'=>'success', 'msg'=>'Parcelas alteradas com sucesso!']);
             }catch (Exception $e){
@@ -918,6 +936,8 @@ class ConvenantController extends Controller
                             SET l.lanc_valortotal = par.valor, l.lanc_numerodeparcela = par.parcelas, l.lanc_datavencimento = par.vencimento
                             WHERE l.id =  '.$request->idLancamento);
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' adicionou '.$request->number.' parcelas no lançamento '.$request->idLancamento.'.');
+
             return response()->json(['status'=>'success', 'msg'=>'Parcelas adicionadas com sucesso!']);
         } catch (Exception $e){
             return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
@@ -938,6 +958,7 @@ class ConvenantController extends Controller
                     'par_status' => $request->statusParc,
                 ]);
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' o status das parcelas '.$request->idparcelas.' para '.$request->statusParc.'.');
 
             return response()->json(['status'=>'success', 'msg'=>'Parcelas alteradas com sucesso!']);
             }catch (Exception $e){
@@ -1030,6 +1051,8 @@ class ConvenantController extends Controller
                 $currentMonth[1]++;
 
             }
+            Log::channel('daily')->info('Usuário '.Session::get('user').' adicionou o lançamento com o contrato nº '.$request->contract.'.');
+
             return response()->json(['status'=>'success', 'msg'=> 'Formulário salvo com sucesso']);
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
@@ -1050,6 +1073,8 @@ class ConvenantController extends Controller
             
             //se não for pago deleto a parcela
             if($parc->par_status != 'Pago') {
+                Log::channel('daily')->info('Usuário '.Session::get('user').' a parcela '.$parc->id.' do lançamento nº '.$request->lanc_codigoid.'.');
+
                 Portion::find($parc->id)->delete();
             } else {
                 $err .= 'Parcela '.$parc->par_numero.', valor R$ '.$parc->par_valor.' está paga e não pode ser deletada.\n';
@@ -1254,6 +1279,8 @@ class ConvenantController extends Controller
                     'msg' => $responseMSG,
                 ];
 
+                Log::channel('daily')->info('Usuário '.Session::get('user').' processou um arquivo de baixa.');
+
                 return response()->json([$responseData], 200);
 
             }else {
@@ -1396,6 +1423,7 @@ class ConvenantController extends Controller
                     'par_observacao' => $request->par_observacao,
                 ]);
 
+            Log::channel('daily')->info('Usuário '.Session::get('user').' adicionou observação na parcela '.$request->idParcela.'.');
 
             return response()->json(['status'=>'success', 'msg'=>'Parcela alterada com sucesso!']);
             }catch (Exception $e){
