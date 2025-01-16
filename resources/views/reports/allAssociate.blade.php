@@ -58,6 +58,7 @@
                             <th>CEP</th>
                             <th>Endereço</th>
                             <th>Bairro</th>
+                            <th>Telefone</th>
                             <th>Status</th>
                             <th>Tipo</th>
                             <th>Classificacao</th>

@@ -209,6 +209,7 @@ function montaTabela(dataSet,typeReport){
         <td align="center">${value.assoc_cep}</td>
         <td>${value.endereco}</td>
         <td align="">${value.assoc_bairro}</td>
+        <td>${value.assoc_fone}</td>
         <td align="">${value.ativo}</td>
         <td align="">${value.tipassoc_nome}</td>
         <td align="">${value.cla_nome}</td>

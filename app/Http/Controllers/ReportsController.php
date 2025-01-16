@@ -255,6 +255,7 @@ class ReportsController extends Controller
                           a.assoc_cep,
                           CONCAT(a.assoc_endereco, ' ', a.assoc_complemento) AS endereco,
                           a.assoc_bairro,
+                          a.assoc_fone,
                           IF(a.assoc_ativosn = 1, 'Ativo','Inativo') AS ativo,
                           t.tipassoc_nome,
                           c.cla_nome
@@ -299,6 +300,7 @@ class ReportsController extends Controller
                 'assoc_cep' => $b->assoc_cep,
                 'endereco' => $b->endereco,
                 'assoc_bairro' => $b->assoc_bairro,
+                'assoc_fone' => $b->assoc_fone,
                 'ativo' => $b->ativo,
                 'tipassoc_nome' => $b->tipassoc_nome,
                 'cla_nome' => $b->cla_nome,
