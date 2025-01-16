@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use  \Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
 /**
  *
@@ -42,6 +43,8 @@ class CategoryConvenantController extends Controller
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
             }
 
+        } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de categorias de convênios.');
         }
 
         $data = [
@@ -72,6 +75,8 @@ class CategoryConvenantController extends Controller
                         'tipconv_nome' => $request->name,
                     ]
                 );
+                Log::channel('daily')->info('Usuário '.Session::get('user').' criou a categorias de convênio '.$request->post('name').'.');
+
                 return response()->json(['status'=> 'success', 'msg'=>'Categoria salva com sucesso!']);
             }catch (Exception $e){
                 return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);

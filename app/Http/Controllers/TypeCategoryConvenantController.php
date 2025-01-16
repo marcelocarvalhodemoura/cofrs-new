@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use \Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class TypeCategoryConvenantController extends Controller
 {
@@ -37,6 +38,8 @@ class TypeCategoryConvenantController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de tipos de convênio.');
         }
 
         $categoryConvenantsData = CategoryConvenants::all();
@@ -68,6 +71,8 @@ class TypeCategoryConvenantController extends Controller
                     'con_prolabore' => $request->post('elaborate')
                 ]
             );
+
+            Log::channel('daily')->info('Usuário '.Session::get('user').' adicionou o tipos de convênio '.$request->name.'.');
 
             return response()->json(['status'=> 'success', 'msg'=>'Formulário salvo com sucesso!']);
         }catch (Exception $e){
