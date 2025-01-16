@@ -15,7 +15,7 @@
           <select class="custom-select" id="cidade" name="cidade">
               <option value="">-Selecione-</option>
               @foreach ($cidades as $item)
-                  <option value="{{ $item->assoc_cidade }}">{{ $item->assoc_cidade }}({{ $item->cont }})</option>
+                  <option value="{{ $item->assoc_cidade }}">{{ $item->assoc_cidade }} ({{ $item->cont }})</option>
               @endforeach
           </select>
       </div>
