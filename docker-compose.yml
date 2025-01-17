@@ -45,7 +45,7 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
     networks:
       - cofrs_network
 
