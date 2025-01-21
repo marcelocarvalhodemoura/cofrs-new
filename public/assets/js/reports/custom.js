@@ -158,6 +158,9 @@ function buscar(){
             });
           } else {
             montaTabela(response.tabela, $("#typeReport").val());
+            if(response.con_prolabore){
+              $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nProlabore: R$ '+response.prolabore+'<br />\nComissão/prolabore: '+response.con_prolabore+'%</div></div>');
+            }
             $("#reportModal h4").html(response.cabecalho);
             $("#reportModal").modal('show');
           }
@@ -269,6 +272,13 @@ function montaTabela(dataSet,typeReport){
         pageSize: 'A4',
         messageTop: function() {
           return $("#reportModal .modal-body h4").text();
+        },
+        messageBottom: function() {
+          if($("#reportModal .modal-body #prolabore").length > 0){
+            return $("#reportModal .modal-body #prolabore").text();
+          } else {
+            return null;
+          }
         },
         customize: function(doc){
           doc.content.splice(0,1);

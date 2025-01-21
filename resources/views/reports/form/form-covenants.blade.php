@@ -10,8 +10,8 @@
             <input type="text" class="form-control flatpickr flatpickr-input" id="periodo" name="periodo" placeholder="Selecione o período" required>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="convenio">Convênio</label>
-            <select class="custom-select" id="convenio" name="convenio">
+            <label for="convenio">Convênio <b class="error">*</b></label>
+            <select class="custom-select" id="convenio" name="convenio" required>
                 <option value="">-Selecione-</option>
                 @foreach ($agreementList as $item)
                     <option value="{{ $item->id }}">{{ $item->con_nome }}</option>

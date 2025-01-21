@@ -111,7 +111,7 @@ class ReportsController extends Controller
       'referenceList' => $referenceList,
     ];
 
-    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Convênios.');
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Conveniados.');
 
     return view('reports.covenants')->with($data);
 
@@ -358,6 +358,7 @@ class ReportsController extends Controller
           a.assoc_nome,
           a.assoc_cpf,
           cv.con_nome,
+          cv.con_prolabore,
           a.assoc_identificacao,
           p.par_vencimentoparcela,
           p.par_numero,
@@ -408,21 +409,26 @@ class ReportsController extends Controller
 
         $busca = \DB::select($sqlBusca);
         if($busca){
+          $par_valor = 0;
           foreach($busca as $b){
-          $retorno['tabela'][] = array(
-            'nome' => $b->assoc_nome,
-            'cpf' => $b->assoc_cpf,
-            'convenio' => $b->con_nome,
-            'matricula' => $b->assoc_identificacao,
-            'vencimento' => $b->par_vencimentoparcela,
-            'vencimentoFormatado' => implode('/',array_reverse(explode('-',$b->par_vencimentoparcela))),
-            'contrato' => $b->lanc_contrato,
-            'valor' => number_format($b->par_valor,2),
-            'status' => $b->par_status,
-            'par_numero' => $b->par_numero,
-            'lanc_numerodeparcela' => $b->lanc_numerodeparcela,
-            );
+            $retorno['tabela'][] = array(
+              'nome' => $b->assoc_nome,
+              'cpf' => $b->assoc_cpf,
+              'convenio' => $b->con_nome,
+              'matricula' => $b->assoc_identificacao,
+              'vencimento' => $b->par_vencimentoparcela,
+              'vencimentoFormatado' => implode('/',array_reverse(explode('-',$b->par_vencimentoparcela))),
+              'contrato' => $b->lanc_contrato,
+              'valor' => number_format($b->par_valor,2),
+              'status' => $b->par_status,
+              'par_numero' => $b->par_numero,
+              'lanc_numerodeparcela' => $b->lanc_numerodeparcela,
+              );
+            $par_valor += $b->par_valor;
           }
+          $retorno['par_valor'] = $par_valor;
+          $retorno['con_prolabore'] = $b->con_prolabore;
+          $retorno['prolabore'] = number_format($b->con_prolabore*$par_valor/100,2,',','.');
         } else {
           $retorno['erro'] = "Não existem resultados para esta busca";
         }
