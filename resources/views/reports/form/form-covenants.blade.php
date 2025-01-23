@@ -1,11 +1,13 @@
 <form class="needs-validation text-left" novalidate action="javascript:void(0);" id="reportFilter">
     @csrf
     <div class="form-row">
+<!--
         <div class="col-md-3 mb-4">
             <label for="cpf">CPF</label>
             <input type="text" class="form-control cpf" id="cpf" name="cpf" placeholder="CPF" >
         </div>
-        <div class="col-md-3 mb-4">
+-->
+        <div class="col-md-6 mb-4">
             <label for="periodo">Período <b class="error">*</b></label>
             <input type="text" class="form-control flatpickr flatpickr-input" id="periodo" name="periodo" placeholder="Selecione o período" required>
         </div>

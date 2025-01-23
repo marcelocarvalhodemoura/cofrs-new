@@ -46,12 +46,12 @@
                 </button>
             </div>
             <div class="modal-body">
+                <h4></h4>
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>CPF</th>
-                            <th>Convênio</th>
                             <th>ID</th>
                             <th>Parcela atual</th>
                             <th>Total de parcelas</th>

@@ -158,6 +158,7 @@ function buscar(){
             });
           } else {
             montaTabela(response.tabela, $("#typeReport").val());
+            $('div#prolabore').remove();
             if(response.con_prolabore){
               $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nProlabore: R$ '+response.prolabore+'<br />\nComissão/prolabore: '+response.con_prolabore+'%</div></div>');
             }
@@ -238,7 +239,6 @@ function montaTabela(dataSet,typeReport){
     tr2 = `<tr>
             <td>${value.nome}</td>
             <td>${value.cpf}</td>
-            <td>${value.convenio}</td>
             <td>${value.matricula}</td>
             <td>${value.par_numero}</td>
             <td>${value.lanc_numerodeparcela}</td>

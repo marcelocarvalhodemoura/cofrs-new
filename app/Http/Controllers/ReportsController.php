@@ -12,6 +12,7 @@ use App\Models\Associate;
 use App\Models\Agreement;
 use App\Models\Classification;
 use App\Models\Typeassociate;
+use App\Models\TypeCategoryConvenant;
 
 class ReportsController extends Controller
 {
@@ -352,7 +353,10 @@ class ReportsController extends Controller
         Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Convênios.');
         break;
       case "covenant":
-        $retorno['cabecalho'] = "Status de Pagamento";
+        $con = TypeCategoryConvenant::where("id", "=", $request->post('convenio'))->first();
+
+        $retorno['cabecalho'] = "Status de Pagamento<br />
+                                  Convênio: ".$con->con_nome."<br />";
 
         $sqlBusca = "SELECT
           a.assoc_nome,
