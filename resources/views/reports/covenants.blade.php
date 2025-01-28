@@ -50,6 +50,7 @@
                 <table id="reporttable" class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Nome</th>
                             <th>CPF</th>
                             <th>ID</th>

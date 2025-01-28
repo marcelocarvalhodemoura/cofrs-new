@@ -200,11 +200,13 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'allAssociate'){
+    i = 1;
     dataSet.map((value,index) => {
 
       let datanascimento = new Date(value.assoc_datanascimento);
 
       tr2 = `<tr>
+        <td>'+i+'</td>
         <td>${value.assoc_nome}</td>
         <td>${value.assoc_cpf}</td>
         <td align="center" data-order="${value.assoc_datanascimento}">${datanascimento.toLocaleDateString("pt-BR")}</td>
@@ -219,6 +221,7 @@ function montaTabela(dataSet,typeReport){
         <td align="">${value.cla_nome}</td>
       </tr>`;
       $("#reporttable tbody").append(tr2);
+      i++;
     });
   }
 
@@ -253,8 +256,6 @@ function montaTabela(dataSet,typeReport){
 
   if(typeReport == 'cashflow'){
   }
-
-  console.log($("#reportModal .modal-body h4").text());
 
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +
