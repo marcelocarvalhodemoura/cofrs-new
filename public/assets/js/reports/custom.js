@@ -158,10 +158,17 @@ function buscar(){
             });
           } else {
             montaTabela(response.tabela, $("#typeReport").val());
+
             $('div#prolabore').remove();
             if(response.con_prolabore){
               $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nProlabore: R$ '+response.prolabore+'<br />\nComissão/prolabore: '+response.con_prolabore+'%</div></div>');
             }
+
+            $('div#i').remove();
+            if(response.i){
+              $(".modal-body").append('<div class="row mt-5 fw-bold" id="i">Total de associados: '+response.i+'</div>');
+            }
+
             $("#reportModal h4").html(response.cabecalho);
             $("#reportModal").modal('show');
           }
@@ -200,13 +207,11 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'allAssociate'){
-    i = 1;
     dataSet.map((value,index) => {
 
       let datanascimento = new Date(value.assoc_datanascimento);
 
       tr2 = `<tr>
-        <td>'+i+'</td>
         <td>${value.assoc_nome}</td>
         <td>${value.assoc_cpf}</td>
         <td align="center" data-order="${value.assoc_datanascimento}">${datanascimento.toLocaleDateString("pt-BR")}</td>
@@ -221,7 +226,6 @@ function montaTabela(dataSet,typeReport){
         <td align="">${value.cla_nome}</td>
       </tr>`;
       $("#reporttable tbody").append(tr2);
-      i++;
     });
   }
 
@@ -257,6 +261,8 @@ function montaTabela(dataSet,typeReport){
   if(typeReport == 'cashflow'){
   }
 
+  console.log($("#reportModal .modal-body h4").text());
+
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +
     "<'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
@@ -277,6 +283,8 @@ function montaTabela(dataSet,typeReport){
         messageBottom: function() {
           if($("#reportModal .modal-body #prolabore").length > 0){
             return $("#reportModal .modal-body #prolabore").text();
+          } else if($("#reportModal .modal-body #i").length > 0){
+            return $("#reportModal .modal-body #i").text();
           } else {
             return null;
           }

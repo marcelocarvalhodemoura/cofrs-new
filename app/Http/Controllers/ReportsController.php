@@ -291,6 +291,7 @@ class ReportsController extends Controller
           $busca = \DB::select($sqlBusca);
   
           if($busca){
+            $i = 0;
             foreach($busca as $b){
               $retorno['tabela'][] = array(
                 'assoc_nome' => $b->assoc_nome,
@@ -306,7 +307,9 @@ class ReportsController extends Controller
                 'tipassoc_nome' => $b->tipassoc_nome,
                 'cla_nome' => $b->cla_nome,
               );
+              $i++;
             }
+          $retorno['i'] = $i;
           } else {
             $retorno['erro'] = "Não existem resultados para esta busca";
           }
