@@ -189,7 +189,7 @@
                 </a>
             </li>
             @endif
-
+            <!--
             <li class="menu ">
                 <a href="/support" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -206,7 +206,7 @@
                     </div>
                 </a>
             </li>
-
+-->
             
         </ul>
 
