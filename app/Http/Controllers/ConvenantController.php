@@ -1326,7 +1326,7 @@ class ConvenantController extends Controller
                         ->where('competencia.com_nome','=',$linha['competenciaFormatada'])
                         ->where('parcelamento.par_status','=','Pendente');
 
-            dd($parcelamento->toSql(),$parcelamento->getBindings());
+            //dd($parcelamento->toSql(),$parcelamento->getBindings());
             /*
             if($linha['valorRejeitado'] == $linha['valorPagar']) {
                 $arr_rtn['msg'] = 'Valor rejeitado ('.$linha['valorRejeitado'].') é igual ao com o a pagar ('.$linha['valorPagar'].')';
