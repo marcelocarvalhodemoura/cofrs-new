@@ -164,6 +164,9 @@
                         <a href="/report/covenant">Conveniados</a>
                     </li>
                     <li class="">
+                        <a href="/report/reference">Referências</a>
+                    </li>
+                    <li class="">
                         <a href="/report/agreement">Convênios</a>
                     </li>
                     <li class="">

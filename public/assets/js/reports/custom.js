@@ -258,6 +258,26 @@ function montaTabela(dataSet,typeReport){
     });
   }
 
+  if(typeReport == 'reference'){
+    dataSet.map((value,index) => {
+
+
+    tr2 = `<tr>
+            <td>${value.nome}</td>
+            <td>${value.cpf}</td>
+            <td>${value.matricula}</td>
+            <td>${value.convenio}</td>
+            <td>${value.par_numero}</td>
+            <td>${value.lanc_numerodeparcela}</td>
+            <td align="center" data-order="${value.vencimento}">${value.vencimentoFormatado}</td>
+            <td>${value.contrato}</td>
+            <td align="right">${value.valor}</td>
+            <td align="center">${value.status}</td>
+          </tr>`;
+      $("#reporttable tbody").append(tr2);
+    });
+  }
+
   if(typeReport == 'cashflow'){
   }
 

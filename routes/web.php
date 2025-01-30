@@ -171,6 +171,7 @@ Route::get('/report/allAssociate', [ReportsController::class, 'allAssociate']);
 Route::get('/report/agreement', [ReportsController::class, 'agreement']);
 Route::get('/report/covenant', [ReportsController::class, 'covenant']);
 Route::get('/report/cashflow', [ReportsController::class, 'cashflow']);
+Route::get('/report/reference', [ReportsController::class, 'reference']);
 Route::post('/aReport', [ReportsController::class, 'aReport']);
 
 

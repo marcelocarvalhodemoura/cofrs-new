@@ -118,6 +118,29 @@ class ReportsController extends Controller
 
   }
 
+  public function reference(Request $request) {
+
+    $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
+    $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
+    $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
+
+    $data = [
+      'category_name' => 'reports',
+      'page_name' => 'reports',
+      'has_scrollspy' => 0,
+      'scrollspy_offset' => '',
+      'alt_menu' => 0,
+      'agreementList' => $agreementList,
+      'classificationList' => $classificationList,
+      'referenceList' => $referenceList,
+    ];
+
+    Log::channel('daily')->info('Usuário '.Session::get('user').' acessou os filtros do Relatório Referências.');
+
+    return view('reports.reference')->with($data);
+
+  }
+
   public function cashflow(Request $request) {
 
   }
@@ -442,6 +465,90 @@ class ReportsController extends Controller
 
         Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Convêniados.');
         break;
+      case "reference":
+          $retorno['cabecalho'] = "Referência: ".$request->post('referencia')."<br />";
+  
+          $sqlBusca = "SELECT
+            a.assoc_nome,
+            a.assoc_cpf,
+            cv.con_nome,
+            cv.con_prolabore,
+            a.assoc_identificacao,
+            p.par_vencimentoparcela,
+            p.par_numero,
+            p.par_equivalente,
+            l.lanc_numerodeparcela,
+            l.lanc_contrato,
+            p.par_valor,
+            p.par_status
+          FROM
+            associado a,
+            lancamento l,
+            convenio cv,
+            classificacao cl,
+            parcelamento p
+          WHERE
+            a.id = l.assoc_codigoid
+            AND p.par_vencimentoparcela >= '".$inicio."'
+            AND p.par_vencimentoparcela <= '".$fim."'
+            AND p.deleted_at IS NULL
+            AND l.con_codigoid = cv.id
+            AND a.cla_codigoid = cl.id
+            AND l.id = p.lanc_codigoid";
+  
+          if($request->post('convenio') != ''){
+            $sqlBusca .= " AND cv.id = ".$request->post('convenio');
+          }
+  
+          if($request->post('classificacao') != ''){
+            $sqlBusca .= " AND cl.id = ".$request->post('classificacao');
+          }
+  
+          if($request->post('referencia') != ''){
+            $sqlBusca .= " AND cv.con_referencia = '".$request->post('referencia')."'";
+          }
+  
+          if($request->post('status') != ''){
+            $sqlBusca .= " AND p.par_status = '".$request->post('status')."'";
+          }
+  
+          if($request->post('assoc_ativosn') != ''){
+            $sqlBusca .= " AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
+          }
+  
+          if($request->post('cpf') != ''){
+            $sqlBusca .= " AND a.assoc_cpf = '".$request->post('cpf')."'";
+          }
+          //dd($sqlBusca);
+  
+          $busca = \DB::select($sqlBusca);
+          if($busca){
+            $par_valor = 0;
+            foreach($busca as $b){
+              $retorno['tabela'][] = array(
+                'nome' => $b->assoc_nome,
+                'cpf' => $b->assoc_cpf,
+                'convenio' => $b->con_nome,
+                'matricula' => $b->assoc_identificacao,
+                'vencimento' => $b->par_vencimentoparcela,
+                'vencimentoFormatado' => implode('/',array_reverse(explode('-',$b->par_vencimentoparcela))),
+                'contrato' => $b->lanc_contrato,
+                'valor' => number_format($b->par_valor,2),
+                'status' => $b->par_status,
+                'par_numero' => $b->par_numero,
+                'lanc_numerodeparcela' => $b->lanc_numerodeparcela,
+                );
+              $par_valor += $b->par_valor;
+            }
+            $retorno['par_valor'] = $par_valor;
+            $retorno['con_prolabore'] = $b->con_prolabore;
+            $retorno['prolabore'] = number_format($b->con_prolabore*$par_valor/100,2,',','.');
+          } else {
+            $retorno['erro'] = "Não existem resultados para esta busca";
+          }
+  
+          Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Referências.');
+          break;        
       case "cashflow":
         break;
     }
