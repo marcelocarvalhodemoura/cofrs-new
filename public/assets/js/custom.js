@@ -150,8 +150,24 @@ function formataNumero(n) {
     return n.replace(/[^\d,]/g, '').replace(",", ".");
 }
 
+
+
+function marcaMenu(){
+    const raiz = window.location.origin;
+    const pagina = window.location.href.substring(raiz.length);
+    //console.log(pagina);
+    //marca o menu
+    $('a[href="'+pagina+'"]').closest('li').addClass('active');
+    $('a[href="'+pagina+'"]').closest('li.menu').addClass('active');
+    $('a[href="'+pagina+'"]').closest('li.menu').attr('aria-expanded', 'true');
+    $('a[href="'+pagina+'"]').closest('ul.submenu').addClass('show');
+    //gera a rolagem no menu lateral
+    $('.sidebar-wrapper').each(function(){ const ps = new PerfectScrollbar($(this)[0]); });
+}
+
+
 $(window).on('load', function () {
-    
+    marcaMenu();
     /*
     Busca e monta o menu de notificações
     */

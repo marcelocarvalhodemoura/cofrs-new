@@ -1174,6 +1174,7 @@ code {
 }
 .sidebar-closed > .sidebar-wrapper .profile-info {
   position: relative;
+  margin-bottom: 10px;
 }
 .sidebar-closed > .sidebar-wrapper .profile-info figure {
   height: 0;
@@ -1181,14 +1182,13 @@ code {
 }
 .sidebar-closed > .sidebar-wrapper .profile-info .user-info {
   text-align: center;
-  padding: 50px 0 0 0;
+  padding: 10px 0 0 0;
   height: 50px;
 }
 .sidebar-closed > .sidebar-wrapper .profile-info .user-info img {
   top: 10px;
   border: 3px solid rgba(68, 94, 222, 0.24);
   width: 36px;
-  height: 36px;
 }
 .sidebar-closed > .sidebar-wrapper .profile-info .user-info h6, .sidebar-closed > .sidebar-wrapper .profile-info .user-info p {
   opacity: 0;
@@ -1227,14 +1227,13 @@ code {
   opacity: 1;
 }
 .sidebar-closed > .sidebar-wrapper:hover .profile-info .user-info {
-  padding: 50px 0 0 0;
-  height: 105px;
+  padding: 20px 0 0 0;
+  height: 85px;
 }
 .sidebar-closed > .sidebar-wrapper:hover .profile-info .user-info img {
   top: 34px;
   border: 6px solid rgba(68, 94, 222, 0.24);
-  width: 90px;
-  height: 90px;
+  width: 50px;
 }
 .sidebar-closed > .sidebar-wrapper:hover .profile-info .user-info h6, .sidebar-closed > .sidebar-wrapper:hover .profile-info .user-info p {
   opacity: 1;

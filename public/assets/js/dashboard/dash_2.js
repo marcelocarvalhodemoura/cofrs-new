@@ -173,8 +173,8 @@ try {
           Perfect Scrollbar | Notifications
       =============================================
   */
-  const ps = new PerfectScrollbar(document.querySelector('.mt-container'));
-
+      $('.mt-container').each(function(){ const ps = new PerfectScrollbar($(this)[0]); });
+  
 
 } catch (e) {
   // statements

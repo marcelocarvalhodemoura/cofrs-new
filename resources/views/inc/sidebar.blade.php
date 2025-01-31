@@ -13,12 +13,11 @@
             </div>
         </div>
         <div class="shadow-bottom"></div>
+        
         <ul class="list-unstyled menu-categories" id="accordionExample">
+
             @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
-            {{-- <li class="menu menu-heading">--}}
-            {{-- <div class="heading">ACESSO SISTEMA</div>--}}
-            {{-- </li>--}}
-            <li class="menu ">
+            <li class="menu">
                 <a href="/dashboard" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
@@ -41,10 +40,9 @@
                         </svg>
                         <span>Usuários</span>
                     </div>
-
                 </a>
             </li>
-            <li class="menu ">
+            <li class="menu">
                 <a href="/alertas" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -53,9 +51,7 @@
                 </a>
             </li>
             @endif
-            {{-- <li class="menu menu-heading">--}}
-            {{-- <div class="heading">SERVICOS</div>--}}
-            {{-- </li>--}}
+
             <li class="menu">
                 <a href="/associates" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -69,7 +65,7 @@
                     </div>
                 </a>
             </li>
-            <li class="menu ">
+            <li class="menu">
                 <a href="#covenants-kit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay">
@@ -99,9 +95,7 @@
                 </ul>
             </li>
             @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
-            {{-- <li class="menu menu-heading">--}}
-            {{-- <div class="heading">FINANCEIRO</div>--}}
-            {{-- </li>--}}
+
             <li class="menu ">
                 <a href="#finances-kit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -134,9 +128,6 @@
 
             </li>
 
-            {{-- <li class="menu menu-heading">--}}
-            {{-- <div class="heading">RELATORIOS</div>--}}
-            {{-- </li>--}}
             <li class="menu ">
                 <a href="#report" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -175,9 +166,6 @@
                 </ul>
             </li>
             @endif
-            {{-- <li class="menu menu-heading">--}}
-            {{-- <div class="heading">SUPORTE</div>--}}
-            {{-- </li>--}}
 
             @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2]))
             <li class="menu ">

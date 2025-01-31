@@ -18,7 +18,7 @@
     <!-- Styles -->
     @include('inc.styles')
 </head>
-<body>
+<body  class="sidebar-noneoverflow" data-spy="scroll" data-target="#navSection" data-offset="100">
     @if(!\Illuminate\Support\Facades\Session::has('user'))
         {{ route('login') }}
     @endif
