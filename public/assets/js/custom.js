@@ -259,3 +259,85 @@ function br2nl (str, replaceMode) {
     // Includes <br>, <BR>, <br />, </br>
     return str.replace(/<\s*\/?br\s*[\/]?>/gi, replaceStr);
   }
+
+function trocaSenha(){
+    $('#passwordModal').modal('show');
+}
+
+
+$(document).ready(function () {
+    $.getScript('/plugins/complexify/jquery.complexify.js', function() {
+        $("#editPassword").complexify({
+          bannedPassword: COMPLEXIFY_BANLIST,
+          minimumChars: 6,
+          strengthScaleFactor: .3
+        }, function(valid, complexity) {
+          $(".mtSenha").val(complexity);
+        });
+      });
+
+
+      $("#formSavePassword").validate({
+        rules: {
+            editPassword: {
+                required: true,
+                minlength: 6,
+                password: true
+            },
+            editPassword2: {
+                required: true,
+                equalTo: '#editPassword'
+            }
+        },
+        messages: {
+            editPassword: "Senha é um campo obrigatório e necessita ser segura",
+            editPassword2: {
+                required: "Conf. Senha é um campo obrigatório",
+                equalTo: "Conf. de Senha deve ser igual ao campo Senha"
+            }
+        },
+        errorElement: "span",
+        highlight: function () {
+            $("#formSavePassword").addClass("was-validated");
+        },
+        unhighlight: function () {
+            $("#formSavePassword").addClass("was-validated");
+        },
+        submitHandler: function () {
+            const id = $("#editUserID").val();
+
+            $.ajax({
+                url: "/users/pass/" + id,
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: $("#formSavePassword").serialize(),
+                success: function (response) {
+
+
+                    if (response.status == 'error') {
+                        msg = response.msg;
+                        titleAlert = 'Atenção!';
+                        typeAlert = 'info';
+                    } else {
+                        typeAlert = 'success';
+                        titleAlert = 'Bom trabalho!'
+                        msg = response.msg;
+                        $('#formSavePassword')[0].reset();
+                        $('#passwordModal').modal('hide');
+                    }
+
+                    swal({
+                        title: titleAlert,
+                        text: msg,
+                        type: typeAlert,
+                        confirmButtonClass: 'btn btn-primary',
+                    });
+                }
+
+            });
+        }
+    });
+
+});

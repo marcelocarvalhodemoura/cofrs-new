@@ -12,6 +12,7 @@ use Mockery\Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\MailController;
 
 class UserController extends Controller
 {
@@ -242,5 +243,10 @@ class UserController extends Controller
             Log::channel('daily')->error('Usuário '.Session::get('user').' tentou deletar o usuário '.$userModel->usr_usuario).' e obteve o erro: '.$e->getMessage().'.';
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
+    }
+
+
+    public function teste(){
+        Mail::to('jonatascrizel@gmail.com')->send(new MeuEmail());
     }
 }

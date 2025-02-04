@@ -1,5 +1,5 @@
 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-<script src="{{asset('assets/js/libs/jquery-3.1.1.min.js')}}"></script>
+<script src="{{asset('assets/js/libs/jquery-3.7.1.min.js')}}"></script>
 <script src="{{asset('bootstrap/js/popper.min.js')}}"></script>
 <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
 
@@ -26,6 +26,7 @@
 <script src="{{asset('plugins/sweetalerts/sweetalert.js')}}"></script>
 <script src="{{asset('plugins/select2/select2.min.js')}}"></script>
 <script src="{{ asset('assets/js/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('assets/js/validate/additional-methods.js') }}"></script>
 <script src="{{asset('plugins/file-upload/file-upload-with-preview.min.js')}}"></script>
 <script src="{{asset('plugins/flatpickr/flatpickr.js')}}"></script>
 
@@ -35,6 +36,8 @@
 <script src="{{asset('plugins/table/datatable/button-ext/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/pdfmake/build/pdfmake.js')}}"></script>
 <script src="{{asset('plugins/pdfmake/build/vfs_fonts.js')}}"></script>
+<script src="{{asset('plugins/complexify/jquery.complexify.banlist.js')}}"></script>
+<script src="{{asset('plugins/complexify/jquery.complexify.js')}}"></script>
 @endif
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 

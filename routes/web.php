@@ -18,6 +18,8 @@ use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\MigracaoController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\MailController;
+
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -58,25 +60,16 @@ Route::post('/dashboard/aNAverbados', [DashboardController::class, 'aNAverbados'
  */
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/logout', [UserController::class, 'logOut'])->name('logout');
-
-//load form with data
 Route::get('/users/load/{id}', [UserController::class, 'getUser']);
-
-//Remove data
 Route::post('/users/delete/{id}', [UserController::class, 'delete']);
-
-//Forgot password
 Route::post('/users/pass/{id}', [UserController::class, 'forgotPassword']);
-
-//Send data from the form
 Route::post('/users/store', [UserController::class, 'store']);
-
-//Update user information
 Route::post('/users/update/{id}', [UserController::class, 'update']);
-
-//Profile
 Route::get('/users/profile/{id}', [UserController::class, 'profile']);
 
+
+
+Route::get('/teste', [UserController::class, 'teste']);
 
 /**
  * Associates Routes

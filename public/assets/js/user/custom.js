@@ -209,6 +209,7 @@ $(document).ready(function () {
      * Modal Change Pass
      *
      */
+
     $('#btnPasswordModal').on('click', function (e) {
         var id = new Array();
 
@@ -222,6 +223,7 @@ $(document).ready(function () {
         if (id > 0) {
             $('#passwordModal').modal('show');
             $("#editUserID").val(id);
+            
         } else {
 
             swal({
@@ -233,20 +235,34 @@ $(document).ready(function () {
         }
     });
 
-    /**
+    $.getScript('/plugins/complexify/jquery.complexify.js', function() {
+        $("#editPassword").complexify({
+          bannedPassword: COMPLEXIFY_BANLIST,
+          minimumChars: 6,
+          strengthScaleFactor: .3
+        }, function(valid, complexity) {
+          $(".mtSenha").val(complexity);
+        });
+      });
+
+      /**
      * Forgot Password
      */
 
     $("#formSavePassword").validate({
         rules: {
-            editPassword: "required",
+            editPassword: {
+                required: true,
+                minlength: 6,
+                password: true
+            },
             editPassword2: {
                 required: true,
                 equalTo: '#editPassword'
             }
         },
         messages: {
-            editPassword: "Senha é um campo obrigatório",
+            editPassword: "Senha é um campo obrigatório e necessita ser segura",
             editPassword2: {
                 required: "Conf. Senha é um campo obrigatório",
                 equalTo: "Conf. de Senha deve ser igual ao campo Senha"

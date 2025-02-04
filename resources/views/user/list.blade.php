@@ -29,7 +29,7 @@
                         <div class="col-md-12 text-right">
                             @include('user.modal.create')
                             @include('user.modal.edit')
-                            @include('user.modal.password')
+                            
                             @include('user.modal.delete')
                         </div>
 

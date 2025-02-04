@@ -5,6 +5,7 @@
         <div class=" form-group col-md-6 ">
             <label for="name">Senha</label>
             <input type="password" class="form-control" id="editPassword" placeholder="inform a senha" name="editPassword" required>
+            <div class="elemValidador">Força da senha: <meter value="0" class="mtSenha" max="100" low="30" high="60" optimum="100" title="Força da senha"></meter></div>
         </div>
         <div class="col-md-6 mb-4">
             <label for="confsenha">Conf. de Senha</label>
