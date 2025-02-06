@@ -313,6 +313,7 @@ function montaTabela(dataSet,typeReport){
           doc.content.splice(0,1);
           doc.pageMargins = [20,50,0,40];
           doc.defaultStyle.fontSize = 6;
+          doc.styles.tableHeader.fontSize = 8;
           var now = new Date();
 					var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
           doc['header'] = (function(){
