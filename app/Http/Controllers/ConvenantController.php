@@ -1083,13 +1083,14 @@ class ConvenantController extends Controller
 
         //Atualiza os lançamentos
         foreach(array_keys($lancamentos) as $v){
-            $resumo = DB::select('SELECT SUM(par_valor) as valor, COUNT(id) as parcelas FROM parcelamento p WHERE p.lanc_codigoid = '.$v.' AND p.deleted_at IS NULL');
+            $resumo = DB::select('SELECT SUM(par_valor) as valor, COUNT(id) as parcelas, MAX(par_vencimentoparcela) as vcto FROM parcelamento p WHERE p.lanc_codigoid = '.$v.' AND p.deleted_at IS NULL');
             //dd($resumo);
             if($resumo[0]->parcelas > 0){
                 Convenant::where('id', $v)
                 ->update([
                     'lanc_valortotal' => $resumo[0]->valor,
                     'lanc_numerodeparcela' => $resumo[0]->parcelas,
+                    'lanc_datavencimento' => $resumo[0]->vcto,
                 ]);
 
             } else {
