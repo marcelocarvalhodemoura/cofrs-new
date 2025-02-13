@@ -12,10 +12,22 @@ use Mockery\Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers;
 use Illuminate\Support\Facades\Log;
+
 use App\Http\Controllers\MailController;
 
 class UserController extends Controller
 {
+
+    
+    public function teste(){
+        $contact = new MailController([
+            'name' => 'John',
+            'email' => 'jonatascrizel@gmail.com',
+            'message' => 'Olá mundo',
+            'subject' => 'teste',
+        ]);
+        $contact->sendEmail();
+    }
 
     public function index(Request $request)
     {
@@ -245,8 +257,4 @@ class UserController extends Controller
         }
     }
 
-
-    public function teste(){
-        Mail::to('jonatascrizel@gmail.com')->send(new MeuEmail());
-    }
 }
