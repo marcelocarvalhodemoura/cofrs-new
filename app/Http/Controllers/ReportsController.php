@@ -340,11 +340,12 @@ class ReportsController extends Controller
           Log::channel('daily')->info('Usuário '.Session::get('user').' emitiu um relatório de Todos os Associados.');
           break;        
       case "agreement":
-        $cab1 = \DB::table('convenio')->select('con_nome', 'con_referencia', 'con_prolabore')->where("id", "=", $request->post('convenio'))->first();
+        $cab1 = \DB::table('convenio')->select('con_nome', 'con_referencia', 'con_comissao_cofrs','con_despesa_canal')->where("id", "=", $request->post('convenio'))->first();
 
         $retorno['cabecalho'] = "Convênio: ".$cab1->con_nome."<br />
           Referência: ".$cab1->con_referencia."<br />
-          Pró-labore: ".$cab1->con_prolabore."%<br />
+          Comissão COFRS: ".$cab1->con_comissao_cofrs."%<br />
+          Despesa Canal: ".$cab1->con_despesa_canal."%<br />
           Período: ".$request->post('periodo');
 
           $sqlBusca = "SELECT
@@ -388,7 +389,8 @@ class ReportsController extends Controller
           a.assoc_nome,
           a.assoc_cpf,
           cv.con_nome,
-          cv.con_prolabore,
+          cv.con_comissao_cofrs,
+          cv.con_despesa_canal,
           a.assoc_identificacao,
           p.par_vencimentoparcela,
           p.par_numero,
@@ -457,8 +459,10 @@ class ReportsController extends Controller
             $par_valor += $b->par_valor;
           }
           $retorno['par_valor'] = $par_valor;
-          $retorno['con_prolabore'] = $b->con_prolabore;
-          $retorno['prolabore'] = number_format($b->con_prolabore*$par_valor/100,2,',','.');
+          $retorno['con_comissao_cofrs'] = $b->con_comissao_cofrs;
+          $retorno['comissao_cofrs'] = number_format($b->con_comissao_cofrs*$par_valor/100,2,',','.');
+          $retorno['con_despesa_canal'] = $b->con_despesa_canal;
+          $retorno['despesa_canal'] = number_format($b->con_despesa_canal*$par_valor/100,2,',','.');
         } else {
           $retorno['erro'] = "Não existem resultados para esta busca";
         }
@@ -472,7 +476,8 @@ class ReportsController extends Controller
             a.assoc_nome,
             a.assoc_cpf,
             cv.con_nome,
-            cv.con_prolabore,
+            cv.con_comissao_cofrs,
+            cv.con_despesa_canal,
             a.assoc_identificacao,
             p.par_vencimentoparcela,
             p.par_numero,
@@ -541,8 +546,10 @@ class ReportsController extends Controller
               $par_valor += $b->par_valor;
             }
             $retorno['par_valor'] = $par_valor;
-            $retorno['con_prolabore'] = $b->con_prolabore;
-            $retorno['prolabore'] = number_format($b->con_prolabore*$par_valor/100,2,',','.');
+            $retorno['con_comissao_cofrs'] = $b->con_comissao_cofrs;
+            $retorno['comissao_cofrs'] = number_format($b->con_comissao_cofrs*$par_valor/100,2,',','.');
+            $retorno['con_despesa_canal'] = $b->con_despesa_canal;
+            $retorno['despesa_canal'] = number_format($b->con_despesa_canal*$par_valor/100,2,',','.');
           } else {
             $retorno['erro'] = "Não existem resultados para esta busca";
           }

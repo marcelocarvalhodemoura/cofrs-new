@@ -160,8 +160,9 @@ function buscar(){
             montaTabela(response.tabela, $("#typeReport").val());
 
             $('div#prolabore').remove();
-            if(response.con_prolabore){
-              $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nProlabore: R$ '+response.prolabore+'<br />\nComissão/prolabore: '+response.con_prolabore+'%</div></div>');
+            if(response.con_despesa_canal || response.con_comissao_cofrs){
+              console.log('aqui');
+              $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nComissão COFRS: R$ '+response.comissao_cofrs+'<br />\nComissão COFRS: '+response.con_comissao_cofrs+'%<br />\nDespesa Canal: R$ '+response.despesa_canal+'<br />\nDespesa Canal: '+response.con_despesa_canal+'%</div></div>');
             }
 
             $('div#i').remove();
@@ -281,7 +282,7 @@ function montaTabela(dataSet,typeReport){
   if(typeReport == 'cashflow'){
   }
 
-  console.log($("#reportModal .modal-body h4").text());
+  //console.log($("#reportModal .modal-body h4").text());
 
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +

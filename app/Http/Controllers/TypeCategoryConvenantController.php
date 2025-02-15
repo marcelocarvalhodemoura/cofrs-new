@@ -68,7 +68,8 @@ class TypeCategoryConvenantController extends Controller
                     'con_nome'  =>  $request->post('name'),
                     'tipconv_codigoid' => $request->post('typeCategory'),
                     'con_referencia' => $request->post('reference'),
-                    'con_prolabore' => $request->post('elaborate')
+                    'con_despesa_canal' => $request->post('con_despesa_canal'),
+                    'con_comissao_cofrs' => $request->post('con_comissao_cofrs'),
                 ]
             );
 

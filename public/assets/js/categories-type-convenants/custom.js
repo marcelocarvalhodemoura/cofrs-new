@@ -161,10 +161,12 @@ $(document).ready(function(){
                 success: function(response){
 
                     $('#formtypecategoryconvenants #name').val(response.con_nome);
-                    $('#formtypecategoryconvenants #elaborate').val(response.con_prolabore);
 
                     $('#formtypecategoryconvenants #reference').val(response.con_referencia);
                     $('#formtypecategoryconvenants #typeCategory').val(response.tipconv_codigoid);
+
+                    $('#formtypecategoryconvenants #con_comissao_cofrs').val(response.con_comissao_cofrs);
+                    $('#formtypecategoryconvenants #con_despesa_canal').val(response.con_despesa_canal);
 
                     $('#formtypecategoryconvenants').append('<input type="hidden" id="typeCategoryId" name="typeCategoryId" value="'+response.id+'"/>');
                 }

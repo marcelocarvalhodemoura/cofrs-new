@@ -31,6 +31,7 @@ class TypeCategoryConvenant extends Model
         'con_nome',
         'tipconv_codigoid',
         'con_referencia',
-        'con_prolabore',
+        'con_despesa_canal',
+        'con_comissao_cofrs',
     ];
 }
