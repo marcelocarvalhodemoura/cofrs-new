@@ -265,6 +265,10 @@ class ConvenantController extends Controller
                 $dynamicWherePortion[] = ['par_status', '=', $request->selStatus];
             }
 
+            if ($request->post('searchContract')) {
+                $dynamicWhere[] = ['lanc_contrato', '=', $request->searchContract];
+            }
+
             if ($dynamicWhere === []){
                 return response()->json(['status'=>'error', 'msg'=> 'Selecione um filtro para pesquisar!']);
             }
