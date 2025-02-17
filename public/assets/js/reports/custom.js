@@ -188,6 +188,8 @@ function montaTabela(dataSet,typeReport){
   $("#reporttable tbody tr").remove();
   var tr2;
 
+  var pageOrientation = 'portrait';
+
   if(typeReport == 'associate'){
     dataSet.map((value,index) => {
       let vencimento = new Date(value.vencimento);
@@ -208,6 +210,8 @@ function montaTabela(dataSet,typeReport){
   }
 
   if(typeReport == 'allAssociate'){
+    pageOrientation = 'landscape';
+
     dataSet.map((value,index) => {
 
       let datanascimento = new Date(value.assoc_datanascimento);
@@ -283,6 +287,7 @@ function montaTabela(dataSet,typeReport){
   }
 
   //console.log($("#reportModal .modal-body h4").text());
+    console.log(pageOrientation);
 
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +
@@ -296,7 +301,7 @@ function montaTabela(dataSet,typeReport){
       { extend: 'excel', className: 'btn btn-sm' },
       { extend: 'pdfHtml5',
         className: 'btn btn-sm',
-        pageOrientation: 'portrait',
+        orientation: pageOrientation,
         pageSize: 'A4',
         messageTop: function() {
           return $("#reportModal .modal-body h4").text();
