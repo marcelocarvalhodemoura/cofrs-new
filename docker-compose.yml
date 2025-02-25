@@ -11,6 +11,7 @@ services:
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     networks:
       - cofrs_network
 
@@ -27,7 +28,7 @@ services:
       - cofrs_network
 
   db:
-    image: mysql:8.0-alpine
+    image: mysql:8.0
     container_name: cofrs_db
     restart: unless-stopped
     environment:
