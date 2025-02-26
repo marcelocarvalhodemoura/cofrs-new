@@ -120,6 +120,12 @@ class DashboardController extends Controller
 
 
     public function aNAverbados() {
+        if(date('d') > 10){
+            $competência = date('Y-m-t',strtotime('+1month'));
+        } else {
+
+        }
+
         $sql = "SELECT
                     a.assoc_nome,
                     l.lanc_contrato

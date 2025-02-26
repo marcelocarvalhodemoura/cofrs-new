@@ -286,9 +286,6 @@ function montaTabela(dataSet,typeReport){
   if(typeReport == 'cashflow'){
   }
 
-  //console.log($("#reportModal .modal-body h4").text());
-    console.log(pageOrientation);
-
   $("#reporttable").DataTable({
     dom: "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B>" +
     "<'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
