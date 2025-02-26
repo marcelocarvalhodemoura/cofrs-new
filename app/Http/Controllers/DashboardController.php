@@ -121,9 +121,9 @@ class DashboardController extends Controller
 
     public function aNAverbados() {
         if(date('d') > 10){
-            $competência = date('Y-m-t',strtotime('+1month'));
+            $competencia = date('Y-m-t',strtotime('+1month'));
         } else {
-
+            $competencia = date('Y-m-t');
         }
 
         $sql = "SELECT
@@ -135,7 +135,7 @@ class DashboardController extends Controller
                     associado a
                 WHERE
                     p.par_numero = 1
-                    AND p.par_vencimentoparcela > '".date('Y-m-t',strtotime('+1month'))."'
+                    AND p.par_vencimentoparcela > '".$competencia."'
                     AND p.par_habilitasn = 1
                     AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
