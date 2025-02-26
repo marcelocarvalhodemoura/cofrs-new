@@ -119,6 +119,10 @@ class ReportsController extends Controller
   }
 
   public function reference(Request $request) {
+    ini_set('memory_limit', '256M');
+    ini_set('max_execution_time', 300);
+    
+    $retorno = array();
 
     $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
     $classificationList = Classification::orderBy('cla_nome', 'asc')->get();
@@ -205,6 +209,16 @@ class ReportsController extends Controller
           $sqlBusca .= "AND a.assoc_ativosn = ".$request->post('assoc_ativosn');
         }
 
+        // if($request->post('cpf') != ''){
+        //   $sqlBusca .= " AND a.assoc_cpf = '".$request->post('cpf')."'";
+        // }
+        
+        // // Add pagination to the query
+        // $page = $request->post('page', 1);
+        // $perPage = 100; // Adjust this number based on your needs
+        // $offset = ($page - 1) * $perPage;
+        // $sqlBusca .= " LIMIT {$perPage} OFFSET {$offset}";
+        
         $busca = \DB::select($sqlBusca);
 
         if($busca){
@@ -311,6 +325,12 @@ class ReportsController extends Controller
             $sqlBusca .= " AND t.id = ".$request->post('referencia');
           }
 
+          // Add pagination to the query
+          // $page = $request->post('page', 1);
+          // $perPage = 100; // Adjust this number based on your needs
+          // $offset = ($page - 1) * $perPage;
+          // $sqlBusca .= " LIMIT {$perPage} OFFSET {$offset}";
+          
           $busca = \DB::select($sqlBusca);
   
           if($busca){
@@ -439,6 +459,12 @@ class ReportsController extends Controller
         }
         //dd($sqlBusca);
 
+        // Add pagination to the query
+        // $page = $request->post('page', 1);
+        // $perPage = 100; // Adjust this number based on your needs
+        // $offset = ($page - 1) * $perPage;
+        // $sqlBusca .= " LIMIT {$perPage} OFFSET {$offset}";
+        
         $busca = \DB::select($sqlBusca);
         if($busca){
           $par_valor = 0;
@@ -526,6 +552,12 @@ class ReportsController extends Controller
           }
           //dd($sqlBusca);
   
+          // Add pagination to the query
+          // $page = $request->post('page', 1);
+          // $perPage = 100; // Adjust this number based on your needs
+          // $offset = ($page - 1) * $perPage;
+          // $sqlBusca .= " LIMIT {$perPage} OFFSET {$offset}";
+          
           $busca = \DB::select($sqlBusca);
           if($busca){
             $par_valor = 0;
