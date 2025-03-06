@@ -36,7 +36,7 @@ class DashboardController extends Controller
                     associado a
                 WHERE
                     p.par_numero = 1
-                    AND p.par_vencimentoparcela > '".date('Y-m-t',strtotime('+1month'))."'
+                    AND p.par_vencimentoparcela >= '".$this->getCompetencia()."-01'
                     AND p.par_habilitasn = 1
                     AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
@@ -44,11 +44,11 @@ class DashboardController extends Controller
                     AND a.assoc_ativosn = 1
                 ";
         $rst = \DB::select($sql);
-        //dd($rst);
+        //echo '<pre>'; die($sql);
 
         //alerta de não-averbados
         $nao_averbados = (object) array(
-            'vigencia' => $vigencia,
+            'vigencia' => implode('/', array_reverse(explode('-', $this->getCompetencia()))),
             'quantidade' => $rst[0]->quantidade,
         );
 
@@ -120,11 +120,6 @@ class DashboardController extends Controller
 
 
     public function aNAverbados() {
-        if(date('d') > 10){
-            $competencia = date('Y-m-t',strtotime('+1month'));
-        } else {
-            $competencia = date('Y-m-t');
-        }
 
         $sql = "SELECT
                     a.assoc_nome,
@@ -135,7 +130,7 @@ class DashboardController extends Controller
                     associado a
                 WHERE
                     p.par_numero = 1
-                    AND p.par_vencimentoparcela > '".$competencia."'
+                    AND p.par_vencimentoparcela > '".$this->getCompetencia()."-01'
                     AND p.par_habilitasn = 1
                     AND p.deleted_at IS NULL
                     AND l.id = p.lanc_codigoid
@@ -147,5 +142,15 @@ class DashboardController extends Controller
 
         return $rst;
 
+    }
+
+    private function getCompetencia() {
+        if(date('d') > 10){
+            $competencia = date('Y-m',strtotime('+1month'));
+        } else {
+            $competencia = date('Y-m');
+        }
+
+        return $competencia;
     }
 }

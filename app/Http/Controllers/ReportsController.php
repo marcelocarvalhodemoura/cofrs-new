@@ -151,6 +151,9 @@ class ReportsController extends Controller
 
   public function aReport(Request $request) {
 
+    ini_set('memory_limit', "5048M");
+    ini_set('max_execution_time', '-1');
+
     if($request->post('periodo')){
       $pp = explode(' a ',$request->post('periodo'));
       $inicio = implode('-',array_reverse(explode('/',$pp[0])));
@@ -159,7 +162,7 @@ class ReportsController extends Controller
 
     $retorno = [];
 
-    switch($request->post('typeReport')){
+    switch($request->post('typeReport')){  
       case "associate":
         $cab1 = \DB::table('associado')->select('assoc_nome','assoc_matricula')->where("assoc_cpf", "=", $request->post('cpf'))->first();
 
@@ -404,7 +407,7 @@ class ReportsController extends Controller
 
         $retorno['cabecalho'] = "Status de Pagamento<br />
                                   Convênio: ".$con->con_nome."<br />";
-
+      
         $sqlBusca = "SELECT
           a.assoc_nome,
           a.assoc_cpf,
