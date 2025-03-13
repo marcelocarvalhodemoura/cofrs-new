@@ -1173,3 +1173,11 @@ function loadUploadDropBill() {
         cancelStr: 'Cancelar',
     });
 }
+
+function carregaContrato() {
+    console.log($('#formConvenants #convenants option:selected').data('referencia'));
+    console.log($('#formConvenants #associate option:selected').data('contrato'));
+    if($('#formConvenants #convenants option:selected').data('referencia') == 'MENSALIDADE'){
+        $('#formConvenants #contract').val($('#formConvenants #associate option:selected').data('contrato'));
+    }
+}

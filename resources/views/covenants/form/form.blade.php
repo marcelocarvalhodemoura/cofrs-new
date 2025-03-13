@@ -3,20 +3,20 @@
     <div class="form-row">
         <div class="col-md-4 mb-4">
             <label for="associate">Associado <b class="error">*</b></label>
-            <select class="form-control" required id="associate" name="associate">
+            <select class="form-control" required id="associate" name="associate" onchange="carregaContrato()">
                 <option value="">-Selecione-</option>
                 @foreach ($associateList as $item)
-                    <option value="{{ $item->id }}">{{ $item->assoc_nome }}</option>
+                    <option value="{{ $item->id }}" data-contrato="{{ $item->assoc_contrato }}">{{ $item->assoc_nome }}</option>
                 @endforeach
             </select>
 
         </div>
         <div class="col-md-4 mb-4">
             <label for="convenants">Convênio <b class="error">*</b></label>
-            <select class="form-control" required id="convenants" name="convenants" style="z-index: 99999!important;">
+            <select class="form-control" required id="convenants" name="convenants" style="z-index: 99999!important;" onchange="carregaContrato()">
                 <option value="">-Selecione-</option>
                 @foreach ($agreementList as $item)
-                    <option value="{{ $item->id }}">{{ $item->con_nome }}</option>
+                    <option value="{{ $item->id }}" data-referencia="{{ $item->con_referencia }}">{{ $item->con_nome }}</option>
                 @endforeach
             </select>
 
