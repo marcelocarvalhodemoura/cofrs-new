@@ -69,6 +69,9 @@ $(document).ready(function () {
     // Currency
     $("#currency").inputmask({ mask: "$999,9999,999.99" });
 
+    // Currency
+    $(".percentual").inputmask({ mask: "99,99" });
+
     /*
     ==================
         METHODS

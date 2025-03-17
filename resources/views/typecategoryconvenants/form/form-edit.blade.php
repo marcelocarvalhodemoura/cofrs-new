@@ -33,11 +33,11 @@
     <div class="form-row">
         <div class="col-md-6 mb-6">
             <label for="con_despesa_canal">Despesa Canal <b class="error">*</b></label>
-            <input type="text" class="form-control" id="con_despesa_canal" name="con_despesa_canal" required>
+            <input type="text" class="form-control percentual" id="con_despesa_canal" name="con_despesa_canal" required>
         </div>
         <div class="col-md-6 mb-6">
             <label for="con_comissao_cofrs">Comissão COFRS <b class="error">*</b></label>
-            <input type="text" class="form-control" id="con_comissao_cofrs" name="con_comissao_cofrs" required>
+            <input type="text" class="form-control percentual" id="con_comissao_cofrs" name="con_comissao_cofrs" required>
         </div>
     </div>
     <div class="modal-footer">
