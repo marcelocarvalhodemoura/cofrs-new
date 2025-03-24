@@ -134,32 +134,18 @@
     <fieldset class="form-group mb-4" id="fieldset3">
         <div class="row">
 
-            <label class="col-form-label col-xl-2 col-sm-3 col-sm-2 pt-0">Selecione o Tipo</label>
-
+            <label class="col-form-label col-12 pt-0">Selecione o Tipo</label>
+            
+            @foreach($referenceList as $ref)
             <div class="col-md-3">
                 <div class="form-group form-check pl-0">
                     <div class="custom-control custom-checkbox checkbox-info">
-                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants2" value="DIVERSOS" checked>
-                        <label class="custom-control-label" for="convenants2">Diversos</label>
+                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants{{ $ref->con_referencia }}" value="{{ $ref->con_referencia }}" checked>
+                        <label class="custom-control-label" for="convenants{{ $ref->con_referencia }}">{{ $ref->con_referencia }}</label>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group form-check pl-0">
-                    <div class="custom-control custom-checkbox checkbox-info">
-                        <input type="checkbox" class="custom-control-input" name="convenants[]" value="MENSALIDADE" id="convenants1" checked>
-                        <label class="custom-control-label" for="convenants1">Mensalidade</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group form-check pl-0">
-                    <div class="custom-control custom-checkbox checkbox-info">
-                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants3" value="EMPRESTIMO" checked>
-                        <label class="custom-control-label" for="convenants3">Emprestimos</label>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </fieldset>
     <fieldset class="form-group mb-4" id="fieldsetFile" style="display: none;">

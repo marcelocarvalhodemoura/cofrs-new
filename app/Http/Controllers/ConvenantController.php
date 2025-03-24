@@ -52,6 +52,7 @@ class ConvenantController extends Controller
         $competitionList = Competence::orderBy('com_datainicio','desc')->get();
         $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
         $statusList = Status::orderBy('est_nome', 'asc')->get();
+        $referenceList = TypeCategoryConvenant::select('con_referencia')->groupBy('con_referencia')->orderBy('con_referencia', 'asc')->get();
 
         $currentCompetence = date('m/Y');
 
@@ -70,6 +71,7 @@ class ConvenantController extends Controller
             'competitionList'=> $competitionList,
             'agreementList' => $agreementList,
             'statusList' => $statusList,
+            'referenceList' => $referenceList,
         ];
 
         Log::channel('daily')->info('Usuário '.Session::get('user').' acessou a tela de Conveniados.');
@@ -80,8 +82,17 @@ class ConvenantController extends Controller
     public function createFile(Request $request)
     {
         Storage::disk('local')->delete('example.txt');
+/*
+        if($request->company[0] === "Ipe"){
+*/
 
         if($request->company[0] === "Ipe"){
+            $classification = '15';
+        }
+
+        if($request->company[0] === "Tesouro"){
+            $classification = '18';
+        }
 
             //Build Title File
             $titleFile = str_pad('H000000000000000CCDRPP677', 39, " ", STR_PAD_RIGHT);
@@ -94,7 +105,7 @@ class ConvenantController extends Controller
                 // Validate Diversos reference
                 if($typeConvenant === "DIVERSOS"){
                     // Return Sql Diversos
-                    $convenantDiversoAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'DIVERSOS');
+                    $convenantDiversoAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'DIVERSOS', $classification);
 
                     //List Diversos
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
@@ -117,7 +128,7 @@ class ConvenantController extends Controller
                 // Validate Monthly Payment
                 if($typeConvenant === "MENSALIDADE"){
                     //Return Sql Monthly Payment
-                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE');
+                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE', $classification);
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
 
@@ -135,7 +146,7 @@ class ConvenantController extends Controller
                 }
 
                 if($typeConvenant === 'EMPRESTIMO'){
-                    $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO');
+                    $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO', $classification);
 
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
@@ -158,10 +169,11 @@ class ConvenantController extends Controller
 
 
             }
-
+        /*
         } else {
             echo "tesouro";
         }
+        */
 
         Log::channel('daily')->info('Usuário '.Session::get('user').' exportou o arquivo da competência '.$request->monthCompetence . '/' . $request->yearCompetence.'.');
 
@@ -171,7 +183,7 @@ class ConvenantController extends Controller
 
     }
 
-    private function typeReferenceAgrouped($competenceName, $reference)
+    private function typeReferenceAgrouped($competenceName, $reference, $classification)
     {
 
         switch ($reference){
@@ -183,11 +195,12 @@ class ConvenantController extends Controller
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
-                    ->where('cla_codigoid', '=', 15)
+                    ->where('cla_codigoid', '=', $classification)
                     ->where('par_numero', '=', 1)
                     ->whereNull('parcelamento.deleted_at')
-                    ->orderBy('assoc_matricula', 'asc')
-                    ->get();
+                    ->orderBy('assoc_matricula', 'asc');
+
+                    dd($referenceSql->toSql(),$referenceSql->getBindings());
                 break;
 
             case 'DIVERSOS':
@@ -200,7 +213,7 @@ class ConvenantController extends Controller
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
 
-                    ->where('cla_codigoid', '=', 15)
+                    ->where('cla_codigoid', '=', $classification)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
                     ->whereNull('parcelamento.deleted_at')
@@ -218,7 +231,7 @@ class ConvenantController extends Controller
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
                     ->where('par_habilitasn', '=', 1)
-                    ->where('cla_codigoid', '=', 15)
+                    ->where('cla_codigoid', '=', $classification)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
                     ->whereNull('parcelamento.deleted_at')
