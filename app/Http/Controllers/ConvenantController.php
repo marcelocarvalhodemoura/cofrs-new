@@ -136,7 +136,6 @@ class ConvenantController extends Controller
                     $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, "MENSALIDADE", $classification);
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
-                        die('oi');
                         $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
@@ -203,7 +202,8 @@ class ConvenantController extends Controller
                     ->where('cla_codigoid', '=', $classification)
                     ->where('par_numero', '=', 1)
                     //->whereNull('parcelamento.deleted_at')
-                    ->orderBy('assoc_matricula', 'asc');
+                    ->orderBy('assoc_matricula', 'asc')
+                    ->get();
 
                     //dd($referenceSql->toSql(),$referenceSql->getBindings());
                 break;
