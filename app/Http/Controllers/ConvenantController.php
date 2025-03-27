@@ -52,7 +52,12 @@ class ConvenantController extends Controller
         $competitionList = Competence::orderBy('com_datainicio','desc')->get();
         $agreementList = Agreement::orderBy('con_nome', 'asc')->get();
         $statusList = Status::orderBy('est_nome', 'asc')->get();
-        $referenceList = TypeCategoryConvenant::select('con_referencia')->groupBy('con_referencia')->orderBy('con_referencia', 'asc')->get();
+        //$referenceList = TypeCategoryConvenant::select('con_referencia')->groupBy('con_referencia')->orderBy('con_referencia', 'asc')->get();
+        $referenceList = (object)[
+            (object)['con_referencia' => 'EMPRESTIMO'],
+            (object)['con_referencia' => 'DIVERSOS'],
+            (object)['con_referencia' => 'MENSALIDADE']
+        ];
 
         $currentCompetence = date('m/Y');
 
@@ -128,10 +133,10 @@ class ConvenantController extends Controller
                 // Validate Monthly Payment
                 if($typeConvenant === "MENSALIDADE"){
                     //Return Sql Monthly Payment
-                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'MENSALIDADE', $classification);
+                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, "MENSALIDADE", $classification);
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
-
+                        die('oi');
                         $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
@@ -197,10 +202,10 @@ class ConvenantController extends Controller
                     ->where('con_referencia', '=', $reference)
                     ->where('cla_codigoid', '=', $classification)
                     ->where('par_numero', '=', 1)
-                    ->whereNull('parcelamento.deleted_at')
+                    //->whereNull('parcelamento.deleted_at')
                     ->orderBy('assoc_matricula', 'asc');
 
-                    dd($referenceSql->toSql(),$referenceSql->getBindings());
+                    //dd($referenceSql->toSql(),$referenceSql->getBindings());
                 break;
 
             case 'DIVERSOS':
