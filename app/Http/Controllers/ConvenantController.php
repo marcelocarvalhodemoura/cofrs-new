@@ -93,14 +93,15 @@ class ConvenantController extends Controller
 
         if($request->company[0] === "Ipe"){
             $classification = '15';
+            $titleFile = str_pad('H000000000000000CCDRPP677', 39, " ", STR_PAD_RIGHT);
         }
 
         if($request->company[0] === "Tesouro"){
             $classification = '18';
+            $titleFile = str_pad('H000000000000000CCDGOV677', 39, " ", STR_PAD_RIGHT);
         }
 
             //Build Title File
-            $titleFile = str_pad('H000000000000000CCDRPP677', 39, " ", STR_PAD_RIGHT);
             $complementTitle = str_pad($request->monthCompetence, 67,"0", STR_PAD_RIGHT );
             //Header file
             $contentFile = $titleFile . $request->yearCompetence . $complementTitle . "\r\n";
