@@ -487,11 +487,12 @@ class ReportsController extends Controller
               );
             $par_valor += $b->par_valor;
           }
-          $retorno['par_valor'] = $par_valor;
+          $retorno['par_valor'] = number_format($par_valor,2,',','.');
           $retorno['con_comissao_cofrs'] = $b->con_comissao_cofrs;
           $retorno['comissao_cofrs'] = number_format($b->con_comissao_cofrs*$par_valor/100,2,',','.');
           $retorno['con_despesa_canal'] = $b->con_despesa_canal;
           $retorno['despesa_canal'] = number_format($b->con_despesa_canal*$par_valor/100,2,',','.');
+          $retorno['liquido'] = number_format($par_valor-($b->con_comissao_cofrs*$par_valor/100)-($b->con_despesa_canal*$par_valor/100),2,',','.');
         } else {
           $retorno['erro'] = "Não existem resultados para esta busca";
         }

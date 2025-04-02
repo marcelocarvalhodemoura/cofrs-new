@@ -162,7 +162,7 @@ function buscar(){
             $('div#prolabore').remove();
             if(response.con_despesa_canal || response.con_comissao_cofrs){
               console.log('aqui');
-              $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nComissão COFRS: R$ '+response.comissao_cofrs+'<br />\nComissão COFRS: '+response.con_comissao_cofrs+'%<br />\nDespesa Canal: R$ '+response.despesa_canal+'<br />\nDespesa Canal: '+response.con_despesa_canal+'%</div></div>');
+              $(".modal-body").append('<div class="row mt-5 fw-bold" id="prolabore"><div class="col-12 text-end">\nTotal bruto: R$ '+response.par_valor+'<br />\nComissão COFRS: R$ '+response.comissao_cofrs+'<br />\nComissão COFRS: '+response.con_comissao_cofrs+'%<br />\nDespesa Canal: R$ '+response.despesa_canal+'<br />\nDespesa Canal: '+response.con_despesa_canal+'%<br />\nTotal líquido: R$ '+response.liquido+'</div></div>');
             }
 
             $('div#i').remove();
