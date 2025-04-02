@@ -70,7 +70,7 @@ $(document).ready(function () {
     $("#currency").inputmask({ mask: "$999,9999,999.99" });
 
     // Currency
-    $(".percentual").inputmask({ mask: "99,99" });
+    $(".percentual").inputmask({ mask: "[9]9,99", numericInput: true, radixPoint: "." , _radixDance: true});
 
     /*
     ==================

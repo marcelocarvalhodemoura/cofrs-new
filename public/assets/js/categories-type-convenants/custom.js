@@ -165,8 +165,8 @@ $(document).ready(function(){
                     $('#formtypecategoryconvenants #reference').val(response.con_referencia);
                     $('#formtypecategoryconvenants #typeCategory').val(response.tipconv_codigoid);
 
-                    $('#formtypecategoryconvenants #con_comissao_cofrs').val(response.con_comissao_cofrs.toString().replace('.',','));
-                    $('#formtypecategoryconvenants #con_despesa_canal').val(response.con_despesa_canal.toString().replace('.',','));
+                    $('#formtypecategoryconvenants #con_comissao_cofrs').val(response.con_comissao_cofrs.toFixed(2).toString().replace('.',','));
+                    $('#formtypecategoryconvenants #con_despesa_canal').val(response.con_despesa_canal.toFixed(2).toString().replace('.',','));
 
                     $('#formtypecategoryconvenants').append('<input type="hidden" id="typeCategoryId" name="typeCategoryId" value="'+response.id+'"/>');
                 }

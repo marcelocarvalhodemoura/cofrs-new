@@ -60,7 +60,7 @@ class TypeCategoryConvenantController extends Controller
 
     public function store(Request $request)
     {
-
+        //die(str_replace(',','.',$request->post('con_comissao_cofrs')));
         try {
             TypeCategoryConvenant::updateOrCreate(
                 ['id' => $request->post('typeCategoryId')],
