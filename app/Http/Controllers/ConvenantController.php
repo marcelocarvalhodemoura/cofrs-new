@@ -56,7 +56,8 @@ class ConvenantController extends Controller
         $referenceList = (object)[
             (object)['con_referencia' => 'EMPRESTIMO'],
             (object)['con_referencia' => 'DIVERSOS'],
-            (object)['con_referencia' => 'MENSALIDADE']
+            (object)['con_referencia' => 'MENSALIDADE'],
+            (object)['con_referencia' => 'MENSALIDADE (TODOS)'],
         ];
 
         $currentCompetence = date('m/Y');
@@ -87,9 +88,8 @@ class ConvenantController extends Controller
     public function createFile(Request $request)
     {
         Storage::disk('local')->delete('example.txt');
-/*
-        if($request->company[0] === "Ipe"){
-*/
+
+
 
         if($request->company[0] === "Ipe"){
             $classification = '15';
@@ -111,7 +111,7 @@ class ConvenantController extends Controller
                 // Validate Diversos reference
                 if($typeConvenant === "DIVERSOS"){
                     // Return Sql Diversos
-                    $convenantDiversoAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'DIVERSOS', $classification);
+                    $convenantDiversoAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'DIVERSOS', $classification, $request->agreement);
 
                     //List Diversos
                     foreach ($convenantDiversoAgroup as $convenantDiverso){
@@ -132,9 +132,10 @@ class ConvenantController extends Controller
                 }
 
                 // Validate Monthly Payment
-                if($typeConvenant === "MENSALIDADE"){
+                if($typeConvenant === "MENSALIDADE" || $typeConvenant === "MENSALIDADE (TODOS)"){
                     //Return Sql Monthly Payment
-                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, "MENSALIDADE", $classification);
+                    $convenantMonthlyPaymentAgroup = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, $typeConvenant, $classification, $request->agreement);
+                    //var_dump($convenantMonthlyPaymentAgroup); die;
                     //List Monthly Payment
                     foreach($convenantMonthlyPaymentAgroup as $convenantMonthlyPayment){
                         $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
@@ -151,7 +152,7 @@ class ConvenantController extends Controller
                 }
 
                 if($typeConvenant === 'EMPRESTIMO'){
-                    $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO', $classification);
+                    $loanConvenant = self::typeReferenceAgrouped($request->monthCompetence . '/' . $request->yearCompetence, 'EMPRESTIMO', $classification, $request->agreement);
 
                     //List Monthly Payment
                     foreach($loanConvenant as $loan){
@@ -188,29 +189,53 @@ class ConvenantController extends Controller
 
     }
 
-    private function typeReferenceAgrouped($competenceName, $reference, $classification)
+    private function typeReferenceAgrouped($competenceName, $reference, $classification, $agreements = null)
     {
 
         switch ($reference){
             case 'MENSALIDADE':
-                $referenceSql = Portion::select('assoc_identificacao', 'par_valor', 'con_referencia', 'assoc_contrato')
+                $sql = Portion::select('assoc_identificacao', 'par_valor', 'con_referencia', 'assoc_contrato')
+                ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
+                ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
+                ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
+                ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
+                ->where('com_nome', '=', $competenceName)
+                ->where('con_referencia', '=', 'MENSALIDADE')
+                ->where('cla_codigoid', '=', $classification)
+                ->where('par_numero', '=', 1);
+
+                if($agreements != null){
+                    $sql->where('convenio.id', '=', $agreements);
+                }
+                
+                $referenceSql = $sql->orderBy('assoc_matricula', 'asc')->get();
+
+                //dd($referenceSql->toSql(),$referenceSql->getBindings());
+                
+                break;
+
+            case 'MENSALIDADE (TODOS)':
+                $sql = Portion::select('assoc_identificacao', 'par_valor', 'con_referencia', 'assoc_contrato')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->where('com_nome', '=', $competenceName)
-                    ->where('con_referencia', '=', $reference)
+                    ->where('con_referencia', '=', 'MENSALIDADE')
                     ->where('cla_codigoid', '=', $classification)
-                    ->where('par_numero', '=', 1)
-                    //->whereNull('parcelamento.deleted_at')
-                    ->orderBy('assoc_matricula', 'asc')
-                    ->get();
+                    ;
 
+                    if($agreements != null){
+                        $sql->where('convenio.id', '=', $agreements);
+                    }
+
+                    $referenceSql = $sql->orderBy('assoc_matricula', 'asc')->get();
+    
                     //dd($referenceSql->toSql(),$referenceSql->getBindings());
                 break;
 
             case 'DIVERSOS':
-                $referenceSql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato')
+                $sql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato')
                     ->selectRaw('SUM(par_valor) as valor_total_diversos')
                     //->selectRaw('MAX(lancamento.lanc_datavencimento) as datamaior')
 
@@ -218,19 +243,21 @@ class ConvenantController extends Controller
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                     ->join('associado', 'associado.id', '=', 'lancamento.assoc_codigoid')
                     ->join('convenio', 'convenio.id', '=', 'lancamento.con_codigoid')
-
                     ->where('cla_codigoid', '=', $classification)
                     ->where('com_nome', '=', $competenceName)
                     ->where('con_referencia', '=', $reference)
                     ->whereNull('parcelamento.deleted_at')
                     ->whereNull('lancamento.deleted_at')
+                    ->groupBy('assoc_identificacao');
 
-                    ->groupBy('assoc_identificacao')
-                    ->orderBy('assoc_identificacao', 'asc')
-                    ->get();
+                    if($agreements != null){
+                        $sql->where('convenio.id', '=', $agreements);
+                    }
+
+                    $referenceSql = $sql->orderBy('assoc_identificacao', 'asc')->get();
                 break;
             case 'EMPRESTIMO':
-                $referenceSql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato', 'lanc_datavencimento')
+                $sql = Portion::select('assoc_identificacao', 'con_referencia', 'lanc_contrato', 'lanc_datavencimento')
                     ->selectRaw('SUM(par_valor) as valor_total_emprestimo')
                     ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
                     ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
@@ -242,8 +269,13 @@ class ConvenantController extends Controller
                     ->where('con_referencia', '=', $reference)
                     ->whereNull('parcelamento.deleted_at')
                     ->whereNull('lancamento.deleted_at')
-                    ->groupBy('lancamento.lanc_contrato')
-                    ->get();
+                    ->groupBy('lancamento.lanc_contrato');
+
+                    if($agreements != null){
+                        $sql->where('convenio.id', '=', $agreements);
+                    }
+
+                    $referenceSql = $sql->orderBy('assoc_identificacao', 'asc')->get();
                 break;
         }
 

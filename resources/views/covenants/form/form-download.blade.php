@@ -140,12 +140,26 @@
             <div class="col-md-3">
                 <div class="form-group form-check pl-0">
                     <div class="custom-control custom-checkbox checkbox-info">
-                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants{{ $ref->con_referencia }}" value="{{ $ref->con_referencia }}" checked>
+                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants{{ $ref->con_referencia }}" value="{{ $ref->con_referencia }}">
                         <label class="custom-control-label" for="convenants{{ $ref->con_referencia }}">{{ $ref->con_referencia }}</label>
                     </div>
                 </div>
             </div>
             @endforeach
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset class="form-group mb-4" id="fieldset3">
+        <div class="row">
+            <div class="col-6">
+                <label for="agreement" class="col-form-label col-12 pt-0">Convênio</label>
+                <select class="form-control" required id="agreement" name="agreement">
+                    <option value="">Todos</option>
+                    @foreach ($agreementList as $item)
+                        <option value="{{ $item->id }}" data-referencia="{{ $item->con_referencia }}">{{ $item->con_nome }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </fieldset>
     <fieldset class="form-group mb-4" id="fieldsetFile" style="display: none;">
