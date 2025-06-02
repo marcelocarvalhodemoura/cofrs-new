@@ -141,7 +141,11 @@ class ConvenantController extends Controller
                         $contractMonthPay = str_pad($convenantMonthlyPayment->assoc_contrato, 40, " ", STR_PAD_RIGHT);
                         $reference = str_pad($convenantMonthlyPayment->con_referencia, 20, " ", STR_PAD_RIGHT);
                         //Format money to 2 decimal
-                        $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
+                        if($typeConvenant === "MENSALIDADE (TODOS)"){
+                            $monthlyPaymentTotal = str_replace(',','.', str_replace('.','',$request->reajuste));
+                        } else {
+                            $monthlyPaymentTotal = number_format($convenantMonthlyPayment->par_valor, 2, '.', '');
+                        }
                         $monthlyPaymentTotal = explode('.', $monthlyPaymentTotal);
 
                         $valuePortionMonthlyPayment = str_pad($monthlyPaymentTotal[0].$monthlyPaymentTotal[1], 9 ,  "0", STR_PAD_LEFT);
@@ -194,6 +198,8 @@ class ConvenantController extends Controller
 
         switch ($reference){
             case 'MENSALIDADE':
+                $competenceArr = explode('/', $competenceName);
+
                 $sql = Portion::select('assoc_identificacao', 'par_valor', 'con_referencia', 'assoc_contrato')
                 ->join('competencia', 'competencia.id', '=', 'parcelamento.com_codigoid')
                 ->join('lancamento', 'lancamento.id', '=', 'parcelamento.lanc_codigoid')
@@ -202,15 +208,18 @@ class ConvenantController extends Controller
                 ->where('com_nome', '=', $competenceName)
                 ->where('con_referencia', '=', 'MENSALIDADE')
                 ->where('cla_codigoid', '=', $classification)
-                ->where('par_numero', '=', 1);
+                ->where('par_numero', '=', 1)
+                ->where(DB::raw('(SELECT COUNT(id) FROM parcelamento WHERE com_nome < "'.$competenceName.'" AND com_nome > "'.date('m/Y',strtotime($competenceArr[1].'-'.$competenceArr[0].'-01 -3months')).'" AND con_referencia = "MENSALIDADE" AND cla_codigoid = 15 AND deleted_at IS NULL)'), '=', 0);
 
                 if($agreements != null){
                     $sql->where('convenio.id', '=', $agreements);
                 }
                 
-                $referenceSql = $sql->orderBy('assoc_matricula', 'asc')->get();
+                $referenceSql = $sql->orderBy('assoc_matricula', 'asc');//->get();
 
                 //dd($referenceSql->toSql(),$referenceSql->getBindings());
+
+                $referenceSql = $sql->get();
                 
                 break;
 

@@ -23,6 +23,9 @@ $(document).ready(function () {
 
     hideModels();
 
+    $('#fieldset4').hide();
+    $("#reajuste").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false });
+
     $('#btnAddMonthlyPayment').on('click', (event) => {
         event.preventDefault();
         $("#monthlyPayment").modal('show');
@@ -1177,5 +1180,17 @@ function loadUploadDropBill() {
 function carregaContrato() {
     if($('#formConvenants #convenants option:selected').data('referencia') == 'MENSALIDADE'){
         $('#formConvenants #contract').val($('#formConvenants #associate option:selected').data('contrato'));
+    }
+}
+
+function checkReferencia(el){
+    if($(el).val() == 'MENSALIDADE (TODOS)'){
+        if($(el).is(':checked')){
+            $("#reajuste").prop('required', true);
+            $("#fieldset4").show();
+        } else {
+            $("#reajuste").prop('required', false);
+            $("#fieldset4").hide();
+        }
     }
 }

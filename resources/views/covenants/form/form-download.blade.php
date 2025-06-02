@@ -140,13 +140,23 @@
             <div class="col-md-3">
                 <div class="form-group form-check pl-0">
                     <div class="custom-control custom-checkbox checkbox-info">
-                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants{{ $ref->con_referencia }}" value="{{ $ref->con_referencia }}">
+                        <input type="checkbox" class="custom-control-input" name="convenants[]" id="convenants{{ $ref->con_referencia }}" value="{{ $ref->con_referencia }}" onclick="checkReferencia(this)">
                         <label class="custom-control-label" for="convenants{{ $ref->con_referencia }}">{{ $ref->con_referencia }}</label>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+    </fieldset>
+    <hr />
+    <fieldset class="form-group mb-4" id="fieldset4">
+        <div class="row">
+            <div class="col-6">
+                <label for="reajuste" class="col-form-label col-12 pt-0">Reajuste</label>
+                <input type="money" class="form-control" id="reajuste" name="reajuste" />
+            </div>
+        </div>
+    </fieldset>
     </fieldset>
     <hr />
     <fieldset class="form-group mb-4" id="fieldset3">
