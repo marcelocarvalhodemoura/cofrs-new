@@ -34,7 +34,8 @@
             "App\\": "app/",
             "DevWev\\LibPassword\\": "app/Libraries/DevWev/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "DevWev\\LibPassword\\": "app/Libraries/DevWev/",
         },
         "files": [
             "app/Helpers.php"
