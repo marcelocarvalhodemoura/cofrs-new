@@ -32,8 +32,11 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password" class="feather feather-eye" tabindex="1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </div>
                                 <div class="d-sm-flex justify-content-between">
-                                    <div class="field-wrapper">
+                                    <div class="d-block">
                                         <button type="submit" class="btn btn-primary" tabindex="0">Acessar</button>
+                                    </div>
+                                    <div class="d-block">
+                                        <a href="/esqueci" class="btn btn-outline-primary">Esqueci a senha</a>
                                     </div>
                                 </div>
 

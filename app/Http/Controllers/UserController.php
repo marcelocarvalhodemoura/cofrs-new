@@ -13,22 +13,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers;
 use Illuminate\Support\Facades\Log;
 
-use App\Http\Controllers\MailController;
+
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Mail;
+use App\Libraries\DevWev\LibPassword;
 
 class UserController extends Controller
 {
-
-    
-    public function teste(){
-        $contact = new MailController([
-            'name' => 'John',
-            'email' => 'jonatascrizel@gmail.com',
-            'message' => 'Olá mundo',
-            'subject' => 'teste',
-        ]);
-        $contact->sendEmail();
-    }
-
+   
     public function index(Request $request)
     {
 
@@ -163,15 +155,29 @@ class UserController extends Controller
     {
         $userModel = new User();
 
+        $pass = LibPassword::gerarSenha(10);
+
         try {
 
             $userModel->usr_nome = $request->post('name');
             $userModel->usr_usuario = $request->post('user');
             $userModel->usr_email = $request->post('email');
-            $userModel->usr_senha = Hash::make($request->post('password1'));
+            $userModel->usr_senha = Hash::make($pass);
             $userModel->tipusr_codigoid = $request->post('usertype');
 
             $userModel->save();
+
+            $contact = [
+                'template' => 'emails.new_user',
+                'name' => $request->post('name'),
+                'email' => $request->post('email'),
+                'subject' => 'Seu acesso ao sistema',
+                'usuario' => $request->post('user'),
+                'senha' => $pass,
+                'acesso' => env('APP_URL'),
+            ];
+
+            Mail::to($contact['email'])->send(new SendEmail($contact));
 
             Log::channel('daily')->info('Usuário '.Session::get('user').' criou o cadastro do usuário '.$request->post('user').'.');
 
@@ -205,6 +211,43 @@ class UserController extends Controller
         }
     }
 
+    public function recovery(Request $request){
+        $userModel = User::select('*', 'usuario.id AS user_id')->join('tipousuario', 'tipousuario.id', '=', 'usuario.tipusr_codigoid')
+            ->where('usr_usuario', '=', $request->username)
+            ->get();
+        //die('- '.$userModel[0]->id);
+        //var_dump($userModel); die;
+        if ($userModel == '[]') {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Usuário inválido'
+            ]);
+        } else {
+            $pass = LibPassword::gerarSenha(10);
+            $userModel->usr_senha = Hash::make($pass);
+            //$userModel->save();
+            User::where('id', $userModel[0]->id)->update(['usr_senha' => Hash::make($pass)]);
+
+            $contact = [
+                'template' => 'emails.recovery',
+                'name' => $userModel[0]->usr_nome,
+                'email' => $userModel[0]->usr_email,
+                'subject' => 'Sua nova senha',
+                'usuario' => $userModel[0]->usr_usuario,
+                'senha' => $pass,
+                'acesso' => env('APP_URL'),
+            ];
+
+            Mail::to($contact['email'])->send(new SendEmail($contact));
+
+            Log::channel('daily')->info('Usuário '.Session::get('user').' solicitou a redefinição da sua senha.');
+
+            return response()->json([
+                'status' => 'success',
+                'msg' => '',
+            ]);
+        }
+    }
 
     /**
      * Forgot password
@@ -255,6 +298,18 @@ class UserController extends Controller
             Log::channel('daily')->error('Usuário '.Session::get('user').' tentou deletar o usuário '.$userModel->usr_usuario).' e obteve o erro: '.$e->getMessage().'.';
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
+    }
+
+    public function teste(){
+    
+    $contact = [
+        'name' => 'John',
+        'email' => 'jonatascrizel@gmail.com',
+        'message' => 'Olá mundo',
+        'subject' => 'teste',
+    ];
+
+    Mail::to($contact['email'])->send(new SendEmail($contact));
     }
 
 }

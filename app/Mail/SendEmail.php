@@ -28,11 +28,11 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-
+        
         return $this
-                ->from(config('mail.from.address'))
-                ->subject(config('Contado do Site'))
-                ->view('emails.teste')
-                ->with('details', $this->details);
+                ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
+                ->subject($this->details['subject'])
+                ->view($this->details['template'])
+                ->with('mensagem', $this->details);
     }
 }

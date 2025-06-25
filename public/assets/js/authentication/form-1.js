@@ -13,6 +13,7 @@ if (togglePassword) {
     }
   });
 }
+
 $('#formAuth').on('submit', event => {
   event.preventDefault();
 
@@ -31,13 +32,10 @@ $('#formAuth').on('submit', event => {
           '</div>';
 
         $('#formAuth').prepend(msg);
-        setTimeout(()=>{
-            $('.alert-warning').remove();
-        },1000);
 
       } else {
-        console.log(response.typeId);
         /*
+        console.log(response.typeId);
         */
         if(response.typeId == 4){//se for operador
           window.location.href = '/associates';
@@ -49,8 +47,46 @@ $('#formAuth').on('submit', event => {
     }
   });
 
-
+  
 });
+
+
+$('#formRecover').on('submit', event => {
+  event.preventDefault();
+
+  $.ajax({
+    method: "POST",
+    url: "/recovery",
+    data: $("#formRecover").serialize(),
+    success: response => {
+
+      if (response.status == 'error') {
+
+        const msg = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><strong>Atenção!</strong> ' + response.msg +
+          '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+          '<span aria-hidden="true">&times;</span>' +
+          '</button>' +
+          '</div>';
+
+        $('#formRecover').prepend(msg);
+
+      } else {
+        swal({
+            title: 'Sucesso!',
+            text: 'Sua senha nova foi enviada para o e-mail associado a este usuário.',
+            type: response.status,
+            confirmButtonClass: 'btn btn-success',
+        }).then(function (result) {
+            window.location.href = '/';
+        });
+      }
+
+    }
+  });
+
+  
+});
+
 
 
 

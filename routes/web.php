@@ -46,8 +46,23 @@ Route::get('', function () {
     // $pageName = 'auth_default';
     return view('pages.authentication.auth_login')->with($data);
 })->name('login');
+Route::post('/recovery', [UserController::class, 'recovery']);
 
+Route::get('/esqueci', function () {
+    // $category_name = 'auth';
+    $data = [
+        'category_name' => 'auth',
+        'page_name' => 'auth_boxed',
+        'has_scrollspy' => 0,
+        'scrollspy_offset' => '',
+        'alt_menu' => 0,
+    ];
+    // $pageName = 'auth_default';
+    return view('pages.authentication.auth_pass_recovery')->with($data);
+})->name('login');
 Route::post('/auth', [UserController::class, 'authentication']);
+
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::post('/dashboard/aNAverbados', [DashboardController::class, 'aNAverbados']);
@@ -68,8 +83,8 @@ Route::post('/users/update/{id}', [UserController::class, 'update']);
 Route::get('/users/profile/{id}', [UserController::class, 'profile']);
 
 
-
-Route::get('/teste', [UserController::class, 'teste']);
+//Teste do sistema de e-mails
+//Route::get('/teste', [UserController::class, 'teste']);
 
 /**
  * Associates Routes
