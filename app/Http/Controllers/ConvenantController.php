@@ -629,7 +629,8 @@ class ConvenantController extends Controller
                 $content['G'] == "" ){
                     continue;
                 }
-            if($content['A'] != 'ID' && $content['A'] != ""){
+            $content['A'] = str_pad($content['A'], 11, "0", STR_PAD_LEFT);
+            if($content['A'] != '000000000ID' && $content['A'] != ""){
                 /* removida essa validação em 15/10/2024, substituída pela validação de ID
                 $dataAssociado = Associate::where('assoc_nome', '=', $content['B'])->get();
                 if(!isset($dataAssociado[0]['assoc_nome'])){
@@ -646,7 +647,7 @@ class ConvenantController extends Controller
                     $erro .= "- Convênio inválido;<br />";
                 }
 
-                if(!is_int($content['D']) || !$content['D'] > 0){
+                if(!$content['D'] > 0){
                     $erro .= "- Número de parcelas é inválido;<br />";
                 }
 
