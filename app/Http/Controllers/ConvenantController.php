@@ -85,8 +85,7 @@ class ConvenantController extends Controller
         return view('covenants.list', $lists)->with($data);
     }
 
-    public function createFile(Request $request)
-    {
+    public function createFile(Request $request){
         Storage::disk('local')->delete('example.txt');
 
 
@@ -401,7 +400,7 @@ class ConvenantController extends Controller
                     ]
                 );
 
-            Log::channel('daily')->info('Usuário '.Session::get('user').' o status da parcela '.$id.' para '.$status.'.');
+            Log::channel('daily')->info('Usuário '.Session::get('user').' alterou o status da parcela '.$id.' para '.$status.'.');
 
             return $portion;
         } catch (Exception $e) {
@@ -1209,7 +1208,7 @@ class ConvenantController extends Controller
 
                 //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
                 while (!feof($ponteiro)) {
-                    $ln = fgets($ponteiro, 4096);
+                    $ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', fgets($ponteiro, 4096));
                     if(trim($ln) == ""){
                         continue;
                     }
@@ -1260,8 +1259,6 @@ class ConvenantController extends Controller
 
                     $numeroLinha++;
                 }
-
-                //print_r($linha);
 
                 // arquivo de diferenças
                 /*
