@@ -1136,7 +1136,7 @@ class ConvenantController extends Controller
             
             //se não for pago deleto a parcela
             if($parc->par_status != 'Pago') {
-                Log::channel('daily')->info('Usuário '.Session::get('user').' a parcela '.$parc->id.' do lançamento nº '.$request->lanc_codigoid.'.');
+                Log::channel('daily')->info('Usuário '.Session::get('user').' a parcela '.$parc->id.' do lançamento nº '.$parc->id.'.');
 
                 Portion::find($parc->id)
                         ->update([
