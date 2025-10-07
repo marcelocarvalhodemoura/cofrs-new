@@ -22,6 +22,7 @@ class Portion extends Model
         'par_status',
         'com_codigoid',
         'par_equivalente',
-        'par_habitiadosn'
+        'par_habilitasn',
+        'deleted_at'
     ];
 }

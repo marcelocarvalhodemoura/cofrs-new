@@ -675,8 +675,6 @@ class ConvenantController extends Controller
                     $erro .= "- Contrato inválido;<br />";
                 }
 
-
-
                 //se teve algum erro, registra para o retorno
                 if($erro != ""){
                     $retorno .= "<strong>Linha ".$line.":</strong><br />".$erro;
@@ -705,6 +703,7 @@ class ConvenantController extends Controller
                     if(strlen($dt[0]) < 2){
                         $dt[0] = '0'.$dt[0];
                     }
+
                     if(strlen($dt[1]) < 2){
                         $dt[1] = '0'.$dt[1];
                     }
@@ -715,7 +714,7 @@ class ConvenantController extends Controller
                     $interval = DateInterval::createFromDateString('+'.intval($content['D']-1).' month');
                     $dv->add($interval);
 
-//                    die($dv->format('Y-m-d'));
+                    //die($dv->format('Y-m-d'));
 
                     $lancamento = Convenant::create([
                         'lanc_valortotal' => $valorTotal,
@@ -754,7 +753,7 @@ class ConvenantController extends Controller
 
                     }
 
-                }else{
+                } else {
                     return false;
                 }
             }
@@ -764,7 +763,7 @@ class ConvenantController extends Controller
             Log::channel('daily')->info('Usuário '.Session::get('user').' processou o arquivo de retorno.');
 
             return 'success';
-        }else{
+        } else {
             return 'Erro na leitura do arquivo';
         }
 
@@ -1139,7 +1138,11 @@ class ConvenantController extends Controller
             if($parc->par_status != 'Pago') {
                 Log::channel('daily')->info('Usuário '.Session::get('user').' a parcela '.$parc->id.' do lançamento nº '.$request->lanc_codigoid.'.');
 
-                Portion::find($parc->id)->delete();
+                Portion::find($parc->id)
+                        ->update([
+                            'par_habilitasn' => 2,
+                            'deleted_at' => date('Y-m-d H:i:s')
+                        ]);
             } else {
                 $err .= 'Parcela '.$parc->par_numero.', valor R$ '.$parc->par_valor.' está paga e não pode ser deletada.\n';
             }
