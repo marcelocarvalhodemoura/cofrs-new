@@ -1399,10 +1399,10 @@ class ConvenantController extends Controller
                 $par_status = 'Pendente';
             } else
             */
-            if (trim($linha['motivoRejeicaoDireita']) == "Insufici?ncia de L?quido"){
+            if (trim($linha['motivoRejeicaoDireita']) == "Insuficiência de Líquido"){
                 $arr_rtn['msg'] = 'Insuficiencia de saldo';
                 $par_status = 'Vencido';
-            } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Obito"){
+            } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Óbito"){
                 $arr_rtn['msg'] = 'Óbito';
                 $par_status = 'Vencido';
             } elseif($linha['valorRejeitado'] > 0){
