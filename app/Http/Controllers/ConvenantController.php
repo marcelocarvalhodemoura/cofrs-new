@@ -1211,10 +1211,24 @@ class ConvenantController extends Controller
 
                 //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
                 while (!feof($ponteiro)) {
-                    $ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', fgets($ponteiro, 4096));
+                    $p = fgets($ponteiro, 4096);
+
+                    //$ln = preg_replace('/[^a-zA-Z0-9ÊêÍíÇçÃãÓó\/_ \-]/u', '', $p);
+                    $ln = $p;
+                    //$ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $p);
+
+                    //$len = strlen($ln) - strlen($ln2);
+                    if($numeroLinha == 1)
+                        $ln = substr($ln,3);
+
                     if(trim($ln) == ""){
                         continue;
                     }
+                    /*
+                   echo mb_substr($ln, 134, 40).'<br />';
+                     */
+
+                    //die;
                     $linha[$numeroLinha]['convenio'] = $request->typeArchive;
                     $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
                     $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
@@ -1230,11 +1244,16 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['valorDescontatoEmFolha'] = substr($ln, 50, 9);
                         $linha[$numeroLinha]['valorRejeitado'] = substr($ln, 59, 9);
                         $linha[$numeroLinha]['situacao'] = substr($ln, 68, 30);
-                        $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 24);
+                        $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 25);
                         $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
                         $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
-                        $linha[$numeroLinha]['contrato'] = trim(substr($ln, 134, 40));
-                        $linha[$numeroLinha]['contatoFormatado'] = substr($ln, 134, 15);//parte do contrato
+                        if($numeroLinha == 1){
+                            $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
+                            $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
+                        } else {
+                            $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
+                            $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
+                        }
                         $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
                         $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
                         $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
@@ -1247,7 +1266,8 @@ class ConvenantController extends Controller
                         $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
                     }
 
-                    //print_r($linha); die;
+                    //print_r($linha[$numeroLinha]); 
+                    // die;
 
                     //verifica os dados do arquivo
                     $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
@@ -1383,7 +1403,7 @@ class ConvenantController extends Controller
                             ->where('associado.assoc_contrato','=', $linha['contrato'])
                             ->where('convenio.con_referencia','=',"MENSALIDADE");
             }else{
-                $parcelamento->where('lancamento.lanc_contrato','=', $linha['contrato']);
+                $parcelamento->where('lancamento.lanc_contrato','=', trim($linha['contrato']));
             };
 
             $parcelamento->where('associado.cla_codigoid','=','15')
@@ -1399,17 +1419,18 @@ class ConvenantController extends Controller
                 $par_status = 'Pendente';
             } else
             */
-            if (trim($linha['motivoRejeicaoDireita']) == "Insuficiência de Líquido"){
-                $arr_rtn['msg'] = 'Insuficiencia de saldo';
+            //die('- '.strpos($linha['motivoRejeicaoDireita'], "Insufic"));
+            if (strpos($linha['motivoRejeicaoDireita'], "Insufic") == 0){
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Insuficiência de líquido';
                 $par_status = 'Vencido';
             } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Óbito"){
-                $arr_rtn['msg'] = 'Óbito';
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Óbito';
                 $par_status = 'Vencido';
             } elseif($linha['valorRejeitado'] > 0){
-                $arr_rtn['msg'] = 'Existe um valor Valor rejeitado ('.$linha['valorRejeitado'].')';
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Existe um valor Valor rejeitado ('.$linha['valorRejeitado'].')';
                 $par_status = 'Pendente';
             } else {
-                $arr_rtn['msg'] = '';
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Processado com sucesso!';
                 $par_status = 'Pago';
             }
 
@@ -1425,7 +1446,7 @@ class ConvenantController extends Controller
                         ]);
                 }
             } else {
-                $arr_rtn['msg'] = 'Nenhuma parcela encontrada';
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].'. Nenhuma parcela encontrada';
             }
 
         } // fim arquivo ipe
