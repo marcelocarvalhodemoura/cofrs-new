@@ -1420,7 +1420,7 @@ class ConvenantController extends Controller
             } else
             */
             //die('- '.strpos($linha['motivoRejeicaoDireita'], "Insufic"));
-            if (strpos($linha['motivoRejeicaoDireita'], "Insufic") == 0){
+            if (strpos($linha['motivoRejeicaoDireita'], "Insufic") >= 0){
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Insuficiência de líquido';
                 $par_status = 'Vencido';
             } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Óbito"){
