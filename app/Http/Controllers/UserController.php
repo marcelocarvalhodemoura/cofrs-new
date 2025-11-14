@@ -235,7 +235,7 @@ class UserController extends Controller
                 'subject' => 'Sua nova senha',
                 'usuario' => $userModel[0]->usr_usuario,
                 'senha' => $pass,
-                'acesso' => env('APP_URL'),
+                'acesso' => 'https://sistema.cofrs.com.br/',//env('APP_URL'),
             ];
 
             Mail::to($contact['email'])->send(new SendEmail($contact));

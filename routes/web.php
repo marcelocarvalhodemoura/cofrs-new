@@ -46,6 +46,7 @@ Route::get('', function () {
     // $pageName = 'auth_default';
     return view('pages.authentication.auth_login')->with($data);
 })->name('login');
+
 Route::post('/recovery', [UserController::class, 'recovery']);
 
 Route::get('/esqueci', function () {
