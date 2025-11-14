@@ -224,9 +224,8 @@ class UserController extends Controller
             ]);
         } else {
             $pass = LibPassword::gerarSenha(10);
-            $userModel->usr_senha = Hash::make($pass);
-            //$userModel->save();
-            User::where('id', $userModel[0]->id)->update(['usr_senha' => Hash::make($pass)]);
+
+            User::where('id', $userModel[0]->user_id)->update(['usr_senha' => Hash::make($pass)]);
 
             $contact = [
                 'template' => 'emails.recovery',
