@@ -1121,7 +1121,7 @@ function loadUpload() {
 
 function freeCompetence(){
     $('#selCompetitionDropBill').prop('disabled', false).focus();
-    //loadUploadDropBill();
+    loadUploadDropBill();
 
     hideModels();
     if($("input[name=typeArchive]:checked").val() == "ipe"){

@@ -300,7 +300,7 @@ class UserController extends Controller
     }
 
     public function teste(){
-    
+    /*
     $contact = [
         'name' => 'John',
         'email' => 'jonatascrizel@gmail.com',
@@ -309,6 +309,9 @@ class UserController extends Controller
     ];
 
     Mail::to($contact['email'])->send(new SendEmail($contact));
+    */
+
+    echo Hash::make('e2q2d5n6@');
     }
 
 }
