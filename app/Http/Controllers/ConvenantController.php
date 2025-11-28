@@ -1419,8 +1419,10 @@ class ConvenantController extends Controller
                 $par_status = 'Pendente';
             } else
             */
-            //die('- '.strpos($linha['motivoRejeicaoDireita'], "Insufic"));
-            if (strpos($linha['motivoRejeicaoDireita'], "Insufic") <> null){
+            //echo('- '.strpos(trim($linha['motivoRejeicaoDireita']), "nsufic").'<br/>');
+            //echo(trim($linha['motivoRejeicaoDireita']).'<br />');
+            
+            if (strpos(trim($linha['motivoRejeicaoDireita']), "nsufic") <> null){
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Insuficiência de líquido';
                 $par_status = 'Vencido';
             } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Óbito"){
