@@ -1511,6 +1511,7 @@ $.validator.addMethod( "ziprange", function( value, element ) {
 return $;
 }));
 
-$.validator.addMethod("password", function (value, element) {
-	return this.optional( element ) || /^90[2-5]\d\{2\}-\d{4}$/.test( value );
-}, "Senhas devem ter entre 8 e 16 caracteres incluindo letras maiúsculas, letras minúsculas e ao menos um número.");
+// Minimum 6 characters, at least one uppercase letter, one lowercase letter, one number, and one special character.
+$.validator.addMethod("validpassword", function (value, element) {
+	return this.optional( element ) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test( value );
+}, "Senhas devem ter entre 6 e 16 caracteres incluindo letras maiúsculas, letras minúsculas e ao menos um número.");

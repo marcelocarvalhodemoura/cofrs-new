@@ -276,13 +276,12 @@ $(document).ready(function () {
         });
       });
 
-
       $("#formSavePassword").validate({
         rules: {
             editPassword: {
                 required: true,
                 minlength: 6,
-                password: true
+                validpassword: true
             },
             editPassword2: {
                 required: true,
@@ -290,7 +289,7 @@ $(document).ready(function () {
             }
         },
         messages: {
-            editPassword: "Senha é um campo obrigatório e necessita ser segura",
+            editPassword: "Senha é um campo obrigatório e necessita ser segura ( 6caracteres, sendo pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial [@$!%*?&])",
             editPassword2: {
                 required: "Conf. Senha é um campo obrigatório",
                 equalTo: "Conf. de Senha deve ser igual ao campo Senha"
@@ -305,6 +304,7 @@ $(document).ready(function () {
         },
         submitHandler: function () {
             const id = $("#editUserID").val();
+alert('oi2');
 
             $.ajax({
                 url: "/users/pass/" + id,
