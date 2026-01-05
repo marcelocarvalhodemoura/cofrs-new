@@ -304,7 +304,6 @@ $(document).ready(function () {
         },
         submitHandler: function () {
             const id = $("#editUserID").val();
-alert('oi2');
 
             $.ajax({
                 url: "/users/pass/" + id,
