@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "opcodesio/log-viewer": "^3.14",
-        "phpoffice/phpspreadsheet": "^1.20",
+        "phpoffice/phpspreadsheet": "^5.4",
         "sendpulse/rest-api": "*",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
