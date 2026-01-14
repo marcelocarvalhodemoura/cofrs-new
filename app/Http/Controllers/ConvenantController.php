@@ -1420,9 +1420,14 @@ class ConvenantController extends Controller
             } else
             */
             //echo('- '.strpos(trim($linha['motivoRejeicaoDireita']), "nsufic").'<br/>');
-            //echo(trim($linha['motivoRejeicaoDireita']).'<br />');
+            //echo(strtolower($linha['motivoRejeicaoEsquerda']).'<br />');
+            //echo strpos(strtolower($linha['motivoRejeicaoEsquerda']), "concu");
             
-            if (strpos(trim($linha['motivoRejeicaoDireita']), "nsufic") <> null){
+            if(strpos(strtolower($linha['motivoRejeicaoEsquerda']), "concu") !== false){
+                // Usar != não funcionaria porque se a posição é 0 a comparação (0 != false) é avaliada como falsa
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Concubinato';
+                $par_status = 'Vencido';
+            } elseif (strpos(trim($linha['motivoRejeicaoDireita']), "nsufic") <> null){
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Insuficiência de líquido';
                 $par_status = 'Vencido';
             } elseif(trim($linha['motivoRejeicaoEsquerda']) == "Óbito"){
@@ -1442,10 +1447,12 @@ class ConvenantController extends Controller
             if($quantidade != 0){
                 $parcelas = $parcelamento->get();
                 foreach ($parcelas as $parc){
+                    /*
                     Portion::where('id', $parc->id)
                         ->update([
                             'par_status' => $par_status
                         ]);
+                        */
                 }
             } else {
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].'. Nenhuma parcela encontrada';
