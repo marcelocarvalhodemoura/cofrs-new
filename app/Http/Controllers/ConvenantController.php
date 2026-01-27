@@ -1447,12 +1447,10 @@ class ConvenantController extends Controller
             if($quantidade != 0){
                 $parcelas = $parcelamento->get();
                 foreach ($parcelas as $parc){
-                    /*
                     Portion::where('id', $parc->id)
                         ->update([
                             'par_status' => $par_status
                         ]);
-                        */
                 }
             } else {
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].'. Nenhuma parcela encontrada';
