@@ -25,6 +25,16 @@
             </select>
         </div>
         <div class="col-md-12 mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive1" value="txt" selected />
+                <label class="form-check-label" for="extensionArchive1">TXT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive2" value="xlsx" />
+                <label class="form-check-label" for="extensionArchive2">XLSX</label>
+            </div>
+        </div>
+        <div class="col-md-12 mb-3">
             <div id="fileuploaderDropBill"></div>
             <div id="retornoDropBill"></div>
         </div>

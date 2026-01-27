@@ -1126,9 +1126,11 @@ function freeCompetence(){
     hideModels();
     if($("input[name=typeArchive]:checked").val() == "ipe"){
         $("#model_ipe").show();
+        $('input[name="extensionArchive"][value="xlsx"]').removeAttr('disabled');
     }
     if($("input[name=typeArchive]:checked").val() == "tesouro"){
         $("#model_tesouro").show();
+        $('input[name="extensionArchive"][value="xlsx"]').prop('disabled', true);
     }
 }
 function hideModels(){
@@ -1142,6 +1144,7 @@ function loadUploadDropBill() {
         formData: {
                 '_token': $('input[name="_token"]').val(),
                 'typeArchive': $('input[name="typeArchive"]:checked').val(),
+                'extensionArchive': $('input[name="extensionArchive"]:checked').val(),
                 'selCompetitionDropBill': $('#selCompetitionDropBill').val()
             },
         autoSubmit: true,
@@ -1167,7 +1170,7 @@ function loadUploadDropBill() {
         showDelete: false,
         showCancel: false,
         maxFileCount: 1,
-        acceptFiles: "text/plain",
+        acceptFiles: "text/plain, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         showFileCounter: false,
         uploadStr: 'Clique ou arraste o arquivo aqui',
         dragDropStr: 'Clique ou arraste o arquivo aqui',

@@ -32,6 +32,9 @@ use Illuminate\Support\Facades\Log;
 use DateTime;
 use DateInterval;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet; 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 /**
  *
  */
@@ -1185,12 +1188,23 @@ class ConvenantController extends Controller
 
         if($request->hasFile('file')){
             // se enviou o arquivo
-            if($request->file('file')->getMimeType() != 'text/plain'){
-                //extensão inválida
-                $responseData = [
-                    'status' => 'warning',
-                    'msg' => 'Envie um arquivo .txt ',
-                ];
+            if($request->extensionArchive == 'xlsx'){
+                if($request->file('file')->getMimeType() != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && $request->file('file')->getMimeType() != 'application/octet-stream'){
+                    //extensão inválida
+                    $responseData = [
+                        'status' => 'warning',
+                        'msg' => 'Envie um arquivo .xlsx ',
+                    ];
+                }               
+            }
+            if($request->extensionArchive == 'txt'){
+                if($request->file('file')->getMimeType() != 'text/plain'){
+                    //extensão inválida
+                    $responseData = [
+                        'status' => 'warning',
+                        'msg' => 'Envie um arquivo .txt ',
+                    ];
+                }               
             }
         } else {
             $responseData = [
@@ -1199,181 +1213,232 @@ class ConvenantController extends Controller
             ];
         }
 
+        $competenciaFormatada = $request->selCompetitionDropBill;
+        $competenciaExplodida = explode("/", $competenciaFormatada);
+        $linha = [];
+        $responseMSG = '';
+
         if($responseData == ""){
-            $ponteiro = fopen($request->file('file'), "r");
-
-            if($ponteiro) {
-                $numeroLinha = 1;
-                $competenciaFormatada = $request->selCompetitionDropBill;
-                $competenciaExplodida = explode("/", $competenciaFormatada);
-                $linha = [];
-                $responseMSG = '';
-
-                //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
-                while (!feof($ponteiro)) {
-                    $p = fgets($ponteiro, 4096);
-
-                    //$ln = preg_replace('/[^a-zA-Z0-9ÊêÍíÇçÃãÓó\/_ \-]/u', '', $p);
-                    $ln = $p;
-                    //$ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $p);
-
-                    //$len = strlen($ln) - strlen($ln2);
-                    if($numeroLinha == 1)
-                        $ln = substr($ln,3);
-
-                    if(trim($ln) == ""){
-                        continue;
-                    }
-                    /*
-                   echo mb_substr($ln, 134, 40).'<br />';
-                     */
-
-                    //die;
-                    $linha[$numeroLinha]['convenio'] = $request->typeArchive;
-                    $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
-                    $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
-
-                    if($request->typeArchive == 'ipe') {
-                        $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 8);
-                        $linha[$numeroLinha]['referencia'] = substr($ln, 8, 2);
-                        $linha[$numeroLinha]['pensionista'] = substr($ln, 10, 2);
-                        $linha[$numeroLinha]['rubrica'] = substr($ln, 12, 3);
-                        $linha[$numeroLinha]['especie'] = substr($ln, 15, 20);
-                        $linha[$numeroLinha]['dataTermino'] = substr($ln, 35, 6);
-                        $linha[$numeroLinha]['valorPagar'] = substr($ln, 41, 9);
-                        $linha[$numeroLinha]['valorDescontatoEmFolha'] = substr($ln, 50, 9);
-                        $linha[$numeroLinha]['valorRejeitado'] = substr($ln, 59, 9);
-                        $linha[$numeroLinha]['situacao'] = substr($ln, 68, 30);
-                        $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 25);
-                        $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
-                        $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
-                        if($numeroLinha == 1){
-                            $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
-                            $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
-                        } else {
-                            $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
-                            $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
-                        }
-                        $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
-                        $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
-                        $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
-                    } else if($request->typeArchive == 'tesouro') {
-                        $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 1);
-                        $linha[$numeroLinha]['matricula'] = substr($ln, 0, 12);
-                        $linha[$numeroLinha]['valordesconto'] = substr($ln, 49, 10);
-                        $linha[$numeroLinha]['referencia'] = substr($ln, 15, 12);
-                        $linha[$numeroLinha]['mensagem'] = substr($ln, 68, 54);
-                        $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
-                    }
-
-                    //print_r($linha[$numeroLinha]); 
-                    // die;
-
-                    //verifica os dados do arquivo
-                    $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
-
-                    foreach($arr_rtn as $k => $v){
-                        $linha[$numeroLinha][$k] = $v;
-                    }
-
-                    if($linha[$numeroLinha]['msg']){
-                        $responseMSG .= 'Linha '.$numeroLinha.': '.$linha[$numeroLinha]['msg'].'<br />';
-                    }
-
-                    $numeroLinha++;
-                }
-
-                // arquivo de diferenças
+            if($request->extensionArchive == 'xlsx'){
                 /*
-                if($request->typeArchive == 'ipe') {
-                    $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
-
-                    $diferencas = Portion::select('assoc_matricula', 'assoc_contrato', 'lanc_contrato', 'con_referencia', 'par_valor', DB::raw('SUM( par_valor ) AS somatorioparcelas'))
-                                ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
-                                ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
-                                ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
-                                ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
-                                ->leftJoin('classificacao','classificacao.id','=','associado.id')
-                                ->where('associado.cla_codigoid','=','15')
-                                ->where('associado.assoc_ativosn','=','1')
-                                ->where('parcelamento.par_habilitasn','=','1')
-                                ->where('competencia.com_nome','=', $competenciaFormatada)
-                                ->whereIn('convenio.con_referencia',["DIVERSOS","MENSALIDADE","EMPRESTIMO"])
-                                ->where('parcelamento.par_status','=',"Vencido")
-                                ->groupBy(DB::raw('IF(convenio.con_referencia IN ("DIVERSOS","EMPRESTIMO"), lanc_contrato, parcelamento.id)'))
-                                ->orderBy('assoc_matricula','asc')
-                                ->get()
-                                ;
-                    //dd($diferencas->toSql(),$diferencas->getBindings());
-                    foreach ($diferencas as $d){
-                        if($d->con_referencia == 'DIVERSOS'){
-                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
-                        }elseif($d->con_referencia == 'MENSALIDADE'){
-                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->assoc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->par_valor,2,'','')."\n";
-                        }elseif($d->con_referencia == 'EMPRESTIMO'){
-                            $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
-                        }
-                    }
-
-                    $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
-
-                } else if($request->typeArchive == 'tesouro') {
-                    $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS - TESOURO \n";
-
-                    $diferencas = Portion::select('id','par_status','assoc_matricula','convenio.con_referencia','assoc_nome')
-                                ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
-                                ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
-                                ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
-                                ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
-                                ->leftJoin('classificacao','classificacao.id','=','associado.id')
-                                ->where('parcelamento.par_habilitasn','=','1')
-                                ->where('associado.cla_codigoid','=','18')
-                                ->where('competencia.com_nome','=', $competenciaFormatada)
-                                ->whereIn('parcelamento.par_status',["Vencido","Pendente"])
-                                ->orderBy('associado.assoc_nome','asc')
-                                ->get()
-                                ;
-
-                    //dd($diferencas->toSql(),$diferencas->getBindings());
-                    foreach ($diferencas as $d){
-                        if($d->par_status == 'Pendente'){
-                            Portion::where('id', $parc->id)
-                                ->update([
-                                    'par_status' => 'Vencido'
-                                ]);
-                        }
-
-                        $conteudoArquivoDif .= $d->assoc_matricula." ".$d->con_referencia." ".$d->assoc_nome." ".$d->assoc_nome."\n";
-                    }
-
-                    $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
-                } // fim arquivo de diferenças
-
-                // grava o arquivo de diferenças
-                Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $reader->setReadDataOnly(true);
+                $spreadsheet = $reader->load($request->file('file'));
                 */
 
-                //$arq = asset('storage/'.$nomeArquivo);
+                $spreadsheet = IOFactory::load($request->file('file'));
+                $worksheet = $spreadsheet->getActiveSheet();
+                $dataArray = $worksheet->toArray();
 
-                $tempo = gmdate("H:i:s", (time() - $tempoInicial));
-                
-                //<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a>
-                $responseMSG .= '<br /><small>Processado em '.$tempo.'</small>';
+                foreach($dataArray as $key => $value){
+                    if($key <= 3){
+                        continue;
+                    }
+                    $ln = $key+1;
+                    //echo '<pre>'; print_r($value); die;
+                    
+                    $linha[$ln] = [
+                                    'convenio' => $request->typeArchive,
+                                    'contrato' => $value[4],
+                                    'contatoFormatado' => mb_substr($value[4], 0, 15),
+                                    'competenciaFormatada' => $competenciaFormatada,
+                                    'motivoRejeicaoDireita' => $value[13],
+                                    'motivoRejeicaoEsquerda' => $value[12],
+                                    'valorRejeitado' => $value[11],//str_replace(',','.', str_replace('.','', $value[11])),
+                    ];
 
-                $responseData = [
-                    'status' => 'success',
-                    'msg' => $responseMSG,
-                ];
+                    $arr_rtn = $this->validaArquivoBaixa($linha[$ln]);
+                    /*
+                    if($ln == 5){
+                    echo '<pre>'; print_r($linha[$ln]); die;
+                    }
+                    */
 
-                Log::channel('daily')->info('Usuário '.Session::get('user').' processou um arquivo de baixa.');
+                    foreach($arr_rtn as $k => $v){
+                        $linha[$ln][$k] = $v;
+                    }
 
-                return response()->json([$responseData], 200);
+                    if($linha[$ln]['msg']){
+                        $responseMSG .= 'Linha '.$ln.': '.$linha[$ln]['msg'].'<br />';
+                    }
+                }
 
-            }else {
-                return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
             }
 
-        }else{
+            if($request->extensionArchive == 'txt'){
+                $ponteiro = fopen($request->file('file'), "r");
+
+                if($ponteiro) {
+                    $numeroLinha = 1;
+
+                    //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
+                    while (!feof($ponteiro)) {
+                        $p = fgets($ponteiro, 4096);
+
+                        //$ln = preg_replace('/[^a-zA-Z0-9ÊêÍíÇçÃãÓó\/_ \-]/u', '', $p);
+                        $ln = $p;
+                        //$ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $p);
+
+                        //$len = strlen($ln) - strlen($ln2);
+                        if($numeroLinha == 1)
+                            $ln = substr($ln,3);
+
+                        if(trim($ln) == ""){
+                            continue;
+                        }
+                        /*
+                        echo mb_substr($ln, 134, 40).'<br />';
+                        */
+
+                        //die;
+                        $linha[$numeroLinha]['convenio'] = $request->typeArchive;
+                        $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
+                        $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
+
+                        if($request->typeArchive == 'ipe') {
+                            $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 8);
+                            $linha[$numeroLinha]['referencia'] = substr($ln, 8, 2);
+                            $linha[$numeroLinha]['pensionista'] = substr($ln, 10, 2);
+                            $linha[$numeroLinha]['rubrica'] = substr($ln, 12, 3);
+                            $linha[$numeroLinha]['especie'] = substr($ln, 15, 20);
+                            $linha[$numeroLinha]['dataTermino'] = substr($ln, 35, 6);
+                            $linha[$numeroLinha]['valorPagar'] = substr($ln, 41, 9);
+                            $linha[$numeroLinha]['valorDescontatoEmFolha'] = substr($ln, 50, 9);
+                            $linha[$numeroLinha]['valorRejeitado'] = substr($ln, 59, 9);
+                            $linha[$numeroLinha]['situacao'] = substr($ln, 68, 30);
+                            $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 25);
+                            $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
+                            $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
+                            if($numeroLinha == 1){
+                                $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
+                                $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
+                            } else {
+                                $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
+                                $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
+                            }
+                            $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
+                            $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
+                            $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
+                        } else if($request->typeArchive == 'tesouro') {
+                            $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 1);
+                            $linha[$numeroLinha]['matricula'] = substr($ln, 0, 12);
+                            $linha[$numeroLinha]['valordesconto'] = substr($ln, 49, 10);
+                            $linha[$numeroLinha]['referencia'] = substr($ln, 15, 12);
+                            $linha[$numeroLinha]['mensagem'] = substr($ln, 68, 54);
+                            $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
+                        }
+
+                        //print_r($linha[$numeroLinha]); 
+                        // die;
+
+                        //verifica os dados do arquivo
+                        $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
+
+                        foreach($arr_rtn as $k => $v){
+                            $linha[$numeroLinha][$k] = $v;
+                        }
+
+                        if($linha[$numeroLinha]['msg']){
+                            $responseMSG .= 'Linha '.$numeroLinha.': '.$linha[$numeroLinha]['msg'].'<br />';
+                        }
+
+                        $numeroLinha++;
+                    }
+
+                    // arquivo de diferenças
+                    /*
+                    if($request->typeArchive == 'ipe') {
+                        $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
+
+                        $diferencas = Portion::select('assoc_matricula', 'assoc_contrato', 'lanc_contrato', 'con_referencia', 'par_valor', DB::raw('SUM( par_valor ) AS somatorioparcelas'))
+                                    ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                                    ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                                    ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+                                    ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                                    ->leftJoin('classificacao','classificacao.id','=','associado.id')
+                                    ->where('associado.cla_codigoid','=','15')
+                                    ->where('associado.assoc_ativosn','=','1')
+                                    ->where('parcelamento.par_habilitasn','=','1')
+                                    ->where('competencia.com_nome','=', $competenciaFormatada)
+                                    ->whereIn('convenio.con_referencia',["DIVERSOS","MENSALIDADE","EMPRESTIMO"])
+                                    ->where('parcelamento.par_status','=',"Vencido")
+                                    ->groupBy(DB::raw('IF(convenio.con_referencia IN ("DIVERSOS","EMPRESTIMO"), lanc_contrato, parcelamento.id)'))
+                                    ->orderBy('assoc_matricula','asc')
+                                    ->get()
+                                    ;
+                        //dd($diferencas->toSql(),$diferencas->getBindings());
+                        foreach ($diferencas as $d){
+                            if($d->con_referencia == 'DIVERSOS'){
+                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
+                            }elseif($d->con_referencia == 'MENSALIDADE'){
+                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->assoc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->par_valor,2,'','')."\n";
+                            }elseif($d->con_referencia == 'EMPRESTIMO'){
+                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
+                            }
+                        }
+
+                        $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
+
+                    } else if($request->typeArchive == 'tesouro') {
+                        $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS - TESOURO \n";
+
+                        $diferencas = Portion::select('id','par_status','assoc_matricula','convenio.con_referencia','assoc_nome')
+                                    ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
+                                    ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
+                                    ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
+                                    ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
+                                    ->leftJoin('classificacao','classificacao.id','=','associado.id')
+                                    ->where('parcelamento.par_habilitasn','=','1')
+                                    ->where('associado.cla_codigoid','=','18')
+                                    ->where('competencia.com_nome','=', $competenciaFormatada)
+                                    ->whereIn('parcelamento.par_status',["Vencido","Pendente"])
+                                    ->orderBy('associado.assoc_nome','asc')
+                                    ->get()
+                                    ;
+
+                        //dd($diferencas->toSql(),$diferencas->getBindings());
+                        foreach ($diferencas as $d){
+                            if($d->par_status == 'Pendente'){
+                                Portion::where('id', $parc->id)
+                                    ->update([
+                                        'par_status' => 'Vencido'
+                                    ]);
+                            }
+
+                            $conteudoArquivoDif .= $d->assoc_matricula." ".$d->con_referencia." ".$d->assoc_nome." ".$d->assoc_nome."\n";
+                        }
+
+                        $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
+                    } // fim arquivo de diferenças
+
+                    // grava o arquivo de diferenças
+                    Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
+                    */
+
+                    //$arq = asset('storage/'.$nomeArquivo);
+
+                }else {
+                    return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
+                }
+
+            }
+
+            $tempo = gmdate("H:i:s", (time() - $tempoInicial));
+            
+            //<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a>
+            $responseMSG .= '<br /><small>Processado em '.$tempo.'</small>';
+
+            $responseData = [
+                'status' => 'success',
+                'msg' => $responseMSG,
+            ];
+
+            Log::channel('daily')->info('Usuário '.Session::get('user').' processou um arquivo de baixa.');
+
+            return response()->json([$responseData], 200);
+
+
+        } else {
             return response()->json([$responseData], 200);
         }
     }
@@ -1383,6 +1448,7 @@ class ConvenantController extends Controller
      * @return Array $arr_rtn
      */
     public function validaArquivoBaixa($linha){
+
         ini_set('max_execution_time', '-1');
         $arr_rtn = [
             'msg' => '',
