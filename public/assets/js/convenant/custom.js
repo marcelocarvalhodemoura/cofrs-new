@@ -1138,6 +1138,8 @@ function hideModels(){
 }
 
 function loadUploadDropBill() {
+    console.log($('input[name="extensionArchive"]:checked').val())
+    
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',
         fileName: "file",
