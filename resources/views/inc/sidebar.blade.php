@@ -84,6 +84,9 @@
                     <li class="">
                         <a href="/covenants">Conveniados</a>
                     </li>
+                    <li class="">
+                        <a href="/processArchive">Processamento de arquivos</a>
+                    </li>
                     @if(in_array(\Illuminate\Support\Facades\Session::get('typeId'),[1,2,3]))
                     <li class="">
                         <a href="/covenants-type">Tipos de Convênio</a>

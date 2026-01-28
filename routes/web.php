@@ -33,6 +33,9 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
+//rota de teste
+Route::get('/teste', [ConvenantController::class, 'darBaixaAutomatica']);
+
 
 Route::get('', function () {
     // $category_name = 'auth';
@@ -84,8 +87,7 @@ Route::post('/users/update/{id}', [UserController::class, 'update']);
 Route::get('/users/profile/{id}', [UserController::class, 'profile']);
 
 
-//Teste do sistema de e-mails
-//Route::get('/teste', [UserController::class, 'teste']);
+
 
 /**
  * Associates Routes
@@ -135,6 +137,8 @@ Route::post('/convenants/updateParcelas', [ConvenantController::class, 'updatePa
 Route::post('/convenants/updateStatusParcelas', [ConvenantController::class, 'updateStatusParcelas']);
 Route::post('/convenants/addParcela', [ConvenantController::class, 'addParcela']);
 Route::post('/convenants/editParcelaObs', [ConvenantController::class, 'editParcelaObs']);
+
+Route::get('/processArchive', [ConvenantController::class, 'processArchive']);
 
 
 /**

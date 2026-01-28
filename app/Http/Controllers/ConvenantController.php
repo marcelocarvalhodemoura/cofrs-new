@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Agreement;
 use App\Models\Associate;
 use App\Models\Agent;
-
 use App\Models\Competence;
 use App\Models\Convenant;
 use App\Models\Portion;
 use App\Models\Status;
+use App\Models\Mark_as_paid;
+use App\Models\Mark_as_paid_line;
+use App\Models\User;
 
 use App\Models\Typeassociate;
 use App\Models\Classification;
@@ -27,6 +29,11 @@ use Illuminate\Http\JsonResponse;
 use File;
 use App\Helpers;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use  \Yajra\DataTables\DataTables;
+
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Mail;
 
 
 use DateTime;
@@ -1219,13 +1226,15 @@ class ConvenantController extends Controller
         $responseMSG = '';
 
         if($responseData == ""){
-            if($request->extensionArchive == 'xlsx'){
-                /*
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-                $reader->setReadDataOnly(true);
-                $spreadsheet = $reader->load($request->file('file'));
-                */
+            $Mark_as_paidModel = new Mark_as_paid();
+            $Mark_as_paidModel->extensionArchive = $request->extensionArchive;
+            $Mark_as_paidModel->competencia = $competenciaExplodida[1].$competenciaExplodida[0];
+            $Mark_as_paidModel->convenio = $request->typeArchive;
+            $Mark_as_paidModel->usuario_id = Session::get('id');
 
+            $Mark_as_paidModel->save();
+
+            if($request->extensionArchive == 'xlsx'){
                 $spreadsheet = IOFactory::load($request->file('file'));
                 $worksheet = $spreadsheet->getActiveSheet();
                 $dataArray = $worksheet->toArray();
@@ -1234,38 +1243,30 @@ class ConvenantController extends Controller
                     if($key <= 3){
                         continue;
                     }
+                    if($value[4] == ''){
+                        continue;
+                    }
                     $ln = $key+1;
                     //echo '<pre>'; print_r($value); die;
                     
-                    $linha[$ln] = [
-                                    'convenio' => $request->typeArchive,
-                                    'contrato' => $value[4],
-                                    'contatoFormatado' => mb_substr($value[4], 0, 15),
-                                    'competenciaFormatada' => $competenciaFormatada,
-                                    'motivoRejeicaoDireita' => $value[13],
-                                    'motivoRejeicaoEsquerda' => $value[12],
-                                    'valorRejeitado' => $value[11],//str_replace(',','.', str_replace('.','', $value[11])),
+                    $linha = [
+                            'id_baixa_arquivo' => $Mark_as_paidModel->id,
+                            'ln' => $ln,
+                            'contrato' => $value[4],
+                            'valorRejeitado' => $value[11],
+                            'competenciaFormatada' => $competenciaFormatada,
+                            'motivoRejeicaoDireita' => $value[13],
+                            'motivoRejeicaoEsquerda' => $value[12],
+                            'matricula' => '',
+                            'referencia' => '',
+                            'mensagemMelhorada' => '',
                     ];
 
-                    $arr_rtn = $this->validaArquivoBaixa($linha[$ln]);
-                    /*
-                    if($ln == 5){
-                    echo '<pre>'; print_r($linha[$ln]); die;
-                    }
-                    */
-
-                    foreach($arr_rtn as $k => $v){
-                        $linha[$ln][$k] = $v;
-                    }
-
-                    if($linha[$ln]['msg']){
-                        $responseMSG .= 'Linha '.$ln.': '.$linha[$ln]['msg'].'<br />';
-                    }
+                    $arr_rtn = $this->armazenaLinhaArquivoBaixa($linha);
                 }
 
-            }
+            } elseif ($request->extensionArchive == 'txt'){
 
-            if($request->extensionArchive == 'txt'){
                 $ponteiro = fopen($request->file('file'), "r");
 
                 if($ponteiro) {
@@ -1274,159 +1275,55 @@ class ConvenantController extends Controller
                     //LÊ O ARQUIVO ATÉ CHEGAR AO FIM
                     while (!feof($ponteiro)) {
                         $p = fgets($ponteiro, 4096);
-
-                        //$ln = preg_replace('/[^a-zA-Z0-9ÊêÍíÇçÃãÓó\/_ \-]/u', '', $p);
                         $ln = $p;
-                        //$ln = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $p);
 
-                        //$len = strlen($ln) - strlen($ln2);
-                        if($numeroLinha == 1)
+                        if($numeroLinha == 1){
                             $ln = substr($ln,3);
+                        }
 
                         if(trim($ln) == ""){
                             continue;
                         }
-                        /*
-                        echo mb_substr($ln, 134, 40).'<br />';
-                        */
 
-                        //die;
-                        $linha[$numeroLinha]['convenio'] = $request->typeArchive;
-                        $linha[$numeroLinha]['competenciaFormatada'] = $competenciaFormatada;
-                        $linha[$numeroLinha]['competenciaExplodida'] = $competenciaExplodida;
+                        $linha = [
+                            'id_baixa_arquivo' => $Mark_as_paidModel->id,
+                            'ln' => $numeroLinha,
+                            'contrato' => '',
+                            'valorRejeitado' => '',
+                            'motivoRejeicaoDireita' => '',
+                            'motivoRejeicaoEsquerda' => '',
+                            'matricula' => '',
+                            'referencia' => '',
+                            'mensagemMelhorada' => '',
+                        ];
 
                         if($request->typeArchive == 'ipe') {
-                            $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 8);
-                            $linha[$numeroLinha]['referencia'] = substr($ln, 8, 2);
-                            $linha[$numeroLinha]['pensionista'] = substr($ln, 10, 2);
-                            $linha[$numeroLinha]['rubrica'] = substr($ln, 12, 3);
-                            $linha[$numeroLinha]['especie'] = substr($ln, 15, 20);
-                            $linha[$numeroLinha]['dataTermino'] = substr($ln, 35, 6);
-                            $linha[$numeroLinha]['valorPagar'] = substr($ln, 41, 9);
-                            $linha[$numeroLinha]['valorDescontatoEmFolha'] = substr($ln, 50, 9);
-                            $linha[$numeroLinha]['valorRejeitado'] = substr($ln, 59, 9);
-                            $linha[$numeroLinha]['situacao'] = substr($ln, 68, 30);
-                            $linha[$numeroLinha]['motivoRejeicaoDireita']  = substr($ln, 98, 25);
-                            $linha[$numeroLinha]['motivoRejeicaoEsquerda'] = substr($ln, 72, 5);
-                            $linha[$numeroLinha]['cpf'] = substr($ln, 123, 11);
-                            if($numeroLinha == 1){
-                                $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
-                                $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
-                            } else {
-                                $linha[$numeroLinha]['contrato'] = trim(mb_substr($ln, 134, 40));
-                                $linha[$numeroLinha]['contatoFormatado'] = mb_substr($ln, 134, 15);//parte do contrato
-                            }
-                            $linha[$numeroLinha]['oficio'] = substr($ln, 174, 9);
-                            $linha[$numeroLinha]['dtDireto'] = substr($ln, 183, 6);
-                            $linha[$numeroLinha]['valorRecolhido'] = substr($ln, 189, 9);
+                            $linha['contrato'] = trim(mb_substr($ln, 134, 40));
+                            $linha['valorRejeitado'] = substr($ln, 59, 7).'.'.substr($ln, 67, 2);
+                            $linha['motivoRejeicaoDireita']  = substr($ln, 98, 25);
+                            $linha['motivoRejeicaoEsquerda'] = substr($ln, 68, 29);
                         } else if($request->typeArchive == 'tesouro') {
-                            $linha[$numeroLinha]['numeroPadrao'] = substr($ln, 0, 1);
-                            $linha[$numeroLinha]['matricula'] = substr($ln, 0, 12);
-                            $linha[$numeroLinha]['valordesconto'] = substr($ln, 49, 10);
-                            $linha[$numeroLinha]['referencia'] = substr($ln, 15, 12);
-                            $linha[$numeroLinha]['mensagem'] = substr($ln, 68, 54);
-                            $linha[$numeroLinha]['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
+                            $linha['matricula'] = substr($ln, 0, 12);
+                            $linha['referencia'] = substr($ln, 15, 12);
+                            $linha['mensagemMelhorada'] = strip_tags(trim(substr($ln, 68, 54)));
                         }
 
-                        //print_r($linha[$numeroLinha]); 
-                        // die;
-
-                        //verifica os dados do arquivo
-                        $arr_rtn = $this->validaArquivoBaixa($linha[$numeroLinha]);
-
-                        foreach($arr_rtn as $k => $v){
-                            $linha[$numeroLinha][$k] = $v;
-                        }
-
-                        if($linha[$numeroLinha]['msg']){
-                            $responseMSG .= 'Linha '.$numeroLinha.': '.$linha[$numeroLinha]['msg'].'<br />';
-                        }
-
+                        //salva linha
+                        $this->armazenaLinhaArquivoBaixa($linha);
                         $numeroLinha++;
                     }
 
-                    // arquivo de diferenças
-                    /*
-                    if($request->typeArchive == 'ipe') {
-                        $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS \n";
-
-                        $diferencas = Portion::select('assoc_matricula', 'assoc_contrato', 'lanc_contrato', 'con_referencia', 'par_valor', DB::raw('SUM( par_valor ) AS somatorioparcelas'))
-                                    ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
-                                    ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
-                                    ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
-                                    ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
-                                    ->leftJoin('classificacao','classificacao.id','=','associado.id')
-                                    ->where('associado.cla_codigoid','=','15')
-                                    ->where('associado.assoc_ativosn','=','1')
-                                    ->where('parcelamento.par_habilitasn','=','1')
-                                    ->where('competencia.com_nome','=', $competenciaFormatada)
-                                    ->whereIn('convenio.con_referencia',["DIVERSOS","MENSALIDADE","EMPRESTIMO"])
-                                    ->where('parcelamento.par_status','=',"Vencido")
-                                    ->groupBy(DB::raw('IF(convenio.con_referencia IN ("DIVERSOS","EMPRESTIMO"), lanc_contrato, parcelamento.id)'))
-                                    ->orderBy('assoc_matricula','asc')
-                                    ->get()
-                                    ;
-                        //dd($diferencas->toSql(),$diferencas->getBindings());
-                        foreach ($diferencas as $d){
-                            if($d->con_referencia == 'DIVERSOS'){
-                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
-                            }elseif($d->con_referencia == 'MENSALIDADE'){
-                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->assoc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->par_valor,2,'','')."\n";
-                            }elseif($d->con_referencia == 'EMPRESTIMO'){
-                                $conteudoArquivoDif .= $d->assoc_matricula.str_pad($d->lanc_contrato,40,' ').str_pad(strip_tags(trim($d->con_referencia)),20,' ').number_format($d->somatorioparcelas,2,'','')."\n";
-                            }
-                        }
-
-                        $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
-
-                    } else if($request->typeArchive == 'tesouro') {
-                        $conteudoArquivoDif = "0".$competenciaExplodida[1].$competenciaExplodida[0]."CIRCULO OPERARIO FERROVIARIO RS - ARQUIVO DE DIFERENÇAS - TESOURO \n";
-
-                        $diferencas = Portion::select('id','par_status','assoc_matricula','convenio.con_referencia','assoc_nome')
-                                    ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
-                                    ->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
-                                    ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id')
-                                    ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
-                                    ->leftJoin('classificacao','classificacao.id','=','associado.id')
-                                    ->where('parcelamento.par_habilitasn','=','1')
-                                    ->where('associado.cla_codigoid','=','18')
-                                    ->where('competencia.com_nome','=', $competenciaFormatada)
-                                    ->whereIn('parcelamento.par_status',["Vencido","Pendente"])
-                                    ->orderBy('associado.assoc_nome','asc')
-                                    ->get()
-                                    ;
-
-                        //dd($diferencas->toSql(),$diferencas->getBindings());
-                        foreach ($diferencas as $d){
-                            if($d->par_status == 'Pendente'){
-                                Portion::where('id', $parc->id)
-                                    ->update([
-                                        'par_status' => 'Vencido'
-                                    ]);
-                            }
-
-                            $conteudoArquivoDif .= $d->assoc_matricula." ".$d->con_referencia." ".$d->assoc_nome." ".$d->assoc_nome."\n";
-                        }
-
-                        $nomeArquivo = 'arqDif-IPE-'.$competenciaExplodida[0].'-'.$competenciaExplodida[1].'-'.date('YmdHi').'.txt';
-                    } // fim arquivo de diferenças
-
-                    // grava o arquivo de diferenças
-                    Storage::disk('public')->put($nomeArquivo, $conteudoArquivoDif,'public');
-                    */
-
-                    //$arq = asset('storage/'.$nomeArquivo);
-
-                }else {
+                } else {
                     return response()->json(['status' => 'warning', 'msg' => 'Não foi possível abrir o arquivo'], 200);
                 }
 
+            } else {
+                return response()->json(['status' => 'warning', 'msg' => 'Você precisa selecionar o convênio.'], 200);
             }
 
             $tempo = gmdate("H:i:s", (time() - $tempoInicial));
             
-            //<strong>Arquivo de diferenças:</strong> <a href="'.Storage::disk('public')->url($nomeArquivo).'" target="_blank">[baixar]</a>
-            $responseMSG .= '<br /><small>Processado em '.$tempo.'</small>';
+            $responseMSG = 'O arquivo entrou em fila de processamento.<br /> Quando estiver concluído você receberá um e-mail com o resultado.<br /><small>Processado em '.$tempo.'</small>';
 
             $responseData = [
                 'status' => 'success',
@@ -1441,6 +1338,88 @@ class ConvenantController extends Controller
         } else {
             return response()->json([$responseData], 200);
         }
+    }
+
+
+    /**
+     * @param Array $linha
+     * @return Array $arr_rtn
+     */
+    public function armazenaLinhaArquivoBaixa($linha){
+        $linhaArquivo = Mark_as_paid_line::create([
+            'id' => Str::uuid(),
+            'id_baixa_arquivo' => $linha['id_baixa_arquivo'],
+            'ln' => $linha['ln'],
+            'contrato' => $linha['contrato'],
+            'valorRejeitado' => $linha['valorRejeitado'],
+            'motivoRejeicaoDireita' => $linha['motivoRejeicaoDireita'],
+            'motivoRejeicaoEsquerda' => $linha['motivoRejeicaoEsquerda'],
+            'matricula' => $linha['matricula'],
+            'referencia' => trim($linha['referencia']),
+            'mensagemMelhorada' => $linha['mensagemMelhorada'],
+        ]);
+
+    }
+
+    public function darBaixaAutomatica(){
+        $tempoInicial = time();
+        //busca arquivos não processados
+        $arquivos = Mark_as_paid::where('processado', '=', 0)->get();
+
+        //processa arquivos
+        foreach ($arquivos as $arquivo) {
+            //marca como em processamento
+            $arquivo->processado = 1;
+            $arquivo->save();
+
+            //busca linhas do arquivo
+            $linhas = Mark_as_paid_line::where('id_baixa_arquivo', '=', $arquivo->id)
+                                        ->orderby('ln', 'asc')
+                                        ->get();
+
+            foreach ($linhas as $ln) {
+                $linha = [
+                    'id' => $ln->id,
+                    'ln' => $ln->ln,
+                    'contrato' => $ln->contrato,
+                    'valorRejeitado' => $ln->valorRejeitado,
+                    'motivoRejeicaoDireita' => $ln->motivoRejeicaoDireita,
+                    'motivoRejeicaoEsquerda' => $ln->motivoRejeicaoEsquerda,
+                    'matricula' => $ln->matricula,
+                    'referencia' => $ln->referencia,
+                    'mensagemMelhorada' => $ln->mensagemMelhorada,
+                    'contratoFormatado' => mb_substr($ln->contrato, 0, 15),
+                    'convenio' => $arquivo->convenio,
+                    'competencia' => $arquivo->competencia,
+                    'competenciaFormatada' => substr($arquivo->competencia, 4, 2).'/'.substr($arquivo->competencia, 0, 4),
+                ];
+
+                $rtn = $this->validaArquivoBaixa($linha);
+
+
+                Mark_as_paid_line::where('id', $linha['id'])
+                            ->update(['rtn' => $rtn['msg']]);
+                
+            }
+            
+            //marca como processado
+            $arquivo->processado = 2;
+            $arquivo->tempo = gmdate("H:i:s", (time() - $tempoInicial));
+            $arquivo->save();
+
+            //envia email
+            $contact = [
+                'template' => 'emails.archive_processed',
+                'subject' => 'Processamento concluído',
+            ];
+
+            $eml = User::select('usr_email')
+                    ->where('id',$arquivo["usuario_id"])
+                    ->first();
+            Mail::to($eml->usr_email)->send(new SendEmail($contact));
+        }
+
+
     }
 
     /**
@@ -1464,7 +1443,7 @@ class ConvenantController extends Controller
                             ->leftJoin('associado','lancamento.assoc_codigoid','=','associado.id');
             //->leftJoin('classificacao','classificacao.id','=','associado.id')
 
-            if($linha['contatoFormatado'] == "CTR_IPERGS_MENS"){
+            if($linha['contratoFormatado'] == "CTR_IPERGS_MENS"){
                 $parcelamento->leftJoin('convenio','convenio.id','=','lancamento.con_codigoid')
                             ->where('associado.assoc_contrato','=', $linha['contrato'])
                             ->where('convenio.con_referencia','=',"MENSALIDADE");
@@ -1479,16 +1458,7 @@ class ConvenantController extends Controller
                         ->where('parcelamento.par_status','=','Pendente');
 
             //dd($parcelamento->toSql(),$parcelamento->getBindings());
-            /*
-            if($linha['valorRejeitado'] == $linha['valorPagar']) {
-                $arr_rtn['msg'] = 'Valor rejeitado ('.$linha['valorRejeitado'].') é igual ao com o a pagar ('.$linha['valorPagar'].')';
-                $par_status = 'Pendente';
-            } else
-            */
-            //echo('- '.strpos(trim($linha['motivoRejeicaoDireita']), "nsufic").'<br/>');
-            //echo(strtolower($linha['motivoRejeicaoEsquerda']).'<br />');
-            //echo strpos(strtolower($linha['motivoRejeicaoEsquerda']), "concu");
-            
+
             if(strpos(strtolower($linha['motivoRejeicaoEsquerda']), "concu") !== false){
                 // Usar != não funcionaria porque se a posição é 0 a comparação (0 != false) é avaliada como falsa
                 $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].': Concubinato';
@@ -1510,7 +1480,7 @@ class ConvenantController extends Controller
             $quantidade = $parcelamento->count();
             $arr_rtn['parcelas_encontradas'] = $quantidade;
 
-            if($quantidade != 0){
+            if($quantidade > 0){
                 $parcelas = $parcelamento->get();
                 foreach ($parcelas as $parc){
                     Portion::where('id', $parc->id)
@@ -1519,10 +1489,11 @@ class ConvenantController extends Controller
                         ]);
                 }
             } else {
-                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].'. Nenhuma parcela encontrada';
+                $arr_rtn['msg'] = 'Contrato '.$linha['contrato'].'. Nenhuma parcela encontrada.';
             }
 
         } // fim arquivo ipe
+
         if($linha['convenio'] == 'tesouro'){
             if($linha['mensagemMelhorada'] == ""){
                 $parcelamento = Portion::select('parcelamento.id')
@@ -1559,6 +1530,7 @@ class ConvenantController extends Controller
                                 'par_status' => $par_status
                             ]);
                     }
+                    $arr_rtn['msg'] = 'Matrícula '.$linha['matricula'].': Processada com sucesso!';
                 } else {
                     $arr_rtn['msg'] = 'Nenhuma parcela encontrada';
                 }
@@ -1591,6 +1563,41 @@ class ConvenantController extends Controller
         }catch (Exception $e){
             return response()->json(['status'=>'error', 'msg' => $e->getMessage()]);
         }
+    }
+
+
+    public function processArchive(Request $request){
+        if (!Session::has('user')) {
+            return redirect()->route('login');
+        }
+
+        if($request->ajax()){
+            try {
+                $lists = Mark_as_paid::join('usuario', 'baixa_arquivo.usuario_id', '=', 'usuario.id')
+                                    ->select('baixa_arquivo.*', 'usuario.usr_nome as nome_usuario')
+                                    ->orderBy('baixa_arquivo.created_at', 'desc')
+                                    ->get();
+                return DataTables::of($lists)
+                   ->make(true);
+            } catch (Exception $e){
+                return response()->json(['status'=>'error', 'msg'=> $e->getMessage()]);
+            }
+
+        } else {
+            Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de arquivos de baixa.');
+        }
+
+        $data = [
+            'category_name' => 'covenants',
+            'page_name' => 'covenants',
+            'has_scrollspy' => 0,
+            'scrollspy_offset' => '',
+            'alt_menu' => 0,
+        ];
+
+
+
+        return view('covenants.list-archives')->with($data);
     }
 
 }
