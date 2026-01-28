@@ -1145,6 +1145,8 @@ function loadUploadDropBill() {
     console.log('loadUploadDropBill');
     console.log($('input[name="extensionArchive"]:checked').val());
 
+    alert($('input[name="extensionArchive"]:checked').val());
+
 
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',
