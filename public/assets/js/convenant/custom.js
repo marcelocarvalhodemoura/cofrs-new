@@ -426,6 +426,7 @@ $(document).ready(function () {
         }, 2000);
     });
 
+    /*
     //creat chart on the form
     var donutChart = {
         chart: {
@@ -459,6 +460,8 @@ $(document).ready(function () {
     donut.render();
 
     donut.render();
+
+    */
 
     //Second upload
     //var secondUpload = new FileUploadWithPreview('mySecondImage');
