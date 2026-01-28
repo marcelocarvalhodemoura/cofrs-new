@@ -26,11 +26,11 @@
         </div>
         <div class="col-md-12 mb-3">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive1" value="txt" selected />
+                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive1" value="txt" onclick="loadUploadDropBill()" />
                 <label class="form-check-label" for="extensionArchive1">TXT</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive2" value="xlsx" />
+                <input class="form-check-input" type="radio" name="extensionArchive" id="extensionArchive2" value="xlsx" onclick="loadUploadDropBill()" />
                 <label class="form-check-label" for="extensionArchive2">XLSX</label>
             </div>
         </div>

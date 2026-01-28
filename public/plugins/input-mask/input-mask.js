@@ -98,7 +98,7 @@ $(document).ready(function () {
     // isComplete
 
     $("#isComplete").inputmask({ mask: "999.999.999.99" })
-    $("#isComplete").inputmask("setvalue", "117.247.169.64");
+    //$("#isComplete").inputmask("setvalue", "117.247.169.64");
     $('#isComplete').on('focus keyup', function (event) {
         event.preventDefault();
         if ($(this).inputmask("isComplete")) {

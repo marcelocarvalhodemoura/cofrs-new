@@ -1124,7 +1124,7 @@ function loadUpload() {
 
 function freeCompetence(){
     $('#selCompetitionDropBill').prop('disabled', false).focus();
-    loadUploadDropBill();
+    //loadUploadDropBill();
 
     hideModels();
     if($("input[name=typeArchive]:checked").val() == "ipe"){
@@ -1142,12 +1142,6 @@ function hideModels(){
 
 
 function loadUploadDropBill() {
-    console.log('loadUploadDropBill');
-    console.log($('input[name="extensionArchive"]:checked').val());
-
-    alert($('input[name="extensionArchive"]:checked').val());
-
-
     var uploadObj = $("#fileuploaderDropBill").uploadFile({
         url: '/convenants/dropBill',
         fileName: "file",
