@@ -130,4 +130,8 @@
 @push('scripts')
     <script src="{{ URL::asset('/assets/js/convenant/custom.js?v=1234223') }}"></script>
     <script src="{{ URL::asset('/assets/js/jquery-maskmoney.js') }}"></script>
+    <!--
+    <script src="{{ URL::asset('plugins/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ URL::asset('plugins/apex/custom-apexcharts.js') }}"></script>
+    -->
 @endpush
