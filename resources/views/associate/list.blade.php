@@ -32,6 +32,8 @@
                                 @include('associate.modal.dependent')
                                 @include('associate.modal.covenants')
                                 @include('associate.modal.delete')
+                                @include('associate.modal.restore')
+                                @include('associate.modal.history')
                             </div>
 
                             <div class="col-md-12">
@@ -44,6 +46,7 @@
                                     <th>Fone</th>
                                     <th>Cidade</th>
                                     <th>Tipo</th>
+                                    <th>Status</th>
                                     <th>Ação</th>
                                 </tr>
                                 </thead>

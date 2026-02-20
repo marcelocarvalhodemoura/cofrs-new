@@ -1,15 +1,15 @@
 <div class="form-row">
     <div class="col-md-4 mb-3">
         <label for="district">Bairro </label>
-        <input type="text" class="form-control" id="district" name="district" placeholder="Bairro" disabled>
+        <input type="text" class="form-control" id="district" name="district" placeholder="Bairro" readonly>
     </div>
     <div class="col-md-4 mb-3">
         <label for="stade">UF</label>
-        <input type="text" class="form-control" id="state" name="state" placeholder="UF" disabled>
+        <input type="text" class="form-control" id="state" name="state" placeholder="UF" readonly>
     </div>
     <div class="col-md-4 mb-3">
         <label for="city">Cidade</label>
-        <input type="text" class="form-control" id="city" name="city" placeholder="Cidade" disabled>
+        <input type="text" class="form-control" id="city" name="city" placeholder="Cidade" readonly required>
     </div>
 </div>
 <div class="form-row">
