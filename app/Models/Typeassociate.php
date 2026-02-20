@@ -17,7 +17,7 @@ class Typeassociate extends Model
     /**
      * @var string
      */
-    protected $primaryKey = 'tipassoc_codigoid';
+    protected $primaryKey = 'id';
     protected $date = ['deleted_at'];
 
     /**

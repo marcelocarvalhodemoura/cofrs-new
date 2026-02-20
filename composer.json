@@ -19,6 +19,7 @@
         "opcodesio/log-viewer": "^3.14",
         "phpoffice/phpspreadsheet": "^5.4",
         "sendpulse/rest-api": "*",
+        "spatie/laravel-activitylog": "^4.11",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
