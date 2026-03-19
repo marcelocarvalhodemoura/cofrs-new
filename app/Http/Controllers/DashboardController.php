@@ -52,6 +52,7 @@ class DashboardController extends Controller
             'quantidade' => $rst[0]->quantidade,
         );
 
+        /*
         $resumo_operacoes = Cashflow::select('credito', DB::raw("SUM(valor) as valor"))
         ->where(DB::raw("YEAR(data_vencimento)"), '=', date('Y'))
         ->where(DB::raw("MONTH(data_vencimento)"), '=', date('m'))
@@ -89,6 +90,7 @@ class DashboardController extends Controller
                 $crescimento_operacoes[$item->credito][$item->mes.'/'.$item->ano] = $item->valor;
             }
         }
+            */
 
         $associados = Associate::select(DB::raw("COUNT(associado.id) AS quantidade"),DB::raw("COUNT(lancamento.id) AS conveniados"))
         ->leftJoin('lancamento','assoc_codigoid','=','associado.id')
@@ -99,6 +101,70 @@ class DashboardController extends Controller
         $ass_nconveniados = $associados->quantidade - $associados->conveniados;
         $ass_conveniados = $associados->conveniados;
 
+
+        $sql = "SELECT
+                    COUNT(a.id) as qntd,
+                    a.assoc_ativosn,
+                    ta.tipassoc_nome
+                FROM
+                    tipoassociado ta,
+                    associado a,
+                    lancamento l
+                WHERE
+                    ta.id = a.tipassoc_codigoid
+                    AND l.assoc_codigoid = a.id
+                GROUP BY
+                    a.assoc_ativosn,
+                    ta.tipassoc_nome
+                ORDER BY
+                    ta.tipassoc_nome
+                ";
+        $conveniados_fonte = \DB::select($sql);
+
+        $sql = "SELECT
+                    COUNT(a.id) as qntd,
+                    c.con_nome
+                FROM
+                    associado a,
+                    lancamento l,
+                    convenio c
+                WHERE
+                    c.id = l.con_codigoid
+                    AND l.assoc_codigoid = a.id
+                    AND a.assoc_ativosn = 1
+                    AND l.lanc_datavencimento >= NOW()
+                GROUP BY
+                    c.con_nome
+                ORDER BY
+                    c.con_nome
+                ";
+        $tipo_convenio = \DB::select($sql);
+
+        $total = 0;
+        foreach($tipo_convenio as $k => $v) {
+            $total += $v->qntd;
+        }
+
+        $sql = "SELECT
+                    a.id,
+                    a.assoc_nome
+                FROM
+                    associado a,
+                    lancamento l,
+                    parcelamento p
+                WHERE
+                    l.assoc_codigoid = a.id
+                    AND a.assoc_ativosn = 2
+                    AND p.lanc_codigoid = l.id 
+                    AND (p.par_status = 'Pendente' OR p.par_status = 'Vencido')
+                GROUP BY
+                    a.assoc_nome
+                ORDER BY
+                    a.assoc_nome
+                ";
+        $desativados = \DB::select($sql);
+
+
         $data = [
             'category_name' => 'dashboard',
             'page_name' => 'analytics',
@@ -107,11 +173,15 @@ class DashboardController extends Controller
             'scrollspy_offset' => '',
             'alt_menu' => 0,
             'vigencia' => $vigencia,
-            'resumo_operacoes' => $resumo_operacoes,
+            //'resumo_operacoes' => $resumo_operacoes,
+            'conveniados_fonte' => $conveniados_fonte,
+            'tipo_convenio' => $tipo_convenio,
+            'total' => $total,
+            'desativados' => $desativados,
             'ass_total' => ($ass_total ? $ass_total : 1),
             'ass_nconveniados' => $ass_nconveniados,
             'ass_conveniados' => $ass_conveniados,
-            'crescimento_operacoes' => $crescimento_operacoes,
+            //'crescimento_operacoes' => $crescimento_operacoes,
             'nao_averbados' => $nao_averbados,
         ];
 
