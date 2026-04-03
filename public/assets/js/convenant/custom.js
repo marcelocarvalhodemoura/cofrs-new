@@ -466,6 +466,51 @@ $(document).ready(function () {
     //Second upload
     //var secondUpload = new FileUploadWithPreview('mySecondImage');
 
+
+    var table = $('#tableArchives').DataTable({
+        dom:"<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l>" +
+            "<'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+            "<'table-responsive'tr>" +
+            "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        processing: true,
+        serverSide: true,
+        ajax: "/processArchive",
+        columns: [
+            {data: 'competencia', name: 'competencia', render: function (data, type) {return data.substr(4,2)+'/'+data.substr(0,4)}},
+            {data: 'convenio', name: 'convenio'},
+            {data: 'extensionArchive', name: 'extensionArchive'},
+            {data: 'nome_usuario', name: 'nome_usuario'},
+            {data: 'created_at', name: 'created_at', render: function (data, type) {return data.substr(8,2)+'/'+data.substr(5,2)+'/'+data.substr(0,4)+' '+data.substr(11,8)}},
+            {data: 'updated_at', name: 'updated_at', render: function (data, type) {return data.substr(8,2)+'/'+data.substr(5,2)+'/'+data.substr(0,4)+' '+data.substr(11,8)}},
+            {data: 'processado', name: 'processado', render: function (data, type) {
+                if (data == 0) {
+                    return '<span class="badge badge-secondary">Aguardando</span>';
+                } else if (data == 1) {
+                    return '<span class="badge badge-warning">Processando</span>';
+                } else if (data == 2) {
+                    return '<span class="badge badge-success">Concluído</span>';
+                }
+            }},
+        ],
+        "oLanguage": {
+            "sProcessing": "Processando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+            "sInfoFiltered": "",
+            "sInfoPostFix": "",
+            "pagingType": "full_numbers",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "oPaginate": {
+                "sPrevious":    "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-left\"><line x1=\"19\" y1=\"12\" x2=\"5\" y2=\"12\"></line><polyline points=\"12 19 5 12 12 5\"></polyline></svg>",
+                "sNext":     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-right\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>"
+            }
+        },
+    });
+
+
 }); //ready
 
 //Remove Portion
@@ -1155,12 +1200,14 @@ function loadUploadDropBill() {
         onSuccess: function (files, data, xhr, pd) {
             //console.log(data);
             /* Retorno do PHP */
-            uploadObj.reset();
+            $("#retornoArquivo")[0].reset();
+            $(".ajax-upload-dragdrop").remove();
+            hideModels();
             if (data[0].status === 'success') {
                 $('#convenantModalUploadFiles').modal('hide');
                 $('#retornoDropBill').html('');
                 swal({
-                    title: 'Bom trabalho!',
+                    title: 'Processado com sucesso!',
                     html: data[0].msg,
                     type: data[0].status,
                     confirmButtonClass: 'btn btn-success',
