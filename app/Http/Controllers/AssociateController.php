@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use  \Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Log;
+use Spatie\Activitylog\Models\Activity;
 
 class AssociateController extends Controller
 {
@@ -27,17 +28,28 @@ class AssociateController extends Controller
         if($request->ajax()){
 
             //load all associates
-            $associateList = Associate::select('assoc_nome', 'assoc_cpf', 'assoc_matricula', 'assoc_fone', 'assoc_cidade', 'tipassoc_nome','associado.id AS assoc_codigoid')
+            $associateList = Associate::select('assoc_nome', 'assoc_cpf', 'assoc_matricula', 'assoc_fone', 'assoc_cidade', 'tipassoc_nome','associado.id AS assoc_codigoid','associado.deleted_at','associado.assoc_ativosn')
                 ->join('tipoassociado', 'associado.tipassoc_codigoid', '=', 'tipoassociado.id')
+                ->withTrashed()
                 ->get();
 
             return DataTables::of($associateList)
                 ->addIndexColumn()
+                ->addColumn('status', function($row){
+                    if($row->deleted_at != null){
+                        $btn = '<span class="badge badge-danger">Excluído</span>';
+                    } elseif($row->assoc_ativosn == 2) {
+                        $btn = '<span class="badge badge-secondary">Desativado</span>';
+                    } else {
+                        $btn = '<span class="badge badge-success">Ativo</span>';
+                    }
+                    return $btn;
+                })
                 ->addColumn('action', function($row){
                     $btn = '<input class="" name="actionCheck[]" id="actionCheck" type="checkbox" value="'.$row->assoc_codigoid.'"/>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['status', 'action'])
                 ->make(true);
         } else {
             Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o lista de associados.');
@@ -135,7 +147,7 @@ class AssociateController extends Controller
         }
 
         try {
-            Associate::updateOrCreate(
+            Associate::withTrashed()->updateOrCreate(
                 ['id' => $request->post('associateId')],
                 [
                     'assoc_nome'  =>  $request->post('name'),
@@ -160,7 +172,7 @@ class AssociateController extends Controller
                     'assoc_banco' => $request->post('bank'),
                     'assoc_agencia' => $request->post('bank_agency'),
                     'assoc_conta' => $request->post('count'),
-                    'assoc_tipoconta' => $request->post('typeassociate'),
+                    //'assoc_tipoconta' => $request->post('typeassociate'),
                     'assoc_estadocivil' => $request->post('civilstatus'),
                     'assoc_fone2' => $request->post('phone2'),
                     'assoc_ativosn' => $request->post('assoc_ativosn'),
@@ -185,7 +197,8 @@ class AssociateController extends Controller
     public function getAssociate($id)
     {
         try{
-            $ass = Associate::find($id);
+            $ass = Associate::where('id', '=', $id)->withTrashed()->first();
+            //echo '<pre>'; var_dump($ass); die;
             Log::channel('daily')->info('Usuário '.Session::get('user').' acessou o cadastro do associado '.$ass->assoc_nome.'.');
             return response()->json($ass);
 
@@ -195,14 +208,79 @@ class AssociateController extends Controller
 
     }
 
-    public function delete($id)
-    {
+    public function getHistory($id){
+        $atividades = Activity::where('log_name', 'associados')
+                                ->where('subject_id', $id)
+                                ->latest()
+                                ->get();
+
+        $html = '<table class="table" id="tableHistory">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Usuário</th>
+                            <th>Ação</th>
+                            <th>Alterações (Campo: De -> Para)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ';
+        foreach($atividades as $atividade) {
+            if($atividade->causer_type){
+                $responsavel = $atividade->causer->usr_nome;
+            } else {
+                $responsavel = 'Sistema';
+            }
+            
+            $html .= '  <tr>
+                            <td>'.$atividade->created_at->format('d/m/Y H:i').'</td>
+                            <td>'. $responsavel .'</td>
+                            <td>'. ucfirst($atividade->description) .'</td>
+                            <td>
+                            ';
+            if(isset($atividade->properties['attributes'])){
+                $html .= '      <ul>
+                        ';
+                foreach($atividade->properties['attributes'] as $campo => $valorNovo){
+                    if($atividade->properties['old'][$campo]){
+                        $valorAntigo = $atividade->properties['old'][$campo];
+                    } else {
+                        $valorAntigo = '(em branco))';
+                    }
+
+                    $html .= '          <li>
+                                        <strong>'. $campo .': </strong> 
+                                        <span class="text-danger">'. $valorAntigo .'</span> 
+                                        <strong>>></strong> 
+                                        <span class="text-success">'. $valorNovo .'</span>
+                                    </li>
+                    ';
+                }
+                $html .= '      </ul>
+                            ';
+            } else {
+                $html .= '<span>Sem detalhes de campos.</span>';
+            }
+
+            $html .= '      </td>
+                        </tr>
+                        ';
+        }
+
+        $html .= '
+                    </tbody>
+                </table>';
+
+        return $html;
+    }
+
+    public function delete($id) {
         $ass = Associate::find($id);
         try{
             Log::channel('daily')->info('Usuário '.Session::get('user').' deletou o associado '.$ass->assoc_nome.'.');
-            return response()->json($ass);
+            //return response()->json($ass);
 
-            return Associate::find($id)->delete();
+            return $ass->delete();
 
         }catch (Exception $e){
             Log::channel('daily')->error('Usuário '.Session::get('user').' tentou deletar o associado '.$ass->assoc_nome.' e obteve o erro:'.$e->getMessage().'.');
@@ -210,7 +288,23 @@ class AssociateController extends Controller
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
 
         }
+    }
 
+    public function restore($id) {
+        $ass = Associate::where('id', '=', $id)->withTrashed()->first();
+        //echo '<pre>'; var_dump($ass); die;
+        try{
+            Log::channel('daily')->info('Usuário '.Session::get('user').' recuperou o associado deletado '.$ass->assoc_nome.'.');
+            //return response()->json($ass);
+
+            return $ass->restore();
+
+        }catch (Exception $e){
+            Log::channel('daily')->error('Usuário '.Session::get('user').' tentou recuperar o associado deletado '.$ass->assoc_nome.' e obteve o erro:'.$e->getMessage().'.');
+
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+
+        }
     }
 
     /**

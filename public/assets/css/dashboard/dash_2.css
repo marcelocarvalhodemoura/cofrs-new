@@ -540,6 +540,16 @@
 .widget-four .widget-content .browser-list:nth-child(3) .w-icon {
     background: #ffeccb ;
 }
+.widget-four .widget-content .browser-list:nth-child(4) .w-icon {
+    background: #8ec8e2;
+}
+.widget-four .widget-content .browser-list:nth-child(5) .w-icon {
+    background: #dee0d2;
+}
+.widget-four .widget-content .browser-list:nth-child(6) .w-icon {
+    background: #f5c4df;
+}
+
 .widget-four .widget-content .browser-list:nth-child(1) .w-icon svg {
     color: #1b55e2;
 }

@@ -28,6 +28,7 @@ $(document).ready(function() {
             {data: 'assoc_fone', name: 'assoc_fone'},
             {data: 'assoc_cidade', name: 'assoc_cidade'},
             {data: 'tipassoc_nome', name: 'tipassoc_nome'},
+            {data: 'status', name: 'status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         "oLanguage": {
@@ -227,6 +228,9 @@ $(document).ready(function() {
             $( "#formAssoc" ).addClass( "was-validated" );
         },
         submitHandler: function () {
+            // mostra o loading
+            $('#load_screen').show();
+
             $.ajax({
                 url:"/associates/store",
                 method:'POST',
@@ -238,12 +242,16 @@ $(document).ready(function() {
                         table.ajax.reload();
                         $('#associateFormModal').modal('hide');
 
+                        // oculta o loading
+                        $('#load_screen').hide();
+
                         swal({
                             title: 'Bom trabalho!',
                             text: response.msg,
                             type: response.status,
                         });
-
+                        
+                        $('#associateId').remove();
                         $('#formAssoc')[0].reset();
                     }
                 }
@@ -437,6 +445,8 @@ $(document).ready(function() {
                 confirmButtonText: "Remova!",
                 closeOnConfirm: false
             }).then(function(result) {
+                // mostra o loading
+                $('#load_screen').show();
 
                 $.ajax({
                     method:"POST",
@@ -448,11 +458,59 @@ $(document).ready(function() {
                     success: function(response){
                         if (response == true){
                             table.ajax.reload();
-                        }
 
+                            //oculta o loading
+                            $('#load_screen').hide();
+                        }
                     }
                 });
 
+            });
+        } else {
+
+            swal({
+                title: "Atenção !",
+                text: "Selecione apenas 1 registro por vez",
+                type:"info",
+                confirmButtonClass: 'btn btn-primary',
+            });
+        }
+    });
+
+    /**
+     * Remove associate
+     */
+    $("#btnAssocietaRestore").on('click', function(e){
+        e.preventDefault();
+
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+
+        });
+
+        //validate if exist value
+        if (id > 0) {
+            // mostra o loading
+            $('#load_screen').show();
+
+            $.ajax({
+                method:"POST",
+                url:"/associates/restore/"+id,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{ id:id },
+                success: function(response){
+                    if (response == true){
+                        table.ajax.reload();
+
+                    //oculta o loading
+                    $('#load_screen').hide();
+                    }
+                }
             });
         } else {
 
@@ -480,6 +538,8 @@ $(document).ready(function() {
 
         //validate if exist value
         if (id > 0) {
+            // mostra o loading
+            $('#load_screen').show();
 
             //load Associate data
             $.ajax({
@@ -527,15 +587,61 @@ $(document).ready(function() {
                     $("#bank_agency").val(response.assoc_agencia);
                     $("#count").val(response.assoc_conta);
 
-                    $("#formAssoc").append('<input type="hidden" id="associateId" name="associateId" value="' + response.id + '">');
+                    $("#formAssoc").prepend('<input type="hidden" id="associateId" name="associateId" value="' + response.id + '" />');
+
+                    //replace Title
+                    $("#associateModalCenterTitle").html('Formulário de Alteração de Associado');
+
+                    //oculta o loading
+                    $('#load_screen').hide();
+
+                    //load Modal Edit Associate
+                    $("#associateFormModal").modal('show');
                 }
             });
 
-            //replace Title
-            $("#associateModalCenterTitle").html('Formulário de Alteração de Associado');
+        }else{
+            swal({
+                title: "Atenção !",
+                text: "Selecione apenas 1 registro por vez",
+                type:"info",
+                confirmButtonClass: 'btn btn-primary',
+            });
+        }
 
-            //load Modal Edit Associate
-            $("#associateFormModal").modal('show');
+    });
+
+
+    $('#btnAssocietaHistory').on('click', function (e) {
+        e.preventDefault();
+        var id = new Array();
+
+        $("input[type=checkbox][name=\'actionCheck[]\']:checked").each(function () {
+            //get value in the input
+            id.push($(this).val());
+        });
+
+        //validate if exist value
+        if (id > 0) {
+            // mostra o loading
+            $('#load_screen').show();
+
+            $("#associateFormModalHistory .modal-body").html('');
+
+            //load Associate data
+            $.ajax({
+                url:"/associates/history/"+id,
+                method:"GET",
+                success:response => {
+                    $("#associateFormModalHistory .modal-body").html(response);
+
+                    //load Modal Edit Associate
+                    $("#associateFormModalHistory").modal('show');
+
+                    //oculta o loading
+                    $('#load_screen').hide();
+                }
+            });
 
         }else{
             swal({

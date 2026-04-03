@@ -17,7 +17,7 @@ class Classification extends Model
     /**
      * @var string
      */
-    protected $primaryKey = 'cla_codigoid';
+    protected $primaryKey = 'id';
     protected $date = ['deleted_at'];
 
     /**
