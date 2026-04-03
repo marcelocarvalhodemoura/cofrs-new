@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('convenant:darBaixaAutomatica', function () {
+    $controller = new \App\Http\Controllers\ConvenantController();
+    $controller->darBaixaAutomatica();
+    $this->info('Baixa automática executada via Closure!');
+})->purpose('Executa a baixa automática');
