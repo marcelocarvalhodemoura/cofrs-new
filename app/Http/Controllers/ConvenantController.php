@@ -1170,8 +1170,10 @@ class ConvenantController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function dropBill(Request $request) {
+        ini_set('max_execution_time', '-1');
         $responseData = "";
         $tempoInicial = time();
+        
         
 
         if($request->hasFile('file')){
@@ -1206,6 +1208,7 @@ class ConvenantController extends Controller
         $linha = [];
         $responseMSG = '';
 
+
         if($responseData == ""){
             $Mark_as_paidModel = new Mark_as_paid();
             $Mark_as_paidModel->extensionArchive = $request->extensionArchive;
@@ -1224,24 +1227,47 @@ class ConvenantController extends Controller
                     if($key <= 3){
                         continue;
                     }
-                    if($value[4] == ''){
-                        continue;
+
+                    if($request->typeArchive == 'ipe') {
+                        if($value[5] == ''){
+                            continue;
+                        }
+                        $ln = $key+1;
+
+                        $linha = [
+                                'id_baixa_arquivo' => $Mark_as_paidModel->id,
+                                'ln' => $ln,
+                                'contrato' => $value[5],
+                                'valorRejeitado' => $value[12],
+                                'competenciaFormatada' => $competenciaFormatada,
+                                'motivoRejeicaoDireita' => $value[14],
+                                'motivoRejeicaoEsquerda' => $value[13],
+                                'matricula' => '',
+                                'referencia' => '',
+                                'mensagemMelhorada' => '',
+                        ];
+                    } else if($request->typeArchive == 'tesouro') {
+                        if($value[1] == ''){
+                            continue;
+                        }
+                        $ln = $key+1;
+                        
+                        $linha = [
+                                'id_baixa_arquivo' => $Mark_as_paidModel->id,
+                                'ln' => $ln,
+                                'contrato' => '',
+                                'valorRejeitado' => '',
+                                'competenciaFormatada' => $competenciaFormatada,
+                                'motivoRejeicaoDireita' => '',
+                                'motivoRejeicaoEsquerda' => '',
+                                'matricula' => $value[1],
+                                'referencia' => explode(" ",$value[3])[0],
+                                'mensagemMelhorada' => $value[13].' '.$value[14],
+                        ];
                     }
-                    $ln = $key+1;
-                    //echo '<pre>'; print_r($value); die;
+
+                    //echo '<pre>'; print_r($linha); die;
                     
-                    $linha = [
-                            'id_baixa_arquivo' => $Mark_as_paidModel->id,
-                            'ln' => $ln,
-                            'contrato' => $value[4],
-                            'valorRejeitado' => $value[11],
-                            'competenciaFormatada' => $competenciaFormatada,
-                            'motivoRejeicaoDireita' => $value[13],
-                            'motivoRejeicaoEsquerda' => $value[12],
-                            'matricula' => '',
-                            'referencia' => '',
-                            'mensagemMelhorada' => '',
-                    ];
 
                     $arr_rtn = $this->armazenaLinhaArquivoBaixa($linha);
                 }
@@ -1343,6 +1369,7 @@ class ConvenantController extends Controller
     }
 
     public function darBaixaAutomatica(){
+        ini_set('max_execution_time', '-1');
         $tempoInicial = time();
         //busca arquivos não processados
         $arquivos = Mark_as_paid::where('processado', '=', 0)->get();
@@ -1375,8 +1402,10 @@ class ConvenantController extends Controller
                     'competenciaFormatada' => substr($arquivo->competencia, 4, 2).'/'.substr($arquivo->competencia, 0, 4),
                 ];
 
+                //echo '<pre>'; print_r($linha); die;
                 $rtn = $this->validaArquivoBaixa($linha);
 
+                //echo '- '.$rtn['msg']; die;
 
                 Mark_as_paid_line::where('id', $linha['id'])
                             ->update(['rtn' => $rtn['msg']]);
@@ -1414,6 +1443,8 @@ class ConvenantController extends Controller
             'msg' => '',
             'parcelas_encontradas' => 0,
         ];
+
+        //echo '<pre>'; print_r($linha); die;
 
         // verifica o convênio
         if($linha['convenio'] == 'ipe'){
@@ -1476,7 +1507,8 @@ class ConvenantController extends Controller
         } // fim arquivo ipe
 
         if($linha['convenio'] == 'tesouro'){
-            if($linha['mensagemMelhorada'] == ""){
+            if(trim($linha['mensagemMelhorada']) == ""){
+                
                 $parcelamento = Portion::select('parcelamento.id')
                                 ->join('competencia','competencia.id','=','parcelamento.com_codigoid')
                                 ->join('lancamento','parcelamento.lanc_codigoid','=','lancamento.id')
@@ -1495,7 +1527,6 @@ class ConvenantController extends Controller
                     $parcelamento->where('associado.cla_codigoid','=','42');
                 }
                 */
-
                 //dd($parcelamento->toSql(),$parcelamento->getBindings());
 
                 $quantidade = $parcelamento->count();
