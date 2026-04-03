@@ -51,8 +51,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request)  {
         if (!Session::has('user')) {
             return redirect()->route('login');
         }
@@ -95,7 +94,7 @@ class ConvenantController extends Controller
         return view('covenants.list', $lists)->with($data);
     }
 
-    public function createFile(Request $request){
+    public function createFile(Request $request) {
         Storage::disk('local')->delete('example.txt');
 
 
@@ -134,7 +133,7 @@ class ConvenantController extends Controller
 
                         $valuePortion = str_pad($diversosTotal[0].$diversosTotal[1], 9 ,  "0", STR_PAD_LEFT);
 
-//                        $bigestDate = explode("-", $convenantDiverso->datamaior);
+                        //$bigestDate = explode("-", $convenantDiverso->datamaior);
 
                         $contentFile .= "D" . str_pad(trim($convenantDiverso->assoc_identificacao), 12, "0", STR_PAD_LEFT). $reference . $contract .$request->yearCompetence.$request->monthCompetence.$valuePortion."0000000000000000000000\r\n";
                     }
@@ -202,8 +201,7 @@ class ConvenantController extends Controller
 
     }
 
-    private function typeReferenceAgrouped($competenceName, $reference, $classification, $agreements = null)
-    {
+    private function typeReferenceAgrouped($competenceName, $reference, $classification, $agreements = null) {
 
         switch ($reference){
             case 'MENSALIDADE':
@@ -301,17 +299,11 @@ class ConvenantController extends Controller
     }
 
 
-    public function uploadFile(Request $request)
-    {
-
-    }
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function getCovenants(Request $request)
-    {
+    public function getCovenants(Request $request) {
 
         if($request->ajax()){
 
@@ -399,8 +391,7 @@ class ConvenantController extends Controller
      * @param string $status
      * @return mixed
      */
-    protected function changeStatusPortion($id, $status)
-    {
+    protected function changeStatusPortion($id, $status) {
         try{
             // load portion
             $portion = Portion::where('id', $id)
@@ -423,8 +414,7 @@ class ConvenantController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function changePayment(Request $request)
-    {
+    public function changePayment(Request $request) {
 
         foreach ($request->id as $id){
             try{
@@ -444,8 +434,7 @@ class ConvenantController extends Controller
      * @param $compentence
      * @return mixed
      */
-    protected function verifyCompetent($compentence)
-    {
+    protected function verifyCompetent($compentence) {
         $competenceList = Competence::where('com_nome','=', $compentence)->get();
 
         if(isEmpty($competenceList)){
@@ -480,8 +469,7 @@ class ConvenantController extends Controller
     }
 
 
-    public function getMonthlyPayment()
-    {
+    public function getMonthlyPayment() {
         $dataConvenants = Convenant::where('con_codigoid', '=', 31)->count();
 
         $data = [
@@ -496,8 +484,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public static function associateProcessed($file)
-    {
+    public static function associateProcessed($file) {
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
@@ -619,8 +606,7 @@ class ConvenantController extends Controller
         return ($responseData);
     }
 
-    public static function convenantsProcessed($file)
-    {
+    public static function convenantsProcessed($file) {
         ini_set('max_execution_time', '-1');
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
@@ -779,8 +765,7 @@ class ConvenantController extends Controller
 
     }
 
-    public static function verifyFile($request)
-    {
+    public static function verifyFile($request) {
         $responseData = "";
 
         //dd($request->file('file'));
@@ -809,8 +794,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function storeMonthlyPayment(Request $request)
-    {
+    public function storeMonthlyPayment(Request $request) {
         $verify = $this->verifyFile($request);
 
         if($verify == ""){
@@ -851,8 +835,7 @@ class ConvenantController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function renegotiation($portion_id, $convenants_id)
-    {
+    public function renegotiation($portion_id, $convenants_id) {
         try {
             //Change Status Portion to renegociation
             self::changeStatusPortion($portion_id, 'Transferido');
@@ -932,7 +915,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateLancamento(Request $request){
+    public function updateLancamento(Request $request) {
 
         try {
             Convenant::where('id', $request->idLancamento)
@@ -955,7 +938,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateParcelas(Request $request){
+    public function updateParcelas(Request $request) {
         //die(json_decode($request->idparcelas)[0]);
         try {
             //edita as parcelas
@@ -978,7 +961,7 @@ class ConvenantController extends Controller
         }
     }
 
-    public function addParcela(Request $request){
+    public function addParcela(Request $request) {
         try {
             $parcela = Portion::where('lanc_codigoid', $request->idLancamento)->orderBy('par_numero','desc')->first();
 
@@ -1022,7 +1005,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateStatusParcelas(Request $request){
+    public function updateStatusParcelas(Request $request) {
         //die(json_decode($request->idparcelas)[0]);
         try {
             //edita as parcelas
@@ -1046,8 +1029,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $convenantModel = new Convenant();
 
         try {
@@ -1133,8 +1115,7 @@ class ConvenantController extends Controller
 
     }
 
-    public function remove(Request $request): JsonResponse
-    {
+    public function remove(Request $request): JsonResponse  {
         $err = '';
         $lancamentos = [];
         $parcelas = DB::select('SELECT * FROM parcelamento WHERE id IN ('.implode(',',$request->id).')');
@@ -1188,7 +1169,7 @@ class ConvenantController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function dropBill(Request $request){
+    public function dropBill(Request $request) {
         $responseData = "";
         $tempoInicial = time();
         
@@ -1345,7 +1326,7 @@ class ConvenantController extends Controller
      * @param Array $linha
      * @return Array $arr_rtn
      */
-    public function armazenaLinhaArquivoBaixa($linha){
+    public function armazenaLinhaArquivoBaixa($linha) {
         $linhaArquivo = Mark_as_paid_line::create([
             'id' => Str::uuid(),
             'id_baixa_arquivo' => $linha['id_baixa_arquivo'],

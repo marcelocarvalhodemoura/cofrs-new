@@ -1178,7 +1178,8 @@ function freeCompetence(){
     }
     if($("input[name=typeArchive]:checked").val() == "tesouro"){
         $("#model_tesouro").show();
-        $('input[name="extensionArchive"][value="xlsx"]').prop('disabled', true);
+        //$('input[name="extensionArchive"][value="xlsx"]').prop('disabled', true);
+        $('input[name="extensionArchive"][value="xlsx"]').removeAttr('disabled');
     }
 }
 function hideModels(){
