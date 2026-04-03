@@ -522,7 +522,7 @@ class ConvenantController extends Controller
 
                 if($dataAssociateCount == 0){
 
-                    if($content['J'] == "") {
+                    if(!isset($content['J']) || $content['J'] == "") {
                         $erro .= '- Campo e-mail (coluna J) não pode ser em branco';
                     }
 
