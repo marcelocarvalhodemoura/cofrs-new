@@ -41,6 +41,6 @@ class ProcessarBaixasArquivos extends Command
     // Instancia o controller através do container do Laravel e chama o método
     app(\App\Http\Controllers\ConvenantController::class)->darBaixaAutomatica();
 
-    $this->info('Finalizado!');
+    $this->info('Baixa automática executada com sucesso!');
     }
 }
