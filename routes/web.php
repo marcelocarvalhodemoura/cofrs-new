@@ -139,9 +139,9 @@ Route::post('/convenants/updateParcelas', [ConvenantController::class, 'updatePa
 Route::post('/convenants/updateStatusParcelas', [ConvenantController::class, 'updateStatusParcelas']);
 Route::post('/convenants/addParcela', [ConvenantController::class, 'addParcela']);
 Route::post('/convenants/editParcelaObs', [ConvenantController::class, 'editParcelaObs']);
-Route::get('/convenants/darBaixaAutomatica', [ConvenantController::class, 'darBaixaAutomatica']);
-
 Route::get('/processArchive', [ConvenantController::class, 'processArchive']);
+
+//Route::get('/convenants/darBaixaAutomatica', [ConvenantController::class, 'darBaixaAutomatica']);
 
 
 /**
