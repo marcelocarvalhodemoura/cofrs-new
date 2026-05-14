@@ -22,10 +22,9 @@
             <label for="reference">Referência <b class="error">*</b></label>
             <select class="custom-select" required="" id="reference" name="reference">
                 <option value="">-Selecione-</option>
-                <option value="DIVERSOS">Diversos</option>
-                <option value="EMPRESTIMO">Empréstimos</option>
-                <option value="MENSALIDADE">Mensalidade</option>
-                <option value="SEG MARITIMA">Seg Marítima</option>
+                @foreach ($referenceList as $item)
+                    <option value="{{ $item->con_referencia }}">{{ $item->con_referencia }}</option>
+                @endforeach
             </select>
         </div>
       </div>

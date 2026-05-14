@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
 use \Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Log;
+use App\Models\Agreement;
 
 class TypeCategoryConvenantController extends Controller
 {
@@ -44,13 +45,16 @@ class TypeCategoryConvenantController extends Controller
 
         $categoryConvenantsData = CategoryConvenants::all();
 
+        $referenceList = Agreement::distinct()->orderBy('con_referencia', 'asc')->get('con_referencia');
+
         $data = [
             'category_name' => 'typecategoryconvenants',
             'page_name' => 'typecategoryconvenants',
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
             'alt_menu' => 0,
-            'categoryConvenants' => $categoryConvenantsData
+            'categoryConvenants' => $categoryConvenantsData,
+            'referenceList' => $referenceList,
         ];
 
 
