@@ -40,6 +40,7 @@
                                         <th width="15%">Enviado em</th>
                                         <th width="15%">Atualizado em</th>
                                         <th width="20%">Status</th>
+                                        <th width="10%">Ações</th>
                                     </thead>
                                     <tbody>
 
@@ -58,4 +59,38 @@
 
 @push('scripts')
     <script src="{{ URL::asset('/assets/js/convenant/custom.js?v=1234223') }}"></script>
+    <!-- Modal de detalhes -->
+    <div class="modal fade" id="archiveDetailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalhes do processamento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="archiveDetailsContent">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Status</th>
+                                    <th>Contrato</th>
+                                    <th>Matrícula</th>
+                                    <th>Referência</th>
+                                    <th>Mensagem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="archiveDetailsTbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endpush

@@ -482,14 +482,41 @@ $(document).ready(function () {
             {data: 'nome_usuario', name: 'nome_usuario'},
             {data: 'created_at', name: 'created_at', render: function (data, type) {return data.substr(8,2)+'/'+data.substr(5,2)+'/'+data.substr(0,4)+' '+data.substr(11,8)}},
             {data: 'updated_at', name: 'updated_at', render: function (data, type) {return data.substr(8,2)+'/'+data.substr(5,2)+'/'+data.substr(0,4)+' '+data.substr(11,8)}},
-            {data: 'processado', name: 'processado', render: function (data, type) {
+            {data: 'processado', name: 'processado', render: function (data, type, row) {
                 if (data == 0) {
-                    return '<span class="badge badge-secondary">Aguardando</span>';
+                    var html = '<span class="badge badge-secondary">Aguardando</span>' +
+                               '<div><small id="eta-'+row.id+'" class="text-muted"></small></div>' +
+                               '<div><small id="errors-'+row.id+'" class="text-muted"></small></div>';
+                    if (!window._archivePollers) { window._archivePollers = {}; }
+                    setTimeout(function(){ initArchiveProgress(row.id); }, 0);
+                    return html;
                 } else if (data == 1) {
-                    return '<span class="badge badge-warning">Processando</span>';
+                    var html = '' +
+                        '<div class="d-flex align-items-center" style="min-width:220px">' +
+                        '  <div class="progress w-100" style="height: 18px;">' +
+                        '    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" id="progress-'+row.id+'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>' +
+                        '  </div>' +
+                        '</div>' +
+                        '<div><small id="eta-'+row.id+'" class="text-muted"></small></div>' +
+                        '<div><small id="elapsed-'+row.id+'" class="text-muted"></small></div>' +
+                        '<div><small id="errors-'+row.id+'" class="text-muted"></small></div>';
+                    if (!window._archivePollers) { window._archivePollers = {}; }
+                    setTimeout(function(){ initArchiveProgress(row.id); }, 0);
+                    return html;
                 } else if (data == 2) {
                     return '<span class="badge badge-success">Concluído</span>';
+                } else if (data == 3) {
+                    return '<span class="badge badge-dark">Cancelado</span>';
                 }
+            }},
+            {data: null, orderable: false, searchable: false, render: function (data, type, row) {
+                var btns = '';
+                btns += '<button class="btn btn-sm btn-outline-info mr-1" onclick="openArchiveDetails('+row.id+')">Detalhes</button>';
+                if (row.processado == 0 || row.processado == 1) {
+                    btns += '<button class="btn btn-sm btn-outline-danger mr-1" onclick="cancelArchive('+row.id+')">Cancelar</button>';
+                }
+                btns += '<button class="btn btn-sm btn-outline-primary" onclick="retryArchive('+row.id+')">Reprocessar</button>';
+                return btns;
             }},
         ],
         "oLanguage": {
@@ -508,8 +535,154 @@ $(document).ready(function () {
                 "sNext":     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-arrow-right\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>"
             }
         },
+        drawCallback: function () {
+            // opcional: poderia iniciar aqui, mas já iniciamos no render para cada linha em processamento
+        }
     });
 
+    // Função de polling para atualizar progresso por arquivo
+    function initArchiveProgress(id) {
+        if (!window._archivePollers) { window._archivePollers = {}; }
+        if (window._archivePollers[id]) { return; } // já está sendo monitorado
+
+        function refresh() {
+            $.ajax({
+                method: 'GET',
+                url: '/processArchive/status/' + id,
+                success: function (r) {
+                    if (!r || !r.id) { return; }
+                    var pct = Math.round(r.percent || 0);
+                    var el = document.getElementById('progress-' + id);
+                    if (el) {
+                        el.style.width = pct + '%';
+                        el.setAttribute('aria-valuenow', pct);
+                        el.textContent = pct + '%';
+                    }
+                    var etaEl = document.getElementById('eta-' + id);
+                    if (etaEl) {
+                        if (r.status === 'done') {
+                            etaEl.textContent = 'Concluído';
+                        } else {
+                            var eta = r.etaSeconds || 0;
+                            if (eta > 0) {
+                                etaEl.textContent = 'Restante ~ ' + Math.ceil(eta/60) + ' min';
+                            } else {
+                                etaEl.textContent = 'Calculando...';
+                            }
+                        }
+                    }
+                    var elapsedEl = document.getElementById('elapsed-' + id);
+                    if (elapsedEl && r.elapsedSeconds != null) {
+                        var mins = Math.floor((r.elapsedSeconds||0)/60);
+                        elapsedEl.textContent = 'Decorrido ~ ' + mins + ' min';
+                    }
+                    var errEl = document.getElementById('errors-' + id);
+                    if (errEl && r.errorLines != null) {
+                        errEl.textContent = 'Erros: ' + r.errorLines;
+                    }
+                    if (r.status === 'done') {
+                        clearInterval(window._archivePollers[id]);
+                        delete window._archivePollers[id];
+                        // força recarregar a linha para mostrar "Concluído"
+                        $('#tableArchives').DataTable().ajax.reload(null, false);
+                        if (!window._archiveToasted) { window._archiveToasted = {}; }
+                        if (!window._archiveToasted[id]) {
+                            window._archiveToasted[id] = true;
+                            swal({ title: 'Concluído', text: 'Processamento finalizado.', type: 'success', confirmButtonClass: 'btn btn-success' });
+                        }
+                    }
+                }
+            });
+        }
+
+        // dispara imediatamente e agenda intervalos
+        refresh();
+        window._archivePollers[id] = setInterval(refresh, 1000);
+    }
+
+    // Ações
+    window.cancelArchive = function(id) {
+        swal({
+            title: "Cancelar processamento?",
+            text: "Esta ação irá marcar o arquivo como cancelado.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-secondary',
+            confirmButtonText: "Cancelar",
+            cancelButtonText: "Fechar",
+            buttonsStyling: false
+        }).then(function(result) {
+            if (result === true) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/processArchive/' + id + '/cancel',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    success: function(res) {
+                        $('#tableArchives').DataTable().ajax.reload(null, false);
+                        swal({ title: 'Cancelado', text: 'Processamento cancelado.', type: 'success', confirmButtonClass: 'btn btn-success' });
+                    }
+                });
+            }
+        });
+    }
+
+    window.retryArchive = function(id) {
+        swal({
+            title: "Reprocessar arquivo?",
+            text: "Resultados anteriores serão sobrescritos.",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-primary',
+            cancelButtonClass: 'btn btn-secondary',
+            confirmButtonText: "Reprocessar",
+            cancelButtonText: "Fechar",
+            buttonsStyling: false
+        }).then(function(result) {
+            if (result === true) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/processArchive/' + id + '/retry',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    success: function(res) {
+                        $('#tableArchives').DataTable().ajax.reload(null, false);
+                        swal({ title: 'Iniciado', text: 'Reprocessamento em fila.', type: 'success', confirmButtonClass: 'btn btn-success' });
+                    }
+                });
+            }
+        });
+    }
+
+    window.openArchiveDetails = function(id) {
+        $('#archiveDetailsTbody').empty().append('<tr><td colspan="6">Carregando...</td></tr>');
+        $('#archiveDetailsModal').modal('show');
+        $.ajax({
+            method: 'GET',
+            url: '/processArchive/' + id + '/lines?limit=200',
+            success: function(res) {
+                var items = (res && res.items) ? res.items : [];
+                var rows = '';
+                if (!items.length) {
+                    rows = '<tr><td colspan="6">Sem dados</td></tr>';
+                } else {
+                    items.forEach(function(it){
+                        var badge = '<span class="badge badge-secondary">Pendente</span>';
+                        if (it.status === 'ok') badge = '<span class="badge badge-success">OK</span>';
+                        if (it.status === 'error') badge = '<span class="badge badge-danger">Erro</span>';
+                        rows += '<tr>' +
+                                '<td>'+ (it.ln || '') +'</td>' +
+                                '<td>'+ badge +'</td>' +
+                                '<td>'+ (it.contrato || '') +'</td>' +
+                                '<td>'+ (it.matricula || '') +'</td>' +
+                                '<td>'+ (it.referencia || '') +'</td>' +
+                                '<td>'+ (it.message || '') +'</td>' +
+                                '</tr>';
+                    });
+                }
+                $('#archiveDetailsTbody').empty().append(rows);
+            }
+        });
+    }
 
 }); //ready
 

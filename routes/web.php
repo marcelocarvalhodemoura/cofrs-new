@@ -140,6 +140,10 @@ Route::post('/convenants/updateStatusParcelas', [ConvenantController::class, 'up
 Route::post('/convenants/addParcela', [ConvenantController::class, 'addParcela']);
 Route::post('/convenants/editParcelaObs', [ConvenantController::class, 'editParcelaObs']);
 Route::get('/processArchive', [ConvenantController::class, 'processArchive']);
+Route::get('/processArchive/status/{id}', [ConvenantController::class, 'statusArchive']);
+Route::get('/processArchive/{id}/lines', [ConvenantController::class, 'linesArchive']);
+Route::post('/processArchive/{id}/retry', [ConvenantController::class, 'retryArchive']);
+Route::post('/processArchive/{id}/cancel', [ConvenantController::class, 'cancelArchive']);
 
 //Route::get('/convenants/darBaixaAutomatica', [ConvenantController::class, 'darBaixaAutomatica']);
 

@@ -1612,4 +1612,132 @@ class ConvenantController extends Controller
         return view('covenants.list-archives')->with($data);
     }
 
+    /**
+     * Status do processamento de um arquivo de baixa (progresso e ETA).
+     */
+    public function statusArchive($id)
+    {
+        try {
+            $arquivo = Mark_as_paid::find($id);
+            if (!$arquivo) {
+                return response()->json(['status' => 'error', 'msg' => 'Arquivo não encontrado'], 404);
+            }
+
+            $total = Mark_as_paid_line::where('id_baixa_arquivo', $id)->count();
+            $processed = Mark_as_paid_line::where('id_baixa_arquivo', $id)
+                ->whereNotNull('rtn')
+                ->count();
+            // heurística simples: considera erro quando rtn não contém 'sucesso'
+            $errorLines = Mark_as_paid_line::where('id_baixa_arquivo', $id)
+                ->whereNotNull('rtn')
+                ->whereRaw('LOWER(rtn) NOT LIKE ?', ['%sucesso%'])
+                ->count();
+
+            $percent = $total > 0 ? round(($processed / $total) * 100, 2) : 0.0;
+
+            $statusMap = [
+                0 => 'queued',
+                1 => 'processing',
+                2 => 'done',
+                3 => 'cancelled',
+            ];
+            $statusText = $statusMap[$arquivo->processado] ?? 'queued';
+
+            // Estimativa de tempo restante simples
+            $startedAt = $arquivo->created_at ?? now();
+            $elapsedSeconds = now()->diffInSeconds($startedAt);
+            $etaSeconds = ($processed > 0 && $total > $processed)
+                ? (int) round(($elapsedSeconds / max($processed, 1)) * ($total - $processed))
+                : 0;
+
+            return response()->json([
+                'id' => $arquivo->id,
+                'status' => $statusText,
+                'totalLines' => $total,
+                'processedLines' => $processed,
+                'errorLines' => $errorLines,
+                'percent' => $percent,
+                'startedAt' => optional($startedAt)->toIso8601String(),
+                'updatedAt' => optional($arquivo->updated_at)->toIso8601String(),
+                'elapsedSeconds' => $elapsedSeconds,
+                'etaSeconds' => $statusText === 'done' ? 0 : $etaSeconds,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Linhas do arquivo para detalhamento (limitadas para a UI)
+     */
+    public function linesArchive($id, Request $request)
+    {
+        try {
+            $limit = (int) ($request->get('limit', 200));
+            $rows = Mark_as_paid_line::where('id_baixa_arquivo', $id)
+                ->orderBy('ln', 'asc')
+                ->limit($limit)
+                ->get(['ln', 'contrato', 'matricula', 'referencia', 'rtn']);
+
+            $data = $rows->map(function ($r) {
+                $status = 'pending';
+                if (!is_null($r->rtn)) {
+                    $status = (stripos($r->rtn, 'sucesso') !== false) ? 'ok' : 'error';
+                }
+                return [
+                    'ln' => $r->ln,
+                    'contrato' => $r->contrato,
+                    'matricula' => $r->matricula,
+                    'referencia' => trim((string) $r->referencia),
+                    'status' => $status,
+                    'message' => $r->rtn,
+                ];
+            });
+
+            return response()->json(['items' => $data], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Reprocessa o arquivo: zera retornos e volta para fila
+     */
+    public function retryArchive($id)
+    {
+        try {
+            $arquivo = Mark_as_paid::find($id);
+            if (!$arquivo) {
+                return response()->json(['status' => 'error', 'msg' => 'Arquivo não encontrado'], 404);
+            }
+            // limpa resultados anteriores
+            Mark_as_paid_line::where('id_baixa_arquivo', $id)->update(['rtn' => null]);
+            // volta para fila
+            $arquivo->processado = 0;
+            $arquivo->save();
+
+            return response()->json(['status' => 'success', 'msg' => 'Reprocessamento iniciado'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Cancela o processamento (marca como cancelado)
+     */
+    public function cancelArchive($id)
+    {
+        try {
+            $arquivo = Mark_as_paid::find($id);
+            if (!$arquivo) {
+                return response()->json(['status' => 'error', 'msg' => 'Arquivo não encontrado'], 404);
+            }
+            $arquivo->processado = 3; // cancelled
+            $arquivo->save();
+
+            return response()->json(['status' => 'success', 'msg' => 'Processamento cancelado'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()], 500);
+        }
+    }
 }
