@@ -311,7 +311,7 @@ class UserController extends Controller
     Mail::to($contact['email'])->send(new SendEmail($contact));
     */
 
-    echo Hash::make('e2q2d5n6@');
+    echo Hash::make('cde3vfr4bgt5@');
     }
 
 }
