@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Session;
 */
 
 //rota de teste
-Route::get('/teste', [ConvenantController::class, 'darBaixaAutomatica']);
+Route::get('/teste', [UserController::class, 'teste']);
 
 
 Route::get('', function () {
