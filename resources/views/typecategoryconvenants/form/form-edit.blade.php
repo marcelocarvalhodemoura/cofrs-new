@@ -25,7 +25,6 @@
                 <option value="EMPRESTIMO">Empréstimos</option>
                 <option value="MENSALIDADE">Mensalidade</option>
                 <option value="SEG MARITIMA">Seg Marítima</option>
-
             </select>
         </div>
     </div>
