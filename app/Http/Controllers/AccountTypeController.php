@@ -76,3 +76,4 @@ class AccountTypeController extends Controller
     return response()->json(AccountType::where('id', '=', $id)->get());
   }
 }
+
